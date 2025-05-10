@@ -1,0 +1,81 @@
+/* policystyle.css */
+/* ----------------- policy 관련 style.css 입니다. (policy.jsp) ----------------- */
+.main-wrapper .site-container {
+    padding-left: 460px;
+    padding-right: 460px;
+}
+
+/* policystyle.css */
+
+/* 페이지 제목 섹션 상단 여백 추가 */
+.page-title-section {
+    margin-top: 50px;
+}
+
+/* 페이지 제목 h2 스타일 */
+.page-title-section h2 {
+    font-size: 2em; /* 예: 기본 폰트 크기의 2배 */
+    margin-bottom: 1.5em; /* 예: 제목 아래 여백 */
+    color: #333; /* 예: 제목 색상 */
+}
+
+/* 페이지 제목 아래 설명 p 스타일 */
+.page-title-section p {
+    font-size: 1.1em; /* 예: 기본 폰트 크기보다 약간 크게 */
+    margin-bottom: 2em; /* 예: 설명 아래 여백 */
+    color: #555; /* 예: 설명 텍스트 색상 */
+    line-height: 1.6; /* 예: 줄 간격 */
+}
+
+/* 각 조항 제목 h3 스타일 */
+.terms-section h3 {
+    font-size: 1.4em; /* 예: h2보다 작게 */
+    margin-top: 2em; /* 예: 이전 섹션과의 상단 여백 */
+    margin-bottom: 1em; /* 예: 제목 아래 여백 */
+    color: #444; /* 예: 조항 제목 색상 */
+    border-bottom: 1px solid #eee; /* 예: 조항 제목 아래 구분선 */
+    padding-bottom: 0.5em; /* 예: 구분선과의 간격 */
+}
+
+/* 조항 내용 p 태그 스타일 */
+.terms-section p {
+    font-size: 1em; /* 예: 기본 폰트 크기 */
+    margin-bottom: 1em; /* 예: 단락 아래 여백 */
+    line-height: 1.8; /* 예: 줄 간격 */
+    color: #666; /* 예: 본문 텍스트 색상 */
+}
+
+/* 조항 내용 목록 (ul, li) 스타일 */
+.terms-section ul {
+    margin-top: 1em; /* 예: 목록 상단 여백 */
+    margin-bottom: 1em; /* 예: 목록 하단 여백 */
+    padding-left: 1.5em; /* 예: 목록 들여쓰기 */
+}
+
+.terms-section li {
+     font-size: 1em; /* 예: 목록 항목 폰트 크기 */
+     margin-bottom: 0.8em; /* 예: 목록 항목 간 여백 */
+     line-height: 1.8; /* 예: 줄 간격 */
+     color: #666; /* 예: 목록 항목 텍스트 색상 */
+}
+
+.terms-section p:first-of-type {
+margin-top: 50px;
+}
+
+
+/* 반응형 디자인 */
+
+@media (max-width: 1400px) {
+    .main-wrapper .site-container {
+        padding-left: 100px;
+        padding-right: 100px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-wrapper .site-container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
