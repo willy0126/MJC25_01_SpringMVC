@@ -5,3 +5,4 @@ com\example\spring\CSController.class
 com\example\spring\InfoController.class
 com\example\spring\BranchController.class
 com\example\spring\PolicyController.class
+com\example\spring\AuthController.class
