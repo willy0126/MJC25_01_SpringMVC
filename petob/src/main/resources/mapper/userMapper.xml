@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="userMapper">
+
+    <!-- 
+        사용자 정보를 Java 객체(UserDto)와 DB 컬럼 간 매핑해주는 resultMap
+        - DB 컬럼명과 UserDto 필드명을 수동으로 매핑함
+     -->
+    <resultMap id="userResultMap" type="com.example.spring.user.UserDto">
+        <result property="userId" column="USER_ID" />
+        <result property="password" column="PASSWORD" />
+        <result property="username" column="USERNAME" />
+        <result property="phone" column="PHONE" />
+        <result property="email" column="EMAIL" />
+        <result property="role" column="ROLE" />
+        <result property="createdAt" column="CREATED_AT" />
+        <result property="updatedAt" column="UPDATED_AT" />
+    </resultMap>
+
+    <!-- 
+        사용자 등록 쿼리
+        - 회원가입 시 사용자의 정보를 USERS 테이블에 삽입
+        - 입력 파라미터는 UserDto 객체이며, 필드 값이 각각 매핑됨
+     -->
+    <insert id="create" parameterType="com.example.spring.user.UserDto">
+        <![CDATA[
+        INSERT INTO USERS (
+            USER_ID,      -- 사용자 ID (PK)
+            PASSWORD,     -- 암호화된 비밀번호
+            USERNAME,     -- 사용자 이름
+            PHONE,        -- 전화번호
+            EMAIL         -- 이메일
+        ) VALUES (
+            #{userId},
+            #{password},
+            #{username},
+            #{phone},
+            #{email}
+        )
+        ]]>
+    </insert>
+
+    <!-- 
+        사용자 단건 조회 쿼리
+        - 주어진 조건(userId, username, phone, email)에 따라 사용자 정보 조회
+        - 입력 파라미터는 UserDto이며, 조건은 동적으로 적용됨
+        - WHERE 절은 1=1로 시작하여 조건이 있는 항목만 필터링
+        - 결과는 userResultMap을 사용하여 UserDto로 매핑됨
+     -->
+    <select id="read" resultMap="userResultMap" parameterType="com.example.spring.user.UserDto">
+        <![CDATA[
+        SELECT
+            USER_ID,
+            PASSWORD,
+            USERNAME,
+            PHONE,
+            EMAIL,
+            ROLE,
+            CREATED_AT,
+            UPDATED_AT
+        FROM
+            USERS
+        WHERE 1=1 
+        ]]>
+        <if test="userId != null">
+            <![CDATA[
+            AND USER_ID = #{userId}
+            ]]>
+        </if>
+        <if test="username != null">
+            <![CDATA[
+            AND USERNAME = #{username}
+            ]]>
+        </if>
+        <if test="phone != null">
+            <![CDATA[
+            AND PHONE = #{phone}
+            ]]>
+        </if>
+        <if test="email != null">
+            <![CDATA[
+            AND EMAIL = #{email}
+            ]]>
+        </if>
+        <![CDATA[
+        LIMIT 1
+        ]]>
+    </select>
+  <!-- 
+        사용자 정보 수정 쿼리
+        - 전달된 UserDto의 값 중 null이 아닌 항목만 수정 대상에 포함됨
+        - USER_ID는 PK이며, WHERE 조건으로 사용 (자기 자신을 기준으로 업데이트)
+        - LIMIT 1은 실수로 다수의 행이 수정되는 것을 방지함
+        - password, username, phone, email 등을 선택적으로 수정할 수 있음
+    -->
+    <update id="update" parameterType="com.example.spring.user.UserDto">
+        <![CDATA[
+        UPDATE USERS 
+        SET USER_ID = #{userId}
+        ]]>
+        <if test="username != null">
+            <![CDATA[
+            , USERNAME = #{username}
+            ]]>
+        </if>
+        <if test="phone != null">
+            <![CDATA[
+            , PHONE = #{phone}
+            ]]>
+        </if>
+        <if test="email != null">
+            <![CDATA[
+            , EMAIL = #{email}
+            ]]>
+        </if>
+        <if test="password != null">
+            <![CDATA[
+            , PASSWORD = #{password}
+            ]]>
+        </if>
+        <![CDATA[
+        WHERE USER_ID = #{userId}
+        LIMIT 1
+        ]]>
+    </update>
+</mapper>
