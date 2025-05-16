@@ -1,5 +1,6 @@
 com\example\spring\LocationController.class
 com\example\spring\MainController.class
+com\example\spring\ReservationController.class
 com\example\spring\CommunityController.class
 com\example\spring\CSController.class
 com\example\spring\InfoController.class
