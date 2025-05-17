@@ -32,9 +32,9 @@
       <div class="menu-item">
         <a href="#" class="menu-link">지점 소개</a>
         <ul class="dropdown">
-          <li><a href="#">본점</a></li>
-          <li><a href="#">홍대입구점</a></li>
-          <li><a href="#">서대문점</a></li>
+          <li><a href="${pageContext.request.contextPath}/branches/mainbranch">본점</a></li>
+          <li><a href="${pageContext.request.contextPath}/branches/subbranch1">홍대입구점</a></li>
+          <li><a href="${pageContext.request.contextPath}/branches/subbranch2">서대문점</a></li>
         </ul>
       </div>
       <div class="menu-item">

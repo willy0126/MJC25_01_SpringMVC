@@ -1,0 +1,92 @@
+/* branchstyle.css */
+
+/* 기본 캐러셀 크기 및 중앙 배치 */
+#basicCarousel {
+    max-width: 500px;
+    /* 최대 너비 설정 */
+    margin: 0 auto;
+    /* 중앙 배치 */
+    margin-bottom: 20px;
+    /* 하단 여백 추가 */
+}
+
+/* 캐러셀 이미지 스타일 (필요에 따라 조절) */
+#basicCarousel .carousel-inner img {
+    height: 500px;
+    object-fit: cover;
+    /* 이미지가 잘리지 않고 비율 유지하며 채우도록 설정 */
+    width: 100%;
+    /* <-- Bootstrap의 d-block w-100 클래스가 적용되지만, 명시적으로 확인 */
+}
+
+/* Bootstrap의 XXL 화면 크기(1400px 이상)에서의 .container 최대 너비 재정의 */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1200px;
+        /* 1400px 이상 화면에서 컨테이너 최대 너비를 1200px로 설정 */
+    }
+}
+
+/* 캐러셀 옆 텍스트 컬럼 (.col-md-4) 내부 스타일 */
+/* 이 셀렉터는 .col-md-4 클래스를 가진 요소 내부에 있는 모든 텍스트와 요소에 영향을 줍니다. */
+/* 필요하다면 이 영역 전체에 배경색, 패딩, 테두리 등을 적용할 수 있습니다. */
+
+.col-md-4.mt-3.mt-md-0.ps-md-4 {
+    padding: 10px;
+    border-radius: 5px;
+}
+
+
+
+/* 텍스트 컬럼 내부 제목 (h5 태그) 스타일 */
+/* '.col-md-4 h5'는 'col-md-4 클래스를 가진 요소의 자손인 h5 태그'를 의미합니다. */
+.col-md-4 h5 {
+    font-size: 1.25rem;
+    /* 글자 크기 (기본 h5 크기 또는 원하는 크기로 조절) */
+    color: #212529;
+    margin-top: 3rem;
+    /* 제목 위 여백 */
+    margin-bottom: 5rem;
+    /* 제목 아래 여백 */
+    line-height: 2;
+    /* 줄 간격 */
+}
+
+/* 텍스트 컬럼 내부 굵은 텍스트 (h5 안에 있는 <b> 태그) 스타일 */
+/* '.col-md-4 h5 b'는 'col-md-4 h5 요소의 자손인 b 태그'를 의미합니다. */
+ .col-md-4 h5 b {
+    color: #007bff; 
+    font-weight: bold;
+}
+
+
+/* 텍스트 컬럼 내부 문단 (p 태그) 스타일 */
+/* '.col-md-4 p'는 'col-md-4 클래스를 가진 요소의 자손인 p 태그'를 의미합니다. */
+.col-md-4 p {
+    font-size: 0.95rem;
+    /* 글자 크기 (기본값 또는 원하는 크기) */
+    color: #333;
+    /* 글자 색상 (예시: 기본 텍스트보다 연하게) */
+    line-height: 1.6;
+    /* 줄 간격 (보통 1.4 ~ 1.8 사이가 가독성 좋음) */
+    margin-top: 25px;
+    /* 문단 위 여백 (필요시 조절) */
+    margin-bottom: 1rem;
+    /* 문단 아래 여백 */
+    /* font-family: '원하는 글꼴', sans-serif;  원하는 글꼴 지정 */
+}
+
+/* 텍스트 컬럼 내부 버튼 (.btn 클래스 요소) 스타일 */
+/* '.col-md-4 .btn'는 'col-md-4 클래스를 가진 요소의 자손인 .btn 클래스 요소'를 의미합니다. */
+/* 버튼의 기본적인 모양(색상, 패딩, 보더 등)은 Bootstrap의 .btn 및 .btn-primary 클래스에 의해 정의됩니다. */
+/* 여기서는 버튼에 추가적인 여백을 주거나, 기본 스타일 외의 특정 속성을 변경할 때 사용합니다. */
+.col-md-4 .btn {
+    margin-top: 4rem;
+    font-size: 1.1rem;
+    padding: .5rem 1rem;
+    border-radius: .25rem; 
+}
+
+
+/* 필요에 따라 다른 스타일 추가 */
+/* 예: 텍스트 링크 (a 태그), 목록 (ul, ol) 등 */
