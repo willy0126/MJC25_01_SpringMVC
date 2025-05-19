@@ -11,9 +11,8 @@
 </head>
 
 <body>
+    <jsp:include page="/WEB-INF/views/common/navbar.jsp" />
     <div class="page-wrapper">
-        <jsp:include page="/WEB-INF/views/common/navbar.jsp" />
-        
         <main class="main-wrapper">
         <div class="login-container">
             <h2>로그인</h2>
@@ -41,6 +40,7 @@
             </div>
         </div>
         </main>
+    </div>
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
     <jsp:include page="/WEB-INF/views/common/script.jsp" />
 </body>
