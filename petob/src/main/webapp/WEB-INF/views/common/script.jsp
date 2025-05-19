@@ -6,13 +6,13 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // carousel fade-in 효과 적용
+        // carousel fade-in 효과 적용 (기존 로직)
         const carousel = document.querySelector('.carousel.fade-in');
         if (carousel) {
             setTimeout(() => carousel.classList.add('show'), 100);
         }
 
-        // IntersectionObserver를 사용하여 fade-in 효과 적용
+        // IntersectionObserver를 사용하여 fade-in 효과 적용 (기존 로직)
         const targets = document.querySelectorAll(
             '.section-title, .intro-item, #procedure, #notices .notice-list, #notices .mini-carousel, section.fade-in'
         );
@@ -31,7 +31,7 @@
             targets.forEach(el => io.observe(el));
         }
 
-        // mini-carousel 자동 전환
+        // mini-carousel 자동 전환 (기존 로직)
         const miniSlides = document.querySelectorAll('.mini-carousel .slide');
         if (miniSlides.length > 0) {
             let currentMini = 0;
@@ -41,23 +41,18 @@
                 miniSlides[currentMini].classList.add('active');
             }, 3000);
         }
-
-        /*
-        // 이미지 캐러셀 기능 추가
-        const mainImage = document.getElementById('mainImage');
-        const carouselItems = document.querySelectorAll('.carousel-item');
-
-        if (mainImage && carouselItems.length > 0) {
-            carouselItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const imageUrl = this.dataset.image;
-                    mainImage.src = imageUrl;
-
-                    carouselItems.forEach(el => el.classList.remove('active'));
-                    this.classList.add('active');
-                });
+        
+        // =====================================================================
+        // 추가된 스크립트: '.content-fade-in' 요소들에 대한 페이지 로드 시 애니메이션
+        // (예: mainbranch.jsp의 제목, 캐러셀, 설명 텍스트 등)
+        // =====================================================================
+        const contentFadeInElements = document.querySelectorAll('.content-fade-in');
+        if (contentFadeInElements.length > 0) {
+            contentFadeInElements.forEach(function(element) {
+                setTimeout(function() {
+                    element.classList.add('show');
+                }, 100); 
             });
         }
-        */
     });
 </script>

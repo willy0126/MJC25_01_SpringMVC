@@ -13,4 +13,6 @@
 <!-- 3. style.css -->
 <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet"/>
 
+<link rel="icon" href="${pageContext.request.contextPath}/resources/img/favicon-32x32.png" type="image/png">
+
 </head>
