@@ -1,8 +1,11 @@
+com\example\spring\ReservationDto.class
 com\example\spring\LocationController.class
 com\example\spring\MainController.class
+com\example\spring\ReservationController.class
 com\example\spring\CommunityController.class
 com\example\spring\CSController.class
 com\example\spring\InfoController.class
+com\example\spring\ReservationService.class
 com\example\spring\BranchController.class
 com\example\spring\PolicyController.class
 com\example\spring\AuthController.class
