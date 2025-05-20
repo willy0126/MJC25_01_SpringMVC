@@ -46,6 +46,13 @@ public class AuthController {
     
     @PostMapping("/register")
     public String registerPost(UserDto user, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+
+            // --- 디버깅 로그 추가 ---
+    logger.debug("Register attempt with UserDto: userId={}, username={}, phone={}, email={}, password (length)={}",
+            user.getUserId(), user.getUsername(), user.getPhone(), user.getEmail(),
+            (user.getPassword() != null ? user.getPassword().length() : "null"));
+    // --- 디버깅 로그 끝 ---
+
         // 회원 가입 처리 (비밀번호 암호화 포함)
         boolean result = userService.create(user);
 

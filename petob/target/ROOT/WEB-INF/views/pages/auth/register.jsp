@@ -184,7 +184,7 @@
                         email: true,
                         maxlength: 50,
                         remote: {
-                            url: '/auth/check-email',
+                            url: '/check-email',
                             type: 'post',
                             data: {
                                 email: function() {
@@ -241,6 +241,5 @@
             });
         });
     </script>
-    <%--// 자바스크립트 --%>
 </body>
 </html>

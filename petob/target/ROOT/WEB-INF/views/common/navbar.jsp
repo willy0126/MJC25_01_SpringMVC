@@ -64,13 +64,9 @@
         </ul>
       </div>
 
-<<<<<<< HEAD
-      <a href="#" class="reserve-button">상담 예약</a>
-=======
       <!-- 상담 예약 버튼 (가장 오른쪽) -->
       <a href="${pageContext.request.contextPath}/reservation" class="reserve-button">상담 예약</a>
 
->>>>>>> jiwon
     </div>
 
   </div>
