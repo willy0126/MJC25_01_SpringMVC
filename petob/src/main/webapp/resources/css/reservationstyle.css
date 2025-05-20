@@ -89,3 +89,6 @@ button[type="submit"]:hover {
     margin-top: 15px;
     font-size: 14px;
 }
+.flatpickr-calendar {
+    z-index: 9999 !important;
+}
