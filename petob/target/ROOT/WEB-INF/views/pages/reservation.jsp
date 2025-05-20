@@ -5,32 +5,16 @@
 <html lang="ko">
 <head>
     <jsp:include page="/WEB-INF/views/common/head.jsp" />
+
     <title>간편 예약 - Star's Haven, 반려동물 장례식장</title>
 
     <link rel="stylesheet" href="<c:url value='/resources/css/reservationstyle.css'/>" />
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script> <!-- 한국어 설정 -->
+
    
 
-<script>
-
-    let reservedTimes = [];
-
-    $(function () {
-        // Datepicker 설정
-        $("#datePicker").datepicker({
-            dateFormat: "yy-mm-dd",
-            minDate: 0,
-            beforeShowDay: function (date) {
-                const day = date.getDay();
-                return [day !== 0 && day !== 6, ""];
-            },
-        });
-      }
-    )
-
-</script>
 
 </head>
 
@@ -84,6 +68,20 @@
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
     <jsp:include page="/WEB-INF/views/common/script.jsp" />
     <script>
+
+                flatpickr("#datePicker", {
+            locale: "ko",
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            disable: [
+                function(date) {
+                    // 주말 비활성화 (0: 일요일, 6: 토요일)
+                    return (date.getDay() === 0 || date.getDay() === 6);
+                }
+            ]
+        });
+
+        
          const allTimes = [
         "09:00", "09:30", "10:00", "10:30",
         "11:00", "11:30", "12:00", "12:30",
