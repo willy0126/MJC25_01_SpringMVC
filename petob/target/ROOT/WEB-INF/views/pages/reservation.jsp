@@ -69,7 +69,8 @@
     <jsp:include page="/WEB-INF/views/common/script.jsp" />
     <script>
 
-                flatpickr("#datePicker", {
+
+        flatpickr("#datePicker", {
             locale: "ko",
             dateFormat: "Y-m-d",
             minDate: "today",
@@ -79,9 +80,7 @@
                     return (date.getDay() === 0 || date.getDay() === 6);
                 }
             ]
-        });
-
-        
+    });
          const allTimes = [
         "09:00", "09:30", "10:00", "10:30",
         "11:00", "11:30", "12:00", "12:30",
