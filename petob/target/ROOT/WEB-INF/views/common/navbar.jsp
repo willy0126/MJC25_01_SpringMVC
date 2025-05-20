@@ -1,26 +1,34 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!-- 네비게이션 전체 -->
+
 <div class="navbar-container">
 
-  <!-- 왼쪽: 로고 -->
+
   <div class="navbar-left">
     <a href="${pageContext.request.contextPath}/">
       <img src="${pageContext.request.contextPath}/resources/img/logo.png" alt="로고" class="logo-img">
     </a>
   </div>
 
-  <!-- 오른쪽: 로그인/회원가입 + 메뉴 + 상담 예약 -->
+
   <div class="navbar-right">
 
-    <!-- 로그인/회원가입 (우측 상단) -->
     <div class="auth-links">
-      <a href="${pageContext.request.contextPath}/login" class="auth-link">로그인</a>
-      <a href="${pageContext.request.contextPath}/register" class="auth-link">회원가입</a>
+      <c:choose>
+       
+        <c:when test="${empty sessionScope.userId}">
+          <a href="${pageContext.request.contextPath}/login" class="auth-link">로그인</a>
+          <a href="${pageContext.request.contextPath}/register" class="auth-link">회원가입</a>
+        </c:when>
+      
+        <c:otherwise>
+          <a href="${pageContext.request.contextPath}/myPage" class="auth-link">마이페이지</a>
+          <a href="${pageContext.request.contextPath}/logout" class="auth-link">로그아웃</a>
+        </c:otherwise>
+      </c:choose>
     </div>
 
-    <!-- 메뉴 링크 + 상담 예약 (우측 하단) -->
     <div class="menu-links">
       <div class="menu-item">
         <a href="#" class="menu-link">이용 안내</a>
