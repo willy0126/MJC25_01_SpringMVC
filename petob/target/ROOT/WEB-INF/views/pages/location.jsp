@@ -19,10 +19,8 @@
 
 <body>
   <div class="page-wrapper">
-    
     <!-- (1) Navbar -->
     <jsp:include page="/WEB-INF/views/common/navbar.jsp" />
-
     <main class="main-wrapper">
       <div class="site-container">
         <div class="map-title fade-in">지점 안내</div>
