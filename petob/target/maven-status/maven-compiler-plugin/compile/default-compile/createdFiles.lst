@@ -1,9 +1,20 @@
+<<<<<<< HEAD
+=======
+com\example\spring\ReservationDto.class
+com\example\spring\LocationController.class
+com\example\spring\MainController.class
+com\example\spring\ReservationController.class
+>>>>>>> jiwon
 com\example\spring\CommunityController.class
 com\example\spring\LocationController.class
 com\example\spring\CSController.class
 com\example\spring\InfoController.class
+<<<<<<< HEAD
 com\example\spring\MainController.class
 com\example\spring\user\UserService.class
+=======
+com\example\spring\ReservationService.class
+>>>>>>> jiwon
 com\example\spring\BranchController.class
 com\example\spring\libs\Pagination.class
 com\example\spring\user\AuthController.class
