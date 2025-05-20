@@ -3,7 +3,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script src="${pageContext.request.contextPath}/resources/js/app.js"></script>
-
+<%-- jQuery --%>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<%-- jQuery Validation --%>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         // carousel fade-in 효과 적용 (기존 로직)
@@ -31,6 +35,22 @@
             targets.forEach(el => io.observe(el));
         }
 
+<<<<<<< HEAD
+    // 3) mini-carousel 자동 전환
+    const miniSlides = document.querySelectorAll('.mini-carousel .slide');
+    if (miniSlides.length > 0) {
+      let currentMini = 0;
+      setInterval(() => {
+        miniSlides[currentMini].classList.remove('active');
+        currentMini = (currentMini + 1) % miniSlides.length;
+        miniSlides[currentMini].classList.add('active');
+      }, 3000);
+    }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/tinymce@7.5.1/tinymce.min.js"></script>
+=======
         // mini-carousel 자동 전환 (기존 로직)
         const miniSlides = document.querySelectorAll('.mini-carousel .slide');
         if (miniSlides.length > 0) {
@@ -56,3 +76,4 @@
         }
     });
 </script>
+>>>>>>> jiwon
