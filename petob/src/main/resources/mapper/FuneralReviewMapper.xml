@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="reviewMapper">
+
+    <resultMap id="reviewResultMap" type="com.example.spring.FuneralReview.FuneralReviewDTO">
+        <result property="id" column="ID"/>
+        <result property="reviewTitle" column="REVIEW_TITLE"/>
+        <result property="reviewContent" column="REVIEW_CONTENT"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="funeralDate" column="FUNERAL_DATE"/>
+        <result property="location" column="LOCATION"/>
+        <result property="createdAt" column="CREATED_AT"/>
+        <result property="updatedAt" column="UPDATED_AT"/>
+        <result property="fileName" column="FILE_NAME"/>
+        <result property="originalFileName" column="ORIGINAL_FILE_NAME"/>
+        <result property="username" column="USERNAME"/>
+        <result property="phone" column="PHONE"/>
+        <result property="email" column="EMAIL"/>
+        <result property="role" column="ROLE"/>
+    </resultMap>
+
+    <select id="list" resultMap="reviewResultMap">
+        <![CDATA[
+        SELECT
+            R.ID,
+            R.REVIEW_TITLE,
+            R.REVIEW_CONTENT,
+            R.USER_ID,
+            R.FUNERAL_DATE,
+            R.LOCATION,
+            R.CREATED_AT,
+            R.UPDATED_AT,
+            R.FILE_NAME,
+            R.ORIGINAL_FILE_NAME,
+            U.USERNAME,
+            U.PHONE,
+            U.EMAIL,
+            U.ROLE
+        FROM
+            REVIEWS R
+        INNER JOIN USERS U ON R.USER_ID = U.USER_ID
+        WHERE 1=1
+        ]]>
+        <if test="searchType != null and searchKeyword != null and searchKeyword != ''">
+            <choose>
+                <when test="searchType == 'reviewTitle'">
+                    <![CDATA[
+                    AND R.REVIEW_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+                    ]]>
+                </when>
+                <when test="searchType == 'reviewContent'">
+                    <![CDATA[
+                    AND R.REVIEW_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+                    ]]>
+                </when>
+                <when test="searchType == 'location'">
+                    <![CDATA[
+                    AND R.LOCATION LIKE CONCAT('%', #{searchKeyword}, '%')
+                    ]]>
+                </when>
+                <when test="searchType == 'username'">
+                    <![CDATA[
+                    AND U.USERNAME LIKE CONCAT('%', #{searchKeyword}, '%')
+                    ]]>
+                </when>
+                <when test="searchType == 'userId'">
+                    <![CDATA[
+                    AND R.USER_ID LIKE CONCAT('%', #{searchKeyword}, '%')
+                    ]]>
+                </when>
+                <when test="searchType == 'all'">
+                    <![CDATA[
+                    AND (
+                        R.REVIEW_TITLE LIKE CONCAT('%', #{searchKeyword}, '%') OR
+                        R.REVIEW_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%') OR
+                        R.LOCATION LIKE CONCAT('%', #{searchKeyword}, '%') OR
+                        U.USERNAME LIKE CONCAT('%', #{searchKeyword}, '%') OR
+                        R.USER_ID LIKE CONCAT('%', #{searchKeyword}, '%')
+                    )
+                    ]]>
+                </when>
+            </choose>
+        </if>
+        <![CDATA[
+        ORDER BY R.ID DESC
+        LIMIT #{offset}, #{listCountPerPage}
+        ]]>
+    </select>
+
+    <insert id="create" parameterType="com.example.spring.FuneralReview.FuneralReviewDTO" useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[
+        INSERT INTO REVIEWS (
+            REVIEW_TITLE,
+            REVIEW_CONTENT,
+            USER_ID,
+            FUNERAL_DATE,
+            LOCATION,
+            FILE_NAME,
+            ORIGINAL_FILE_NAME,
+            CREATED_AT,
+            UPDATED_AT
+        ) VALUES (
+            #{reviewTitle},
+            #{reviewContent},
+            #{userId},
+            #{funeralDate},
+            #{location},
+            #{fileName},
+            #{originalFileName},
+            NOW(),
+            NOW()
+        )
+        ]]>
+    </insert>
+
+    <select id="read" resultMap="reviewResultMap">
+        <![CDATA[
+        SELECT
+            R.ID,
+            R.REVIEW_TITLE,
+            R.REVIEW_CONTENT,
+            R.USER_ID,
+            R.FUNERAL_DATE,
+            R.LOCATION,
+            R.CREATED_AT,
+            R.UPDATED_AT,
+            R.FILE_NAME,
+            R.ORIGINAL_FILE_NAME,
+            U.USERNAME,
+            U.PHONE,
+            U.EMAIL,
+            U.ROLE
+        FROM
+            REVIEWS R
+        INNER JOIN USERS U ON R.USER_ID = U.USER_ID
+        WHERE R.ID = #{id}
+        LIMIT 1
+        ]]>
+    </select>
+
+    <update id="update" parameterType="com.example.spring.FuneralReview.FuneralReviewDTO">
+        <![CDATA[
+        UPDATE REVIEWS
+        SET
+            REVIEW_TITLE = #{reviewTitle},
+            REVIEW_CONTENT = #{reviewContent},
+            FUNERAL_DATE = #{funeralDate},
+            LOCATION = #{location},
+            UPDATED_AT = NOW()
+        ]]>
+        <if test="fileName != null">
+            <![CDATA[
+            , FILE_NAME = #{fileName}
+            ]]>
+        </if>
+        <if test="originalFileName != null">
+            <![CDATA[
+            , ORIGINAL_FILE_NAME = #{originalFileName}
+            ]]>
+        </if>
+        <![CDATA[
+        WHERE ID = #{id}
+        LIMIT 1
+        ]]>
+    </update>
+
+    <update id="updateFile" parameterType="com.example.spring.FuneralReview.FuneralReviewDTO">
+        <![CDATA[
+        UPDATE REVIEWS
+        SET
+            FILE_NAME = #{fileName},
+            ORIGINAL_FILE_NAME = #{originalFileName},
+            UPDATED_AT = NOW()
+        WHERE ID = #{id}
+        LIMIT 1
+        ]]>
+    </update>
+
+    <delete id="delete">
+        <![CDATA[
+        DELETE FROM REVIEWS
+        WHERE ID = #{id}
+        LIMIT 1
+        ]]>
+    </delete>
+
+    <select id="totalCount" resultType="int">
+        <![CDATA[
+        SELECT COUNT(*)
+        FROM REVIEWS R
+        INNER JOIN USERS U ON R.USER_ID = U.USER_ID
+        WHERE 1=1
+        ]]>
+        <if test="searchType != null and searchKeyword != null and searchKeyword != ''">
+            <choose>
+                <when test="searchType == 'reviewTitle'">
+                    <![CDATA[
+                    AND R.REVIEW_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+                    ]]>
+                </when>
+                <when test="searchType == 'reviewContent'">
+                    <![CDATA[
+                    AND R.REVIEW_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+                    ]]>
+                </when>
+                <when test="searchType == 'location'">
+                    <![CDATA[
+                    AND R.LOCATION LIKE CONCAT('%', #{searchKeyword}, '%')
+                    ]]>
+                </when>
+                <when test="searchType == 'username'">
+                    <![CDATA[
+                    AND U.USERNAME LIKE CONCAT('%', #{searchKeyword}, '%')
+                    ]]>
+                </when>
+                 <when test="searchType == 'userId'">
+                    <![CDATA[
+                    AND R.USER_ID LIKE CONCAT('%', #{searchKeyword}, '%')
+                    ]]>
+                </when>
+                <when test="searchType == 'all'">
+                    <![CDATA[
+                    AND (
+                        R.REVIEW_TITLE LIKE CONCAT('%', #{searchKeyword}, '%') OR
+                        R.REVIEW_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%') OR
+                        R.LOCATION LIKE CONCAT('%', #{searchKeyword}, '%') OR
+                        U.USERNAME LIKE CONCAT('%', #{searchKeyword}, '%') OR
+                        R.USER_ID LIKE CONCAT('%', #{searchKeyword}, '%')
+                    )
+                    ]]>
+                </when>
+            </choose>
+        </if>
+    </select>
+
+</mapper>

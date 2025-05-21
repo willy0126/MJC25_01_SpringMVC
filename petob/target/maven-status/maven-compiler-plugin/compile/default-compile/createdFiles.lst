@@ -1,3 +1,4 @@
+com\example\spring\interceptor\AuthInterceptor.class
 com\example\spring\ReservationDto.class
 com\example\spring\CommunityController.class
 com\example\spring\LocationController.class
@@ -6,10 +7,14 @@ com\example\spring\InfoController.class
 com\example\spring\ReservationService.class
 com\example\spring\MainController.class
 com\example\spring\user\UserService.class
+com\example\spring\FuneralReview\FuneralReviewController.class
+com\example\spring\FuneralReview\FuneralReviewDTO.class
+com\example\spring\FuneralReview\FuneralReviewDAO.class
 com\example\spring\ReservationController.class
 com\example\spring\BranchController.class
 com\example\spring\libs\Pagination.class
 com\example\spring\user\AuthController.class
 com\example\spring\user\UserDao.class
 com\example\spring\PolicyController.class
+com\example\spring\FuneralReview\FuneralReviewService.class
 com\example\spring\user\UserDto.class
