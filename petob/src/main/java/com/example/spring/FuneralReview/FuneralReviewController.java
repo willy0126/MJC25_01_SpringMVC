@@ -9,15 +9,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.UUID;
-
+// import org.springframework.web.multipart.MultipartFile; // 중복된 import문, 아래에 하나만 남김
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.beans.factory.annotation.Value; // 현재 코드에서는 사용하지 않으므로 주석 처리 또는 삭제 가능
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,49 +31,43 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@Controller 
-@RequestMapping("/Funeral_reviews")
+@Controller
+@RequestMapping("/funeral-reviews")
 public class FuneralReviewController {
 
- @Autowired
+    @Autowired
     FuneralReviewService funeralReviewService;
 
-    // 로깅을 위한 변수
+    @Autowired
+    ServletContext servletContext;
+
     private static final Logger logger = LoggerFactory.getLogger(FuneralReviewController.class);
 
-    public String uploadPathByOS() {
-        String uploadPath = "";
-        String os = System.getProperty("os.name").toLowerCase();
+    // 웹 애플리케이션 내부의 'uploads/funeral-reviews' 폴더를 기준으로 경로 반환
+    private String getUploadPath() {
+        String relativePath = "/uploads/funeral-reviews/";
+        String absolutePath = servletContext.getRealPath(relativePath);
 
-        if (os.contains("win")) {
-            uploadPath = "C:/upload/auth-post";
-        } else if (os.contains("mac")) {
-            uploadPath = "/Users/user/upload/auth-post";
-        } else if (os.contains("nux") || os.contains("nix")) {
-            uploadPath = "/home/user/upload/auth-post";
-        } else {
-            throw new IllegalStateException("Unsupported operating system: " + os);
+        // 디렉토리가 존재하지 않으면 생성
+        File uploadDir = new File(absolutePath);
+        if (!uploadDir.exists()) {
+            if (uploadDir.mkdirs()) {
+                logger.info("업로드 디렉토리 생성 성공: {}", absolutePath);
+            } else {
+                logger.error("업로드 디렉토리 생성 실패: {}", absolutePath);
+                // 디렉토리 생성 실패 시 예외를 발생시키거나, 기본 경로를 사용하도록 처리할 수 있습니다.
+                // 여기서는 로깅만 하고 진행하지만, 실제 운영에서는 더 강력한 처리가 필요할 수 있습니다.
+            }
         }
-
-        return uploadPath;
+        return absolutePath;
     }
 
-    /**
-     * 게시글 목록 화면 요청 처리 (GET 방식)
-     *
-     * - 사용자가 검색 조건(searchType, searchKeyword)을 입력하면 해당 조건에 따라 게시글을 필터링
-     * - 검색 조건이 없으면 전체 게시글을 조회
-     * - 페이지 번호(page) 파라미터를 통해 해당 페이지의 게시글만 조회 (기본값은 1)
-     * - 게시글 목록, 검색 조건, 페이지네이션 정보를 모델에 담아 뷰로 전달
-     *
-     * @param searchType 검색 기준 ("title", "content", "userId", "username", "phone", "email", "all" 등), null 허용
-     * @param searchKeyword 검색어, null 또는 빈 문자열 허용
-     * @param currentPage 현재 페이지 번호 (기본값: 1)
-     * @param model 뷰에 전달할 데이터를 담는 객체
-     * @return 게시글 목록을 출력할 뷰 이름 ("authPost/list.jsp")
-     */
+    // (listGet, createGet, createPost, readGet, updateGet, updatePost, deletePost, download 메서드는 이전과 동일하게 유지)
+    // ... 이전 코드 생략 ...
+
     @GetMapping("")
     public String listGet(
         @RequestParam(required = false) String searchType,
@@ -77,151 +75,115 @@ public class FuneralReviewController {
         @RequestParam(value = "page", defaultValue = "1") int currentPage,
         Model model
     ) {
-        int listCountPerPage = 10;  // 한 페이지에서 불러올 게시글 수
-        int pageCountPerPage = 5;   // 하단에 보여질 페이지 수 (예: [1][2][3][4][5])
+        int listCountPerPage = 10;
+        int pageCountPerPage = 5;
 
-        // 서비스 계층을 통해 게시글 목록 + 검색 조건 + 페이징 정보를 조회
         Map<String, Object> result = funeralReviewService.list(
             currentPage, listCountPerPage, pageCountPerPage, searchType, searchKeyword
         );
 
-        // 모델에 조회된 데이터 전달 (뷰에서 활용)
-        model.addAttribute("posts", result.get("posts"));               // 게시글 목록
-        model.addAttribute("pagination", result.get("pagination"));     // 페이지네이션 정보
-        model.addAttribute("searchType", result.get("searchType"));     // 검색 기준
-        model.addAttribute("searchKeyword", result.get("searchKeyword")); // 검색어
+        model.addAttribute("posts", result.get("posts"));
+        model.addAttribute("pagination", result.get("pagination"));
+        model.addAttribute("searchType", result.get("searchType"));
+        model.addAttribute("searchKeyword", result.get("searchKeyword"));
 
-        // authPost/list.jsp 뷰 렌더링
-        return "FuneralReview/list";
+        return "funeralReview/list";
     }
 
-  
     @GetMapping("/create")
-    public String createGet() {
-        // 단순히 글쓰기 화면만 보여주는 기능이므로 별도의 데이터 전달 없음
-        return "FuneralReview/create";
+    public String createGet(HttpSession session) {
+        if (session.getAttribute("userId") == null) {
+            return "redirect:/login";
+        }
+        return "funeralReview/create";
     }
 
-    /**
-     * 게시글 등록 요청 처리 (POST 방식)
-     * - 사용자가 입력한 게시글 정보와 첨부파일을 처리하여 등록
-     * - 첨부파일이 존재할 경우 지정된 경로에 저장하고, 게시글 정보에 파일명 설정
-     * - 등록 성공 시 해당 게시글 보기 페이지로 리다이렉트
-     * - 등록 실패 또는 예외 발생 시 글쓰기 페이지로 리다이렉트
-     *
-     * @param post 사용자가 입력한 게시글 정보 (파일 포함)
-     * @param redirectAttributes 리다이렉트 시 전달할 메시지를 담는 객체
-     * @return 리다이렉트 경로 (성공 시 상세보기, 실패 시 글쓰기)
-     */
     @PostMapping("/create")
     public String createPost(
-        FuneralReviewDTO post, 
-        HttpServletRequest request, 
+        FuneralReviewDTO post,
+        HttpServletRequest request,
         RedirectAttributes redirectAttributes
     ) {
-        String uploadPath = uploadPathByOS(); // 운영체제에 따른 업로드 경로 설정
+        HttpSession session = request.getSession();
+        String userId = (String) session.getAttribute("userId");
+
+        if (userId == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "로그인이 필요합니다.");
+            return "redirect:/login";
+        }
+        post.setUserId(userId);
+
+        String uploadPath = getUploadPath();
 
         try {
-            // 첨부파일 정보 가져오기
             MultipartFile uploadFile = post.getUploadFile();
 
-            // 첨부파일이 존재하는 경우 처리
             if (uploadFile != null && !uploadFile.isEmpty()) {
-                String originalFileName = uploadFile.getOriginalFilename();                      // 원본 파일명
-                String fileName = UUID.randomUUID().toString() + "_" + originalFileName;         // 중복 방지를 위한 저장 파일명
-
-                // 업로드 경로에 디렉토리가 없으면 생성
-                File uploadDir = new File(uploadPath);
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdirs();
+                String originalFileName = uploadFile.getOriginalFilename();
+                String extension = "";
+                if (originalFileName != null && originalFileName.lastIndexOf(".") != -1) {
+                    extension = originalFileName.substring(originalFileName.lastIndexOf("."));
                 }
+                String fileName = UUID.randomUUID().toString() + extension;
 
-                // 파일 저장
                 File fileToUpload = new File(uploadPath + File.separator + fileName);
                 uploadFile.transferTo(fileToUpload);
 
-                // 게시글 DTO에 파일 정보 설정
                 post.setFileName(fileName);
                 post.setOriginalFileName(originalFileName);
             }
 
-            // 세션에서 로그인된 사용자 아이디 가져오기
-            String userId = (String) request.getSession().getAttribute("userId");
-
-            // 사용자 아이디 등록
-            post.setUserId(userId);
-
-            // 게시글 등록 (성공 시 ID 반환)
             int createdId = funeralReviewService.create(post);
 
             if (createdId > 0) {
                 redirectAttributes.addFlashAttribute("successMessage", "게시글이 등록되었습니다.");
-                return "redirect:/FuneralReview-posts/" + createdId;
+                return "redirect:/funeral-reviews/" + createdId;
             }
 
-            // 등록 실패 시
             redirectAttributes.addFlashAttribute("errorMessage", "게시글 등록에 실패했습니다.");
-            return "redirect:/FuneralReview-posts/create";
+            return "redirect:/funeral-reviews/create";
 
         } catch (IOException | IllegalStateException e) {
             logger.error("파일 업로드 오류: {}", e.getMessage(), e);
             redirectAttributes.addFlashAttribute("errorMessage", "파일 업로드 중 오류가 발생했습니다.");
-            return "redirect:/FuneralReview-posts/create";
+            return "redirect:/funeral-reviews/create";
         }
     }
 
-    /**
-     * 게시글 상세보기 요청 처리 (GET 방식)
-     * @param id 상세 조회할 게시글 ID
-     * @param model 뷰에 전달할 게시글 데이터를 담는 객체
-     * @return 상세보기 화면 뷰 이름 ("authPost/read.jsp")
-     */
     @GetMapping("/{id}")
-    public String readGet(@PathVariable("id") int id, Model model) {
-        // 서비스 계층을 통해 게시글 ID에 해당하는 게시글 데이터 조회
+    public String readGet(@PathVariable("id") int id, Model model, HttpSession session) {
         FuneralReviewDTO post = funeralReviewService.read(id);
-
-        // 조회한 게시글 데이터를 모델에 담아 뷰로 전달
+        if (post == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다.");
+        }
         model.addAttribute("post", post);
-
-        // 게시글 상세보기 화면 렌더링
-        return "FuneralReview/read";
+        model.addAttribute("currentUserId", session.getAttribute("userId"));
+        model.addAttribute("currentUserRole", session.getAttribute("role"));
+        return "funeralReview/read";
     }
 
-    /**
-     * 게시글 수정 화면 요청 처리 (GET 방식)
-     * @param id 수정할 게시글의 ID
-     * @param model 수정할 게시글 데이터를 뷰로 전달하기 위한 모델 객체
-     * @return "authPost/update" 뷰 이름 (예: authPost/update.jsp)
-     */
     @GetMapping("/{id}/update")
-    public String updateGet(@PathVariable("id") int id, Model model, HttpServletRequest request) {
+    public String updateGet(@PathVariable("id") int id, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        HttpSession session = request.getSession();
+        String currentUserId = (String) session.getAttribute("userId");
+        String currentUserRole = (String) session.getAttribute("role");
+
         FuneralReviewDTO post = funeralReviewService.read(id);
 
-        // 세션에서 로그인된 사용자 아이디 가져오기
-        String userId = (String) request.getSession().getAttribute("userId");
+        if (post == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "존재하지 않는 게시글입니다.");
+            return "redirect:/funeral-reviews";
+        }
 
-        // 사용자 세션 아이디와 게시글 아이디 비교
-        if (!userId.equals(post.getUserId())) {
-            return "redirect:/FuneralReview/logout";
+        if (currentUserId == null || (!currentUserId.equals(post.getUserId()) && (currentUserRole == null || !currentUserRole.equals("ADMIN")))) {
+            redirectAttributes.addFlashAttribute("errorMessage", "수정 권한이 없습니다.");
+            return "redirect:/funeral-reviews/" + id;
         }
 
         model.addAttribute("post", post);
-        return "FuneralReview/update";
+        return "funeralReview/update";
     }
 
-    /**
-     * 게시글 수정 요청 처리 (POST 방식)
-     * - 게시글 ID와 사용자가 입력한 수정 정보(PostDto)를 받아 게시글을 수정
-     * - 첨부파일이 새로 업로드되었거나 삭제 요청이 있으면 기존 파일 삭제
-     * - 새 파일이 있을 경우 저장하고, 파일 정보를 post 객체에 반영
-     * - 비밀번호 검증 실패 또는 수정 실패 시 수정 페이지로 리다이렉트
-     *
-     * @param id 수정할 게시글 ID (경로 변수)
-     * @param post 수정된 게시글 정보 (비밀번호 및 첨부파일 포함)
-     * @param redirectAttributes 리다이렉트 시 사용자 메시지를 전달할 객체
-     * @return 수정 성공 시 상세보기 페이지로, 실패 시 수정 폼으로 리다이렉트
-     */
     @PostMapping("/{id}/update")
     public String updatePost(
             @PathVariable("id") int id,
@@ -229,182 +191,228 @@ public class FuneralReviewController {
             HttpServletRequest request,
             RedirectAttributes redirectAttributes) {
 
-        String uploadPath = uploadPathByOS(); // 운영체제에 따른 업로드 경로 설정
-        post.setId(id); // URL에서 받은 ID를 post 객체에 설정
+        HttpSession session = request.getSession();
+        String currentUserId = (String) session.getAttribute("userId");
+        String currentUserRole = (String) session.getAttribute("role");
+
+        FuneralReviewDTO originalPost = funeralReviewService.read(id);
+
+        if (originalPost == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "존재하지 않는 게시글입니다.");
+            return "redirect:/funeral-reviews";
+        }
+
+        if (currentUserId == null || (!currentUserId.equals(originalPost.getUserId()) && (currentUserRole == null || !currentUserRole.equals("ADMIN")))) {
+            redirectAttributes.addFlashAttribute("errorMessage", "수정 권한이 없습니다.");
+            return "redirect:/funeral-reviews/" + id;
+        }
+        
+        post.setId(id);
+        post.setUserId(originalPost.getUserId());
+
+        String uploadPath = getUploadPath();
 
         try {
-            // 기존 게시글 정보 조회
-            FuneralReviewDTO originalPost = funeralReviewService.read(id);
-
-            // 세션에서 로그인된 사용자 아이디 가져오기
-            String userId = (String) request.getSession().getAttribute("userId");
-
-            // 사용자 세션 아이디와 게시글 아이디 비교
-            if (!userId.equals(originalPost.getUserId())) {
-                return "redirect:/FuneralReview/logout";
-            }
-
             MultipartFile uploadFile = post.getUploadFile();
 
-            // 파일 삭제 요청이 있거나 새 파일이 업로드된 경우 기존 파일 삭제
-            if ((uploadFile != null && !uploadFile.isEmpty()) || post.isDeleteFile()) {
+            if (post.isDeleteFile()) {
                 if (originalPost.getFileName() != null) {
                     Path filePath = Paths.get(uploadPath).resolve(originalPost.getFileName());
-                    if (Files.exists(filePath)) {
-                        Files.delete(filePath); // 기존 파일 삭제
-                    }
+                    Files.deleteIfExists(filePath);
                 }
-
-                // 삭제 요청이 있는 경우 DTO에서 파일 정보 초기화
-                if (post.isDeleteFile()) {
-                    post.setFileName(null);
-                    post.setOriginalFileName(null);
-                }
+                post.setFileName(null);
+                post.setOriginalFileName(null);
             }
 
-            // 새 파일이 업로드된 경우 저장 및 파일명 설정
             if (uploadFile != null && !uploadFile.isEmpty()) {
-                String originalFileName = uploadFile.getOriginalFilename();
-                String fileName = UUID.randomUUID().toString() + "_" + originalFileName;
-
-                // 업로드 디렉토리가 없으면 생성
-                File uploadDir = new File(uploadPath);
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdirs();
+                if (!post.isDeleteFile() && originalPost.getFileName() != null) {
+                    Path oldFilePath = Paths.get(uploadPath).resolve(originalPost.getFileName());
+                    Files.deleteIfExists(oldFilePath);
                 }
 
-                // 파일 저장
-                File fileToUpload = new File(uploadPath + File.separator + fileName);
+                String originalFileName = uploadFile.getOriginalFilename();
+                String extension = "";
+                if (originalFileName != null && originalFileName.lastIndexOf(".") != -1) {
+                    extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+                }
+                String newFileName = UUID.randomUUID().toString() + extension;
+
+                File fileToUpload = new File(uploadPath + File.separator + newFileName);
                 uploadFile.transferTo(fileToUpload);
 
-                // 게시글 객체에 파일 정보 저장
-                post.setFileName(fileName);
+                post.setFileName(newFileName);
                 post.setOriginalFileName(originalFileName);
+            } else if (!post.isDeleteFile()) {
+                post.setFileName(originalPost.getFileName());
+                post.setOriginalFileName(originalPost.getOriginalFileName());
             }
 
-            // 게시글 수정 처리
             boolean updated = funeralReviewService.update(post);
 
             if (updated) {
                 redirectAttributes.addFlashAttribute("successMessage", "게시글이 수정되었습니다.");
-                return "redirect:/FuneralReview-posts/" + id;
+                return "redirect:/funeral-reviews/" + id;
             } else {
                 redirectAttributes.addFlashAttribute("errorMessage", "게시글 수정에 실패했습니다.");
-                return "redirect:/FuneralReview-posts/" + id + "/update";
+                return "redirect:/funeral-reviews/" + id + "/update";
             }
 
         } catch (IOException | IllegalStateException e) {
-            // 파일 처리 중 예외 발생 시
-            redirectAttributes.addFlashAttribute("errorMessage", "파일 업로드에 실패했습니다.");
-            return "redirect:/FuneralReview-posts/" + id + "/update";
+            logger.error("파일 처리 오류: {}", e.getMessage(), e);
+            redirectAttributes.addFlashAttribute("errorMessage", "파일 처리 중 오류가 발생했습니다.");
+            return "redirect:/funeral-reviews/" + id + "/update";
         }
     }
 
-    /**
-     * 게시글 삭제 요청 처리 (POST 방식)
-     * - 게시글 ID와 비밀번호를 기반으로 삭제 요청 처리
-     * - 비밀번호 검증에 성공하면 게시글 삭제 및 첨부파일도 함께 삭제
-     * - 실패 시 또는 예외 발생 시 상세 페이지로 리다이렉트하고 에러 메시지 전달
-     *
-     * @param id 삭제할 게시글 ID (경로 변수)
-     * @param post 사용자 입력 정보 (비밀번호 포함)
-     * @param redirectAttributes 리다이렉트 시 메시지 전달용 객체
-     * @return 삭제 성공 시 목록 페이지로, 실패 시 상세 페이지로 리다이렉트
-     */
     @PostMapping("/{id}/delete")
     public String deletePost(
-        @PathVariable("id") int id, 
-        FuneralReviewDTO post, 
+        @PathVariable("id") int id,
         HttpServletRequest request,
         RedirectAttributes redirectAttributes
     ) {
-        String uploadPath = uploadPathByOS(); // OS에 따른 업로드 경로 설정
-        post.setId(id); // URL 경로의 ID를 post 객체에 설정
+        HttpSession session = request.getSession();
+        String currentUserId = (String) session.getAttribute("userId");
+        String currentUserRole = (String) session.getAttribute("role");
+
+        FuneralReviewDTO originalPost = funeralReviewService.read(id);
+
+        if (originalPost == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "존재하지 않는 게시글입니다.");
+            return "redirect:/funeral-reviews";
+        }
+
+        if (currentUserId == null || (!currentUserId.equals(originalPost.getUserId()) && (currentUserRole == null || !currentUserRole.equals("ADMIN")))) {
+            redirectAttributes.addFlashAttribute("errorMessage", "삭제 권한이 없습니다.");
+            return "redirect:/funeral-reviews/" + id;
+        }
+
+        String uploadPath = getUploadPath();
 
         try {
-            // 기존 게시글 조회 (첨부파일 확인용)
-            FuneralReviewDTO originalPost = funeralReviewService.read(id);
-
-            // 세션에서 로그인된 사용자 아이디 가져오기
-            String userId = (String) request.getSession().getAttribute("userId");
-
-            // 사용자 세션 아이디와 게시글 아이디 비교
-            if (!userId.equals(originalPost.getUserId())) {
-                return "redirect:/FuneralReview/logout";
-            }
-
-            // 첨부파일이 존재하는 경우 서버에서 삭제
-            if (originalPost != null && originalPost.getFileName() != null) {
+            if (originalPost.getFileName() != null) {
                 Path filePath = Paths.get(uploadPath).resolve(originalPost.getFileName());
-                if (Files.exists(filePath)) {
-                    Files.delete(filePath);
-                }
+                Files.deleteIfExists(filePath);
             }
 
-            // 게시글 삭제 처리
-            boolean deleted = funeralReviewService.delete(post);
+            boolean deleted = funeralReviewService.delete(id);
 
             if (deleted) {
                 redirectAttributes.addFlashAttribute("successMessage", "게시글이 삭제되었습니다.");
-                return "redirect:/FuneralReview-posts";
+                return "redirect:/funeral-reviews";
             }
 
-            // 삭제 실패 (비밀번호 불일치 등)
             redirectAttributes.addFlashAttribute("errorMessage", "게시글 삭제에 실패했습니다.");
-            return "redirect:/FuneralReview-posts/" + id;
+            return "redirect:/funeral-reviews/" + id;
 
         } catch (IOException e) {
-            // 파일 삭제 중 오류 발생
-            redirectAttributes.addFlashAttribute("errorMessage", "업로드 파일 삭제에 실패했습니다.");
-            return "redirect:/FuneralReview-posts/" + id;
+            logger.error("파일 삭제 오류: {}", e.getMessage(), e);
+            redirectAttributes.addFlashAttribute("errorMessage", "업로드 파일 삭제 중 오류가 발생했습니다.");
+            return "redirect:/funeral-reviews/" + id;
         }
+    }
+
+    @GetMapping("/{id}/download")
+    public ResponseEntity<Resource> download(@PathVariable("id") int id) {
+        FuneralReviewDTO post = funeralReviewService.read(id);
+
+        if (post == null || post.getFileName() == null || post.getFileName().isEmpty()) {
+            logger.warn("다운로드 요청 실패: 게시글 또는 파일 정보 없음. 게시글 ID {}", id);
+            return ResponseEntity.notFound().build();
+        }
+
+        String uploadPath = getUploadPath();
+        Path filePath = Paths.get(uploadPath).resolve(post.getFileName()).normalize();
+
+        try {
+            Resource resource = new UrlResource(filePath.toUri());
+            if (!resource.exists() || !resource.isReadable()) {
+                logger.error("다운로드 요청 실패: 파일을 찾을 수 없거나 읽을 수 없음. 경로: {}", filePath);
+                // 실제 배포 환경에서는 이 부분에서 더 구체적인 예외 처리가 필요할 수 있습니다.
+                // 예를 들어, 파일을 찾을 수 없다는 메시지를 사용자에게 전달하는 커스텀 예외 페이지로 리다이렉트 등
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "요청한 파일을 찾을 수 없습니다.");
+            }
+
+            String originalFileName = post.getOriginalFileName();
+            if (originalFileName == null || originalFileName.isEmpty()) {
+                originalFileName = post.getFileName();
+            }
+
+            String encodedDownloadName = new String(originalFileName.getBytes("UTF-8"), "ISO-8859-1");
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodedDownloadName + "\"")
+                    .contentType(determineMediaType(filePath))
+                    .body(resource);
+
+        } catch (MalformedURLException e) {
+            logger.error("다운로드 URL 생성 오류: {}", filePath, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (UnsupportedEncodingException e) {
+            logger.error("파일명 인코딩 오류: {}", post.getOriginalFileName(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (ResponseStatusException e) { // ResponseStatusException을 명시적으로 캐치
+            throw e; // 그대로 다시 던져서 Spring이 처리하도록 함
+        } catch (IOException e) {
+             logger.error("파일 처리 오류 (download): {}", filePath, e);
+             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    private org.springframework.http.MediaType determineMediaType(Path path) throws IOException {
+        String contentType = Files.probeContentType(path);
+        if (contentType == null) {
+            return org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
+        }
+        return org.springframework.http.MediaType.parseMediaType(contentType);
     }
 
     /**
-     * 게시글 첨부파일 다운로드 요청 처리
-     * - 게시글 ID를 기반으로 첨부된 파일을 서버에서 찾아 클라이언트로 전송
-     * - 파일이 존재하지 않거나 읽을 수 없는 경우 404 응답 반환
+     * 지정된 파일 이름의 이미지를 웹 애플리케이션 내부 업로드 경로에서 찾아 반환합니다.
+     * 이 엔드포인트는 <img src="..."> 태그 등을 통해 이미지를 직접 표시할 때 사용될 수 있습니다.
      *
-     * @param id 다운로드할 게시글 ID
-     * @return ResponseEntity<Resource> 형태의 HTTP 응답 (첨부파일 포함)
+     * @param filename 요청된 이미지의 파일명 (UUID로 생성된 저장 파일명)
+     * @return 이미지 리소스 또는 404/500 에러 응답
      */
-    @GetMapping("/{id}/download")
-    public ResponseEntity<Resource> download(@PathVariable("id") int id) {
-        String uploadPath = uploadPathByOS(); // 운영체제에 따른 업로드 경로 설정
+    @GetMapping("/image/{filename:.+}") // 파일 확장자를 포함한 모든 문자열을 받도록 수정
+    public ResponseEntity<Resource> showImage(@PathVariable String filename) {
+        // 파일 이름에 경로 조작 문자(.., /)가 있는지 확인하여 간단한 보안 처리
+        if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
+            logger.warn("잘못된 파일 이름 요청: {}", filename);
+            return ResponseEntity.badRequest().build();
+        }
 
+        String uploadPath = getUploadPath(); // 일관된 업로드 경로 사용
         try {
-            // 게시글 정보 조회
-            FuneralReviewDTO post = funeralReviewService.read(id);
-
-            // 게시글 또는 첨부파일이 없는 경우 404 반환
-            if (post == null || post.getFileName() == null) {
-                return ResponseEntity.notFound().build();
-            }
-
-            // 파일 경로 생성 (업로드 디렉토리 + 저장 파일명)
-            Path filePath = Paths.get(uploadPath).resolve(post.getFileName());
+            Path filePath = Paths.get(uploadPath).resolve(filename).normalize();
             Resource resource = new UrlResource(filePath.toUri());
 
-            // 파일이 존재하지 않거나 읽을 수 없는 경우 404 반환
             if (!resource.exists() || !resource.isReadable()) {
+                logger.warn("요청된 이미지를 찾을 수 없음: {}", filePath);
                 return ResponseEntity.notFound().build();
             }
 
-            // 다운로드 시 사용될 파일명 (원본 파일명 유지)
-            String fileName = post.getOriginalFileName();
+            String contentType = Files.probeContentType(filePath);
+            if (contentType == null) {
+                contentType = "application/octet-stream"; // 타입을 알 수 없는 경우 기본값
+            }
 
-            // 파일명이 한글일 경우 브라우저에 맞게 인코딩 처리
-            String encodedDownloadName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
-
-            // 파일 다운로드 응답 생성
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodedDownloadName + "\"")
+                    .header(HttpHeaders.CONTENT_TYPE, contentType)
                     .body(resource);
 
-        } catch (UnsupportedEncodingException | MalformedURLException e) {
-            logger.error("파일 다운로드 오류: {}", e.getMessage(), e);
-            return ResponseEntity.internalServerError().build();
+        } catch (MalformedURLException e) {
+            logger.error("이미지 URL 생성 오류: {}", filename, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (IOException e) {
+            logger.error("이미지 파일 접근 오류: {}", filename, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    
+
+    // uploadPathByOS() 메서드는 더 이상 사용하지 않으므로 삭제 또는 주석 처리합니다.
+    /*
+    public String uploadPathByOS() {
+        // ... (이전 OS별 경로 로직) ...
+    }
+    */
 }

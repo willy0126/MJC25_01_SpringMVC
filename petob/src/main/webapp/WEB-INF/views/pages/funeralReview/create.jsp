@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%-- JSTL 태그 라이브러리 추가 (컨텍스트 경로 사용을 위해) --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -21,25 +23,41 @@
         <div class="row">
             <div class="col-12">
                 <%-- 게시글 등록 --%>
-                <form id="createForm" action="/FuneralReview-posts/create" method="POST" enctype="multipart/form-data">
+                <%-- action 경로 수정 --%>
+                <form id="createForm" action="${pageContext.request.contextPath}/funeral-reviews/create" method="POST" enctype="multipart/form-data">
                     <div class="card mb-3">
                         <div class="card-header">
                             게시글 등록 (<span class="text-danger">*</span> 표시는 필수항목입니다.)
                         </div>
                         <div class="card-body">
+                            <%-- DTO의 필드명과 일치하도록 name 속성 변경 (FuneralReviewDTO 기준) --%>
                             <%-- 제목 --%>
                             <div class="mb-3">
-                                <label for="title" class="form-label">제목<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요">
+                                <label for="reviewTitle" class="form-label">제목<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="reviewTitle" name="reviewTitle" placeholder="제목을 입력하세요">
                             </div>
                             <%--// 제목 --%>
 
                             <%-- 내용 --%>
                             <div class="mb-3">
-                                <label for="content" class="form-label">내용<span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="content" name="content" rows="5" placeholder="내용을 입력하세요"></textarea>
+                                <label for="reviewContent" class="form-label">내용<span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="reviewContent" name="reviewContent" rows="5" placeholder="내용을 입력하세요"></textarea>
                             </div>
                             <%--// 내용 --%>
+                            
+                            <%-- 장례 날짜 (추가된 필드 예시 - FuneralReviewDTO에 funeralDate가 Date 타입으로 있음) --%>
+                            <div class="mb-3">
+                                <label for="funeralDate" class="form-label">장례 날짜</label>
+                                <input type="date" class="form-control" id="funeralDate" name="funeralDate">
+                            </div>
+                            <%--// 장례 날짜 --%>
+
+                            <%-- 장소 (추가된 필드 예시 - FuneralReviewDTO에 location이 String 타입으로 있음) --%>
+                            <div class="mb-3">
+                                <label for="location" class="form-label">장소</label>
+                                <input type="text" class="form-control" id="location" name="location" placeholder="장례식장 위치를 입력하세요">
+                            </div>
+                            <%--// 장소 --%>
 
                             <%-- 첨부파일 --%>
                             <div class="mb-3">
@@ -52,7 +70,8 @@
                         <div class="card-footer">
                             <div>
                                 <button type="submit" class="btn btn-primary">등록</button>
-                                <a href="/FuneralReview-posts" class="btn btn-secondary">취소</a>
+                                <%-- 취소 버튼 경로 수정 --%>
+                                <a href="${pageContext.request.contextPath}/funeral-reviews" class="btn btn-secondary">취소</a>
                             </div>
                         </div>
                     </div>
@@ -69,50 +88,48 @@
         $(document).ready(function() {
             // TinyMCE 초기화
             tinymce.init({
-                selector: '#content',
+                selector: '#reviewContent', // name 속성과 일치시킴
                 language: 'ko_KR',
-                // TinyMCE 필수 입력 설정
                 setup: function(editor) {
                     editor.on('change', function() {
-                        editor.save(); // 에디터 내용을 textarea에 반영
-                        validateContent(); // 컨텐츠 유효성 검사
+                        editor.save(); 
+                        validateContent(); 
                     });
                 }
             });
 
-            // 컨텐츠 유효성 검사 함수
             function validateContent() {
-                var content = tinymce.get('content').getContent();
-                var textContent = $('<div>').html(content).text(); // HTML 태그 제거
+                var content = tinymce.get('reviewContent').getContent(); // id와 일치시킴
+                var textContent = $('<div>').html(content).text(); 
 
                 if (textContent.length < 2) {
-                    $('#content').addClass('is-invalid');
+                    $('#reviewContent').addClass('is-invalid');
                     $('#content-error').remove();
-                    $('#content').closest('.mb-3').append('<div id="content-error" class="invalid-feedback">내용은 최소 2자 이상 입력하세요.</div>');
+                    $('#reviewContent').closest('.mb-3').append('<div id="content-error" class="invalid-feedback">내용은 최소 2자 이상 입력하세요.</div>');
                     return false;
-                } else if (textContent.length > 1000) {
-                    $('#content').addClass('is-invalid');
+                } else if (textContent.length > 1000) { // 글자 수 제한은 필요에 따라 조정
+                    $('#reviewContent').addClass('is-invalid');
                     $('#content-error').remove();
-                    $('#content').closest('.mb-3').append('<div id="content-error" class="invalid-feedback">내용은 최대 1000자 이하로 입력하세요.</div>');
+                    $('#reviewContent').closest('.mb-3').append('<div id="content-error" class="invalid-feedback">내용은 최대 1000자 이하로 입력하세요.</div>');
                     return false;
                 } else {
-                    $('#content').removeClass('is-invalid').addClass('is-valid');
+                    $('#reviewContent').removeClass('is-invalid').addClass('is-valid');
                     $('#content-error').remove();
                     return true;
                 }
             }
 
-            // 게시글 폼 검증
             $('#createForm').validate({
                 rules: {
-                    title: {
+                    reviewTitle: { // name 속성과 일치시킴
                         required: true,
                         minlength: 2,
                         maxlength: 100
-                    }
+                    },
+                    // funeralDate, location 등의 다른 필드 유효성 검사 추가 가능
                 },
                 messages: {
-                    title: {
+                    reviewTitle: { // name 속성과 일치시킴
                         required: '제목을 입력하세요.',
                         minlength: '제목은 최소 2자 이상 입력하세요.',
                         maxlength: '제목은 최대 100자 이하로 입력하세요.'
@@ -125,7 +142,6 @@
                     element.closest('.mb-3').append(error);
                 },
                 submitHandler: function(form) {
-                    // 폼 제출 전 내용 검증
                     if (validateContent()) {
                         form.submit();
                     }

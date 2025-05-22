@@ -1,6 +1,8 @@
 package com.example.spring.FuneralReview;
+
 import java.util.Date;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.format.annotation.DateTimeFormat; // DateTimeFormat 임포트 추가
 
 public class FuneralReviewDTO {
     private int id;                         // 리뷰 ID (Primary Key)
@@ -8,7 +10,9 @@ public class FuneralReviewDTO {
     private String reviewContent;          // 리뷰 내용
     private String userId;                 // 작성자 ID
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd") // 어노테이션 추가
     private Date funeralDate;              // 장례 날짜
+
     private String location;               // 장소
 
     private Date createdAt;                // 작성일
@@ -26,7 +30,7 @@ public class FuneralReviewDTO {
     private String email;                  // 이메일
     private String role;                   // 역할 (USER, ADMIN)
 
-    // --- lombok 안먹힐때 대비해서 만들어둠
+    // --- lombok 안먹힐때 대비해서 만들어둠 ---
     public int getId() {
         return id;
     }

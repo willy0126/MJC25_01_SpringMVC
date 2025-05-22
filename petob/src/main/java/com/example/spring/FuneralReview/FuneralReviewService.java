@@ -5,58 +5,55 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+// import org.springframework.security.crypto.password.PasswordEncoder; // 현재 사용 안함
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional; // 트랜잭션 어노테이션 추가
 
 import com.example.spring.libs.Pagination;
 
 @Service
 public class FuneralReviewService {
-     @Autowired
+    @Autowired
     FuneralReviewDAO funeralReviewDAO;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    // @Autowired // 현재 후기 게시판에서 비밀번호를 사용하지 않으므로 주석 처리
+    // PasswordEncoder passwordEncoder;
 
     public Map<String, Object> list(int currentPage, int listCountPerPage, int pageCountPerPage, String searchType, String searchKeyword) {
-        // 검색 조건에 따른 전체 게시글 수 조회
         int totalCount = funeralReviewDAO.totalCount(searchType, searchKeyword);
-
-        // 페이지네이션 객체 생성 (총 게시글 수 기반으로 계산)
         Pagination pagination = new Pagination(currentPage, listCountPerPage, pageCountPerPage, totalCount);
-
-        // 페이징 정보에 따른 게시글 목록 조회 (LIMIT offset, count)
         List<FuneralReviewDTO> posts = funeralReviewDAO.list(pagination.offset(), listCountPerPage, searchType, searchKeyword);
 
-        // 결과 데이터 맵 구성
         Map<String, Object> result = new HashMap<>();
         result.put("posts", posts);
         result.put("searchType", searchType);
         result.put("searchKeyword", searchKeyword);
-        result.put("pagination", pagination); // 뷰에서 페이지 번호 출력에 사용
+        result.put("pagination", pagination);
 
         return result;
     }
 
+    @Transactional // 데이터 일관성을 위해 트랜잭션 처리
     public int create(FuneralReviewDTO post) {
-        // DAO를 호출하여 게시글을 DB에 저장하고 결과를 반환
-        int result = funeralReviewDAO.create(post);
-        return result;
+        return funeralReviewDAO.create(post);
     }
 
     public FuneralReviewDTO read(int id) {
-        // DAO를 통해 ID에 해당하는 게시글을 조회
         return funeralReviewDAO.read(id);
     }
 
+    @Transactional // 데이터 일관성을 위해 트랜잭션 처리
     public boolean update(FuneralReviewDTO post) {
+        // 파일 정보가 null이면 DB에도 null로 업데이트 되도록 DAO 또는 Mapper에서 처리 필요
+        // 혹은 여기서 DTO의 파일 관련 필드를 명시적으로 null로 설정할 수 있음
+        // 예: if (post.getFileName() == null) post.setOriginalFileName(null);
         int result = funeralReviewDAO.update(post);
         return result > 0;
     }
 
-
-    public boolean delete(FuneralReviewDTO post) {
-        int result = funeralReviewDAO.delete(post.getId());
+    @Transactional // 데이터 일관성을 위해 트랜잭션 처리
+    public boolean delete(int id) { // 매개변수를 int id로 변경
+        int result = funeralReviewDAO.delete(id);
         return result > 0;
     }
 }

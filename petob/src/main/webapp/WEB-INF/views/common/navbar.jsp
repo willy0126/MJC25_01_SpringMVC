@@ -48,7 +48,7 @@
       <div class="menu-item">
         <a href="#" class="menu-link">커뮤니티</a>
         <ul class="dropdown">
-          <li><a href="/Funeral_reviews">장례 후기</a></li>
+          <li><a href="${pageContext.request.contextPath}/funeral-reviews">장례 후기</a></li>
           <li><a href="#">한 마디 나누기</a></li>
         </ul>
       </div>

@@ -139,8 +139,7 @@
         ]]>
     </select>
 
-    <update id="update" parameterType="com.example.spring.FuneralReview.FuneralReviewDTO">
-        <![CDATA[
+     <update id="update" parameterType="com.example.spring.FuneralReview.FuneralReviewDTO">
         UPDATE REVIEWS
         SET
             REVIEW_TITLE = #{reviewTitle},
@@ -148,23 +147,12 @@
             FUNERAL_DATE = #{funeralDate},
             LOCATION = #{location},
             UPDATED_AT = NOW()
-        ]]>
-        <if test="fileName != null">
-            <![CDATA[
-            , FILE_NAME = #{fileName}
-            ]]>
-        </if>
-        <if test="originalFileName != null">
-            <![CDATA[
+            , FILE_NAME = #{fileName} 
             , ORIGINAL_FILE_NAME = #{originalFileName}
-            ]]>
-        </if>
-        <![CDATA[
         WHERE ID = #{id}
         LIMIT 1
-        ]]>
     </update>
-
+    
     <update id="updateFile" parameterType="com.example.spring.FuneralReview.FuneralReviewDTO">
         <![CDATA[
         UPDATE REVIEWS
