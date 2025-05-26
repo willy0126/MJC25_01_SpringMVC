@@ -52,222 +52,219 @@ public class InquiryDto {
         this.email = email;
         this.isSecret = isSecret;
         this.status = status;
-        this.viewCount = viewCount;
+        this.viewCount = viewCount != null ? viewCount : 0;
         this.replyContent = replyContent;
         this.replyBy = replyBy;
         this.replyDate = replyDate;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
-        
-        // 추가 필드 초기화
+
         this.isPrivate = isSecret;
         this.writerId = userId;
         this.writer = username;
-        this.viewCount = viewCount != null ? viewCount : 0;
     }
-    
-    // Getter & Setter 메서드들
+
+    // 추가: JSP에서 ${inquiry.id}로 접근할 수 있도록 alias getter
+    public Long getId() {
+        return this.inquiryId;
+    }
+
     public Long getInquiryId() {
         return inquiryId;
     }
-    
+
     public void setInquiryId(Long inquiryId) {
         this.inquiryId = inquiryId;
     }
-    
+
     public String getUserId() {
         return userId;
     }
-    
+
     public void setUserId(String userId) {
         this.userId = userId;
-        this.writerId = userId; // 동기화
+        this.writerId = userId;
     }
-    
+
     public String getUsername() {
         return username;
     }
-    
+
     public void setUsername(String username) {
         this.username = username;
-        this.writer = username; // 동기화
+        this.writer = username;
     }
-    
+
     public String getCategory() {
         return category;
     }
-    
+
     public void setCategory(String category) {
         this.category = category;
     }
-    
+
     public String getPriority() {
         return priority;
     }
-    
+
     public void setPriority(String priority) {
         this.priority = priority;
     }
-    
+
     public String getTitle() {
         return title;
     }
-    
+
     public void setTitle(String title) {
         this.title = title;
     }
-    
+
     public String getContent() {
         return content;
     }
-    
+
     public void setContent(String content) {
         this.content = content;
     }
-    
+
     public String getEmail() {
         return email;
     }
-    
+
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     public Boolean getIsSecret() {
         return isSecret;
     }
-    
+
     public void setIsSecret(Boolean isSecret) {
         this.isSecret = isSecret;
-        this.isPrivate = isSecret; // 동기화
+        this.isPrivate = isSecret;
     }
-    
+
     public String getStatus() {
         return status;
     }
-    
+
     public void setStatus(String status) {
         this.status = status;
     }
-    
+
     public Integer getViewCount() {
         return viewCount != null ? viewCount : 0;
     }
-    
+
     public void setViewCount(Integer viewCount) {
         this.viewCount = viewCount;
     }
-    
+
     public String getReplyContent() {
         return replyContent;
     }
-    
+
     public void setReplyContent(String replyContent) {
         this.replyContent = replyContent;
     }
-    
+
     public String getReplyBy() {
         return replyBy;
     }
-    
+
     public void setReplyBy(String replyBy) {
         this.replyBy = replyBy;
     }
-    
+
     public LocalDateTime getReplyDate() {
         return replyDate;
     }
-    
+
     public void setReplyDate(LocalDateTime replyDate) {
         this.replyDate = replyDate;
     }
-    
+
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }
-    
+
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
-        
-        // 날짜 관련 플래그 설정
+
         if (createdDate != null) {
             LocalDateTime now = LocalDateTime.now();
             this.isToday = createdDate.toLocalDate().equals(now.toLocalDate());
             this.isThisYear = createdDate.getYear() == now.getYear();
         }
     }
-    
+
     public LocalDateTime getUpdatedDate() {
         return updatedDate;
     }
-    
+
     public void setUpdatedDate(LocalDateTime updatedDate) {
         this.updatedDate = updatedDate;
     }
-    
-    // 추가 필드 Getter & Setter
+
     public Boolean getIsPrivate() {
         return isPrivate != null ? isPrivate : false;
     }
-    
+
     public void setIsPrivate(Boolean isPrivate) {
         this.isPrivate = isPrivate;
-        this.isSecret = isPrivate; // 동기화
+        this.isSecret = isPrivate;
     }
-    
+
     public String getWriterId() {
         return writerId != null ? writerId : userId;
     }
-    
+
     public void setWriterId(String writerId) {
         this.writerId = writerId;
     }
-    
+
     public String getWriter() {
         return writer != null ? writer : username;
     }
-    
+
     public void setWriter(String writer) {
         this.writer = writer;
     }
-    
+
     public Boolean getIsHot() {
-        // 조회수가 50 이상이면 인기글로 표시
         return viewCount != null && viewCount >= 50;
     }
-    
+
     public void setIsHot(Boolean isHot) {
         this.isHot = isHot;
     }
-    
+
     public Integer getReplyCount() {
         return replyCount != null ? replyCount : 0;
     }
-    
+
     public void setReplyCount(Integer replyCount) {
         this.replyCount = replyCount;
     }
-    
+
     public Boolean getIsToday() {
         return isToday != null ? isToday : false;
     }
-    
+
     public void setIsToday(Boolean isToday) {
         this.isToday = isToday;
     }
-    
+
     public Boolean getIsThisYear() {
         return isThisYear != null ? isThisYear : false;
     }
-    
+
     public void setIsThisYear(Boolean isThisYear) {
         this.isThisYear = isThisYear;
     }
-    
-    // 카테고리명 반환 (한글)
+
     public String getCategoryName() {
         if (category == null) return "";
-        
         switch (category) {
             case "SERVICE": return "서비스";
             case "RESERVATION": return "예약";
@@ -279,11 +276,9 @@ public class InquiryDto {
             default: return category;
         }
     }
-    
-    // 상태명 반환 (한글)
+
     public String getStatusName() {
         if (status == null) return "대기";
-        
         switch (status) {
             case "WAITING": return "답변대기";
             case "PROCESSING": return "처리중";
@@ -292,11 +287,9 @@ public class InquiryDto {
             default: return status;
         }
     }
-    
-    // 우선순위명 반환 (한글)
+
     public String getPriorityName() {
         if (priority == null) return "일반";
-        
         switch (priority) {
             case "NORMAL": return "일반";
             case "HIGH": return "높음";
@@ -304,8 +297,7 @@ public class InquiryDto {
             default: return priority;
         }
     }
-    
-    // toString 메서드
+
     @Override
     public String toString() {
         return "InquiryDto{" +
@@ -321,17 +313,15 @@ public class InquiryDto {
                 ", createdDate=" + createdDate +
                 '}';
     }
-    
-    // equals & hashCode 메서드
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        
         InquiryDto that = (InquiryDto) obj;
         return inquiryId != null ? inquiryId.equals(that.inquiryId) : that.inquiryId == null;
     }
-    
+
     @Override
     public int hashCode() {
         return inquiryId != null ? inquiryId.hashCode() : 0;

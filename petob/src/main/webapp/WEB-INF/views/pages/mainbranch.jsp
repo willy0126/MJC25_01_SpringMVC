@@ -84,7 +84,7 @@
                                     <b>지점 번호:</b> 02-123-4567
                                 </p>
                                 <p class="address-info-line">
-                                    <b>운영 시간:</b> 09:00 ~ 18:00
+                                    <b>운영 시간:</b> 09:00 ~ 23:00
                                 </p>
                                 <p class="mt-3">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#businessLicenseModal"

@@ -1,5 +1,4 @@
   /* ----------------- Main.jsp 관련 스타일 ----------------- */
-
   /* ----------------- Carousel Styles ----------------- */
   .carousel.fade-in {
     opacity: 0;
@@ -31,6 +30,128 @@
     margin-top: 0;
     font-size: 20px;
   }
+
+  /* ----------------- 메인 페이지 캐러셀 전체 너비 설정 ----------------- */
+.carousel-wrapper-full-width {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.carousel-wrapper-full-width .carousel {
+  width: 100%;
+}
+
+/* 캐러셀 캡션이 .site-container의 패딩과 너비 제한을 따르도록 재조정 */
+.carousel-wrapper-full-width .carousel-caption.site-container {
+  position: absolute;
+  bottom: 40px;
+  right: auto; 
+  left: auto;
+  width: 100%;
+  padding-top: 20px; 
+  padding-bottom: 20px; 
+  color: #fff; 
+  text-align: left; 
+
+  /* .site-container의 max-width 및 padding을 적용하기 위한 핵심 스타일 */
+  /* style.css의 .site-container 기본 패딩 값을 가져옵니다. */
+  padding-left: 360px; 
+  padding-right: 360px; 
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1920px; 
+}
+
+/* style.css의 .site-container 미디어 쿼리에 맞춰 캡션 내부 패딩도 조정 */
+@media (max-width: 1600px) {
+  .carousel-wrapper-full-width .carousel-caption.site-container {
+    padding-left: 240px;
+    padding-right: 240px;
+  }
+}
+@media (max-width: 1280px) {
+  .carousel-wrapper-full-width .carousel-caption.site-container {
+    padding-left: 120px;
+    padding-right: 120px;
+  }
+}
+@media (max-width: 992px) {
+  .carousel-wrapper-full-width .carousel-caption.site-container {
+    padding-left: 60px;
+    padding-right: 60px;
+    bottom: 30px; /* 모바일 화면에서 캡션 위치 조정 (예시) */
+  }
+  /* 모바일에서 캡션 폰트 크기 등 조정 (예시) */
+  .carousel-wrapper-full-width .carousel-caption h5 {
+    font-size: 1.25rem; /* 예: 20px */
+  }
+  .carousel-wrapper-full-width .carousel-caption p {
+    font-size: 0.875rem; /* 예: 14px */
+  }
+}
+@media (max-width: 576px) {
+  .carousel-wrapper-full-width .carousel-caption.site-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    bottom: 20px; /* 더 작은 화면에서 캡션 위치 조정 (예시) */
+  }
+  .carousel-wrapper-full-width .carousel-caption h5 {
+    font-size: 1rem; /* 예: 16px */
+  }
+  .carousel-wrapper-full-width .carousel-caption p {
+    font-size: 0.75rem; /* 예: 12px */
+    display: -webkit-box; /* 여러 줄 말줄임 처리 */
+    -webkit-line-clamp: 2; /* 줄 수 제한 */
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* ----------------- Daily Stars Counter Section Styles ----------------- */
+/* 카운터 숫자 스타일 */
+#daily-pet-loss-count {
+    color: #e64641; /* 강렬한 빨간색 */
+    font-size: 2em; /* 매우 크게 */ 
+    font-weight: 900; /* 두껍게 */
+    line-height: 1; /* 숫자 자체의 줄 간격 조절 */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    animation: pulseNumber 2s infinite ease-in-out;
+}
+
+/* "마리" 단위 텍스트 스타일 */
+.counter-display .unit-text {
+    font-size: 0.3em; /* 숫자 크기에 비례하여 작게 (5em의 0.3배 = 1.5em) */
+    font-weight: 500; /* 보통 두께 */
+    color: #666; /* 숫자보다 덜 강조되는 색상 */
+    margin-left: 8px; /* 숫자와의 간격 */
+    vertical-align: baseline; /* 숫자와 기준선 맞추기 */
+    text-shadow: none;
+}
+
+/* 카운터 숫자 업데이트 시 적용될 '반짝임' 효과 클래스 */
+#daily-pet-loss-count.updated {
+    animation-name: pulseBriefly;
+    animation-duration: 0.5s; /* 반짝임 지속 시간 */
+    animation-timing-function: ease-out;
+}
+
+@keyframes pulseBriefly {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1); /* 살짝 커졌다가 */
+        opacity: 0.7; /* 살짝 투명해졌다가 */
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
 
   /* ----------------- Main Page Contents Styles ----------------- */
   .section-title {
@@ -223,3 +344,185 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+
+/* mainstyle.css 에 추가/수정 */
+
+/* "도움의 손길" 사이드바 스타일 */
+.quick-help-sidebar {
+    position: fixed;
+    right: 100px;
+    top: 80%;
+    transform: translateY(-50%);
+    z-index: 1050; 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    visibility: hidden;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+.quick-help-sidebar.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* .quick-help-button 스타일은 이전 답변의 내용 유지 */
+.quick-help-button {
+    background-color: rgba(255, 255, 255, 0.750);
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 12px;
+    width: 100px; 
+    height: auto; 
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85em;
+}
+
+.quick-help-button:hover {
+    background-color: #A8D8EA;
+    color: white;
+    border-color: #A8D8EA;
+}
+
+.quick-help-button .button-icon {
+    width: 35px;
+    height: 35px;
+    margin-bottom: 5px;
+}
+
+/* 챗봇 컨테이너 및 내부 스타일은 이전 답변의 내용 대부분 유지 */
+.chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px; /* 사이드바와 겹치지 않도록, 또는 사이드바 버튼 클릭 시 위치 조정 */
+    width: 350px;
+    max-height: 80vh;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 1060;
+    display: none; 
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chatbot-container.open {
+    display: flex;
+    animation: slideInChatbot 0.3s ease-out forwards;
+}
+
+@keyframes slideInChatbot {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.chatbot-header {
+    background-color: #A8D8EA;
+    color: #ffffff;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.chatbot-header h5 {
+    margin: 0;
+    font-size: 1.125em;
+}
+
+.chatbot-close-button {
+    background: none;
+    border: none;
+    color: #f9f9f9;
+    font-size: 1.5em;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.chatbot-messages {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    min-height: 200px;
+    background-color: #f9f9f9;
+}
+
+.chatbot-message {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 15px;
+    max-width: 80%;
+    line-height: 1.4;
+    clear: both;
+}
+
+.chatbot-message.bot {
+    background-color: #e9ecef;
+    color: #333;
+    border-bottom-left-radius: 2px;
+    float: left; /* 왼쪽 정렬 */
+}
+
+.chatbot-message.user-selection { /* 사용자가 선택한 옵션을 메시지로 표시할 때 */
+    background-color: #93e2ff; /* 테마색 활용 */
+    color: #ffffff;
+    border-bottom-right-radius: 2px;
+    float: right; /* 오른쪽 정렬 */
+    text-align: right;
+}
+
+
+.chatbot-input-area {
+    padding: 10px;
+    border-top: 1px solid #eee;
+    background-color: #fff;
+}
+
+#chatbotOptionsContainer button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 8px;
+    background-color: #fff;
+    border: 1px solid #93e2ff;
+    color: #333333;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+#chatbotOptionsContainer button:hover {
+    background-color: #93e2ff;
+    color: #ffffff;
+}
+
+#chatbotOptionsContainer button:last-child {
+    margin-bottom: 0;
+}
+
+/* 챗봇 메시지 내 링크 스타일 */
+.chatbot-link {
+    color: #1787ff;
+    text-decoration: underline;
+}
+.chatbot-link:hover {
+    color: #005fc4;
+}
