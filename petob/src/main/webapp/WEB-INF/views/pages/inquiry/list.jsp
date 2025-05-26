@@ -227,23 +227,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- 공지사항 (고정) -->
-                                    <c:forEach var="notice" items="${noticeList}">
-                                        <tr class="notice-row">
-                                            <td><span class="notice-badge">공지</span></td>
-                                            <td>-</td>
-                                            <td class="title-cell">
-                                                <a href="<c:url value='/inquiry/notice/${notice.id}'/>" class="title-link">
-                                                    <i class="fas fa-bullhorn notice-icon"></i>
-                                                    ${notice.title}
-                                                </a>
-                                            </td>
-                                            <td>관리자</td>
-                                            <td><fmt:formatDate value="${notice.createdDate}" pattern="MM-dd"/></td>
-                                            <td>-</td>
-                                            <td>${notice.viewCount}</td>
-                                        </tr>
-                                    </c:forEach>
+                            
                                     
                                     <!-- 일반 문의 -->
                                     <c:forEach var="inquiry" items="${inquiryList}" varStatus="status">

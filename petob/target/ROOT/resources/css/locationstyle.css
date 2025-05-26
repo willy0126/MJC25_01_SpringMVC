@@ -1,467 +1,106 @@
-/* 전체 페이지 구조 */
-.page-wrapper {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background-color: #f8f9fa;
-}
+/* ----------------- location 관련 style.css 입니다. (location.jsp) ----------------- */
 
-.main-wrapper {
-    flex: 1;
-    padding: 60px 0;
-    display: flex;
-    justify-content: center;
-}
-
-/* 게시판 컨테이너 */
-.board-container {
-    background-color: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    width: 90%;
-    max-width: 1200px;
-    border: 1px solid rgba(198, 230, 251, 0.3);
-}
-
-/* 제목 스타일 */
-.board-container h2 {
-    text-align: center;
-    margin-bottom: 40px;
-    font-size: 28px;
-    color: #333;
-    font-weight: 600;
-    padding-bottom: 15px;
-    border-bottom: 3px solid #c6e6fb;
+/* 지도 컨테이너 중앙 정렬 + 크기 조정 */
+.map-container {
     position: relative;
-}
-
-.board-container h2::after {
-    content: '';
-    position: absolute;
-    bottom: -3px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 3px;
-    background: linear-gradient(90deg, #c6e6fb 0%, #a8d5f2 100%);
-    border-radius: 2px;
-}
-
-/* 테이블 스타일 */
-.inquiry-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 30px;
-    background: white;
+    width: 80%;
+    max-width: 1000px;
+    height: 500px;
+    margin: 2rem auto; /* 위아래 2rem, 좌우 자동 */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
-
-/* 테이블 헤더 */
-.inquiry-table thead {
-    background: linear-gradient(135deg, #c6e6fb 0%, #a8d5f2 100%);
-}
-
-.inquiry-table thead th {
-    padding: 18px 15px;
+  
+/* 지도 오버레이 타이틀 */
+.map-title {
+    width: 80%;
+    max-width: 1000px;
+    margin: 2rem auto 2rem;
+    padding-top: 40px;
+    font-size: 24px;
     font-weight: 600;
-    color: #2c3e50;
-    text-align: center;
-    font-size: 15px;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid #a8d5f2;
-}
-
-/* 테이블 바디 */
-.inquiry-table tbody tr {
-    transition: all 0.3s ease;
-    border-bottom: 1px solid #e9ecef;
-}
-
-.inquiry-table tbody tr:hover {
-    background-color: rgba(198, 230, 251, 0.1);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.inquiry-table tbody tr:last-child {
-    border-bottom: none;
-}
-
-.inquiry-table tbody td {
-    padding: 16px 15px;
-    text-align: center;
-    color: #555;
-    font-size: 14px;
-    vertical-align: middle;
-}
-
-/* 제목 컬럼 특별 스타일 */
-.inquiry-table tbody td:nth-child(2) {
+    color: #212529;
     text-align: left;
-    font-weight: 500;
 }
 
-.inquiry-table tbody td:nth-child(2) a {
-    color: #333;
-    text-decoration: none;
-    transition: color 0.3s ease;
-    display: block;
-    padding: 4px 0;
+/* 실제 지도 영역 */
+#map {
+    width: 100%;
+    height: 100%;
 }
 
-.inquiry-table tbody td:nth-child(2) a:hover {
-    color: #0066cc;
-    text-decoration: underline;
-}
-
-/* 잠금 아이콘 스타일 */
-.inquiry-table tbody td:nth-child(2) a:contains("🔒") {
-    color: #6c757d;
-    font-style: italic;
-}
-
-/* 상태 컬럼 스타일 */
-.inquiry-table tbody td:nth-child(4) {
-    font-weight: 600;
-}
-
-/* 상태별 색상 (JavaScript로 동적으로 적용 가능) */
-.status-pending {
-    color: #ffc107 !important;
-    background-color: rgba(255, 193, 7, 0.1);
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 12px;
-}
-
-.status-processing {
-    color: #17a2b8 !important;
-    background-color: rgba(23, 162, 184, 0.1);
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 12px;
-}
-
-.status-completed {
-    color: #28a745 !important;
-    background-color: rgba(40, 167, 69, 0.1);
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 12px;
-}
-
-/* 공개여부 컬럼 스타일 */
-.inquiry-table tbody td:nth-child(5) {
-    font-weight: 500;
-}
-
-/* 버튼 스타일 */
-.btn {
-    display: inline-block;
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: 600;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
-    text-align: center;
-    margin-top: 20px;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #c6e6fb 0%, #a8d5f2 100%);
-    color: #2c3e50;
-    box-shadow: 0 2px 10px rgba(166, 213, 240, 0.3);
-}
-
-.btn-primary:hover {
-    background: linear-gradient(135deg, #b3ddf9 0%, #95c9ef 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(166, 213, 240, 0.4);
-    color: #1a252f;
-}
-
-.btn-primary:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 10px rgba(166, 213, 240, 0.3);
-}
-
-/* 버튼 컨테이너 */
-.button-container {
-    text-align: center;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #e9ecef;
-}
-
-/* 필터 폼 (향후 추가 시) */
-.filter-form {
-    background-color: rgba(248, 249, 250, 0.7);
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    border: 1px solid #e9ecef;
-}
-
-.filter-form .form-group {
-    display: inline-block;
-    margin-right: 15px;
-    margin-bottom: 10px;
-}
-
-.filter-form label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-    color: #555;
-    font-size: 14px;
-}
-
-.filter-form select, 
-.filter-form input {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-    background-color: white;
-}
-
-.filter-form .btn {
-    padding: 8px 16px;
-    font-size: 14px;
-    margin-left: 10px;
-}
-
-/* 빈 목록 메시지 */
-.empty-message {
-    text-align: center;
-    padding: 60px 20px;
-    color: #6c757d;
-    background-color: rgba(248, 249, 250, 0.5);
-    border-radius: 8px;
-    margin: 20px 0;
-}
-
-.empty-message h3 {
-    margin-bottom: 15px;
-    color: #495057;
-    font-weight: 600;
-}
-
-.empty-message p {
-    margin-bottom: 20px;
-    line-height: 1.6;
-}
-
-/* 페이지네이션 (향후 추가 시) */
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
-    gap: 5px;
-}
-
-.pagination a, 
-.pagination span {
-    display: inline-block;
-    padding: 8px 12px;
-    border: 1px solid #dee2e6;
-    color: #6c757d;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-}
-
-.pagination a:hover {
-    background-color: #e9ecef;
-    border-color: #adb5bd;
-}
-
-.pagination .current {
-    background: linear-gradient(135deg, #c6e6fb 0%, #a8d5f2 100%);
-    color: #2c3e50;
-    border-color: #c6e6fb;
-    font-weight: 600;
-}
-
-/* 반응형 디자인 */
-@media (max-width: 1024px) {
-    .board-container {
-        padding: 30px;
-        max-width: 95%;
-    }
-    
-    .inquiry-table thead th,
-    .inquiry-table tbody td {
-        padding: 12px 10px;
-        font-size: 13px;
-    }
-}
-
-@media (max-width: 768px) {
-    .main-wrapper {
-        padding: 40px 0;
-    }
-    
-    .board-container {
-        padding: 25px 20px;
-        margin: 0 10px;
-        max-width: calc(100% - 20px);
-    }
-    
-    .board-container h2 {
-        font-size: 24px;
-        margin-bottom: 30px;
-    }
-    
-    /* 모바일에서 테이블을 카드 형태로 변경 */
-    .inquiry-table {
-        display: none;
-    }
-    
-    .mobile-card-list {
-        display: block;
-    }
-    
-    .inquiry-card {
-        background: white;
-        border: 1px solid #e9ecef;
-        border-radius: 8px;
-        padding: 20px;
-        margin-bottom: 15px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        transition: all 0.3s ease;
-    }
-    
-    .inquiry-card:hover {
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        transform: translateY(-2px);
-    }
-    
-    .inquiry-card .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 15px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    
-    .inquiry-card .card-title {
-        font-weight: 600;
-        color: #333;
-        font-size: 16px;
-        flex: 1;
-        margin-right: 10px;
-    }
-    
-    .inquiry-card .card-number {
-        background-color: #e9ecef;
-        color: #6c757d;
-        padding: 2px 8px;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 500;
-    }
-    
-    .inquiry-card .card-info {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        font-size: 14px;
-    }
-    
-    .inquiry-card .info-item {
-        display: flex;
-        justify-content: space-between;
-    }
-    
-    .inquiry-card .info-label {
-        color: #6c757d;
-        font-weight: 500;
-    }
-    
-    .inquiry-card .info-value {
-        color: #333;
-        font-weight: 600;
-    }
-}
-
-@media (max-width: 480px) {
-    .board-container {
-        padding: 20px 15px;
-    }
-    
-    .board-container h2 {
-        font-size: 22px;
-        margin-bottom: 25px;
-    }
-    
-    .inquiry-card {
-        padding: 15px;
-    }
-    
-    .inquiry-card .card-info {
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
-    
-    .btn {
-        width: 100%;
-        padding: 14px 20px;
-        font-size: 15px;
-    }
-}
-
-/* 로딩 상태 */
-.loading {
-    text-align: center;
-    padding: 40px;
-    color: #6c757d;
-}
-
-.loading::after {
-    content: '';
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #e9ecef;
-    border-top: 2px solid #c6e6fb;
+/* 하트 앤 파우 마커 */
+.heart-paw-marker {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background-color: #ffb5cf;
+    border: 3px solid #f3f3f3;
     border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-left: 10px;
-}
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.95);
+  }
+  
+  /* 가운데에 발자국 이모지 삽입 */
+  .heart-paw-marker::before {
+    content: '🐾';
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+    font-size: 25px;
+    line-height: 1;
+  }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* 테이블 애니메이션 */
-.inquiry-table tbody tr {
-    opacity: 0;
-    animation: fadeInUp 0.5s ease forwards;
-}
-
-.inquiry-table tbody tr:nth-child(1) { animation-delay: 0.1s; }
-.inquiry-table tbody tr:nth-child(2) { animation-delay: 0.2s; }
-.inquiry-table tbody tr:nth-child(3) { animation-delay: 0.3s; }
-.inquiry-table tbody tr:nth-child(4) { animation-delay: 0.4s; }
-.inquiry-table tbody tr:nth-child(5) { animation-delay: 0.5s; }
-
+  /* 4) 페이드인 애니메이션 공통 */
 @keyframes fadeInUp {
     from {
-        opacity: 0;
-        transform: translateY(20px);
+      opacity: 0;
+      transform: translateY(20px);
     }
     to {
-        opacity: 1;
-        transform: translateY(0);
+      opacity: 1;
+      transform: translateY(0);
     }
-}
+  }
+  
+  /* 페이드인 전 기본 상태 */
+  .fade-in {
+    opacity: 0;
+  }
+  
+  /* 타이틀 페이드인 (0.2s 지연) */
+  .map-title.fade-in {
+    animation: fadeInUp 0.5s ease-out 0.2s forwards;
+  }
+  
+  /* 지도 컨테이너 페이드인 (0.6s 지연) */
+  .map-container.fade-in {
+    animation: fadeInUp 0.5s ease-out 0.5s forwards;
+  }
+
+  .map-note.fade-in {
+    animation: fadeInUp 0.5s ease-out 0.8s forwards;
+  }
+
+  /* 지도 하단 유의 사항 박스 */
+  .map-note {
+    width: 80%;
+    max-width: 1000px;
+    margin: 25px auto;
+    padding: 1rem;
+    border-left: 5px solid #ffe5dc;
+    border-radius: 8px;
+    background-color: #ffefdf;
+    color: #333;
+    font-size: 0.975rem;
+    line-height: 2;
+  }
+  
+  .map-note strong {
+    display: block;
+    margin-left: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.125rem;
+  }

@@ -2,46 +2,41 @@ package com.example.spring.inquiry;
 
 import java.time.LocalDateTime;
 
-/**
- * 문의 게시판 데이터 전송 객체 (DTO)
- */
 public class InquiryDto {
-    
-    private Long inquiryId;          // 문의 고유번호
-    private String userId;           // 작성자 ID
-    private String username;         // 작성자 이름
-    private String category;         // 문의 카테고리 (SERVICE, RESERVATION, PRICE, etc.)
-    private String priority;         // 우선순위 (NORMAL, HIGH, URGENT)
-    private String title;            // 문의 제목
-    private String content;          // 문의 내용
-    private String email;            // 답변받을 이메일
-    private Boolean isSecret;        // 비밀글 여부
-    private String status;           // 처리상태 (WAITING, PROCESSING, COMPLETED, CLOSED)
-    private Integer viewCount;       // 조회수
-    private String replyContent;     // 관리자 답변
-    private String replyBy;          // 답변자 ID
-    private LocalDateTime replyDate; // 답변일시
-    private LocalDateTime createdDate; // 작성일시
-    private LocalDateTime updatedDate; // 수정일시
-    
-    // 추가 필드 (화면 표시용)
-    private Boolean isPrivate;       // 비밀글 여부 (isSecret과 동일)
-    private String writerId;         // 작성자 ID (userId와 동일)
-    private String writer;           // 작성자명 (username과 동일)
-    private Boolean isHot;           // 인기글 여부
-    private Integer replyCount;      // 댓글 수
-    private Boolean isToday;         // 오늘 작성 여부
-    private Boolean isThisYear;      // 올해 작성 여부
-    
-    // 기본 생성자
+
+    private Long inquiryId;
+    private String userId;
+    private String username;
+    private String category;
+    private String priority;
+    private String title;
+    private String content;
+    private String email;
+    private Boolean isSecret;
+    private String status;
+    private Integer viewCount;
+    private String replyContent;
+    private String replyBy;
+    private LocalDateTime replyDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
+
+    // 추가 필드
+    private Boolean isPrivate;
+    private String writerId;
+    private String writer;
+    private Boolean isHot;
+    private Integer replyCount;
+    private Boolean isToday;
+    private Boolean isThisYear;
+
     public InquiryDto() {}
-    
-    // 전체 생성자
-    public InquiryDto(Long inquiryId, String userId, String username, String category, 
-                     String priority, String title, String content, String email, 
-                     Boolean isSecret, String status, Integer viewCount, 
-                     String replyContent, String replyBy, LocalDateTime replyDate,
-                     LocalDateTime createdDate, LocalDateTime updatedDate) {
+
+    public InquiryDto(Long inquiryId, String userId, String username, String category,
+                      String priority, String title, String content, String email,
+                      Boolean isSecret, String status, Integer viewCount,
+                      String replyContent, String replyBy, LocalDateTime replyDate,
+                      LocalDateTime createdDate, LocalDateTime updatedDate) {
         this.inquiryId = inquiryId;
         this.userId = userId;
         this.username = username;
