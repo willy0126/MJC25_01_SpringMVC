@@ -8,7 +8,7 @@
   
 <br>
 
-## 📝 프로젝트 소개
+## 📝  프로젝트 소개
 주어진 '반려동물 관련' 이라는 조건 속에서, 기존과는 다른 신선함 + 의미 있는 주제로 하자는 목표로 여러 방향을 탐구하였습니다.
 <br>최종적으로 고민 끝에 <b>"반려동물 장례식장"</b> 이라는 주제를 선정하여 프로젝트를 시작하게 되었습니다.
 <br><br>아래는 웹사이트 제작을 하게된 이유에 대해 간략히 기술합니다.
@@ -27,11 +27,11 @@
 
 <br><br>
 
-## 🙋‍♂️팀원 소개
+## 🙋‍♂️  팀원 소개
 
 |학번|이름|개발|
-|------|---|---|
-|2020261041|박지원|테스트|
-|2020261074|안병준|테스트|
-|2021261037|안성준|테스트|
-|2022261067|최서연|테스트|
+|:------:|:---:|:---:|
+|2020261041|<a href="https://github.com/willy0126" target="_blank" rel="noopener noreferrer">박지원</a>|테스트|
+|2020261074|<a href="https://github.com/AnByoungJun0605" target="_blank" rel="noopener noreferrer">안병준</a>|테스트|
+|2021261037|<a href="https://github.com/Asj-Cell" target="_blank" rel="noopener noreferrer">안성준</a>|테스트|
+|2022261067|<a href="https://github.com/chltj" target="_blank" rel="noopener noreferrer">최서연</a>|테스트|
