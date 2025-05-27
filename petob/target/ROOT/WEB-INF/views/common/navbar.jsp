@@ -72,8 +72,8 @@
       <div class="menu-item">
         <a href="#" class="menu-link">고객센터</a>
         <ul class="dropdown">
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">문의 게시판</a></li>
+          <li><a href="${pageContext.request.contextPath}/faq">FAQ</a></li>
+          <li><a href="${pageContext.request.contextPath}/inquiry/list">문의 게시판</a></li>
           <li><a href="#">공지사항</a></li>
         </ul>
       </div>

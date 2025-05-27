@@ -1,0 +1,131 @@
+/* petob/src/main/webapp/resources/css/csstyle.css */
+
+.faq-container {
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    /* 전체 FAQ 컨테이너 테두리 (선택 사항) */
+    border-radius: 8px;
+    /* 모서리 둥글게 (선택 사항) */
+    /* 애니메이션을 위해 초기 상태 추가 */
+    opacity: 0;
+    animation-name: fadeInUp;
+    animation-duration: 0.6s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+    /* 제목 애니메이션 후 시작되도록 지연 시간 설정 */
+    animation-delay: 0.5s;
+    /* 제목보다 0.3초 늦게 시작 */
+}
+
+.faq-item {
+    border-bottom: 1px solid #eee;
+    /* 각 Q&A 항목 구분선 */
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+    /* 마지막 항목 구분선 제거 */
+}
+
+.faq-question {
+    background-color: #f9f9f9;
+    /* 버튼 배경색 */
+    color: #333;
+    /* 버튼 글자색 */
+    cursor: pointer;
+    padding: 18px 20px;
+    /* 버튼 내부 여백 */
+    width: 100%;
+    border: none;
+    /* 버튼 기본 테두리 제거 */
+    text-align: left;
+    outline: none;
+    /* 클릭 시 외곽선 제거 */
+    font-size: 1.1em;
+    /* 질문 글자 크기 */
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    /* 부드러운 배경색 변경 효과 */
+    display: flex;
+    /* 텍스트와 아이콘 정렬을 위해 flex 사용 */
+    justify-content: space-between;
+    /* 양 끝으로 정렬 */
+    align-items: center;
+    /* 수직 중앙 정렬 */
+}
+
+.faq-question:hover {
+    background-color: #f1f1f1;
+    /* 마우스 오버 시 배경색 */
+}
+
+.faq-question.active {
+    /* 답변이 열렸을 때 질문 버튼 스타일 (선택 사항) */
+    background-color: #e7e7e7;
+}
+
+.faq-icon {
+    font-size: 1.2em;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    /* 아이콘 회전 효과 */
+}
+
+.faq-question.active .faq-icon {
+    transform: rotate(45deg);
+    /* 열렸을 때 + 아이콘을 x 모양으로 변경 */
+}
+
+.faq-answer {
+    padding: 0 20px;
+    /* 답변 내부 좌우 여백 */
+    background-color: white;
+    display: none;
+    /* 기본적으로 답변 숨김 */
+    overflow: hidden;
+    /* 애니메이션을 위해 필요 */
+    line-height: 1.7;
+}
+
+.faq-answer p,
+.faq-answer ul {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.faq-answer ul {
+    padding-left: 20px;
+}
+
+/* --- 애니메이션 스타일 (하단에 추가) --- */
+
+/* Fade-in 애니메이션 정의 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+        /* 아래에서 위로 살짝 올라오는 효과 */
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 페이지 제목 (h1) 에 fade-in 적용 */
+/* 이 스타일은 faq.jsp의 .page-title-section h1에 적용됩니다. */
+.page-title-section h1 {
+    opacity: 0;
+    /* 초기에는 투명하게 */
+    animation-name: fadeInUp;
+    animation-duration: 0.6s;
+    /* 애니메이션 지속 시간 */
+    animation-fill-mode: forwards;
+    /* 애니메이션 종료 후 상태 유지 */
+    animation-timing-function: ease-out;
+    /* 부드러운 애니메이션 효과 */
+    animation-delay: 0.2s;
+    /* 페이지 로드 후 0.2초 뒤에 시작 */
+}

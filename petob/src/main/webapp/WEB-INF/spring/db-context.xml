@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="
-           http://www.springframework.org/schema/beans 
-           http://www.springframework.org/schema/beans/spring-beans.xsd
-           http://www.springframework.org/schema/tx
-           http://www.springframework.org/schema/tx/spring-tx.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/tx
+                http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <!-- HikariCP DataSource 설정 -->
+    <!-- DataSource 설정 -->
     <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
-        <property name="driverClassName" value="org.mariadb.jdbc.Driver" />
-        <property name="jdbcUrl" value="jdbc:mariadb://127.0.0.1:3308/spring" />
-        <property name="username" value="spring" />
-        <property name="password" value="1234" />
+        <property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mariadb://127.0.0.1:3308/spring"/>
+        <property name="username" value="spring"/>
+        <property name="password" value="1234"/>
 
-        <!-- HikariCP 고급 설정 (예: 최대 풀 크기, 커넥션 타임아웃 등) -->
+        <!-- HikariCP 설정 -->
         <property name="maximumPoolSize" value="10"/>
         <property name="minimumIdle" value="5"/>
         <property name="idleTimeout" value="30000"/>
@@ -23,27 +21,29 @@
         <property name="maxLifetime" value="1800000"/>
     </bean>
 
-    <!-- JdbcTemplate -->
+    <!-- JdbcTemplate 설정 -->
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <!-- TransactionManager -->
+    <!-- 트랜잭션 관리자 설정 -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <!-- Enable transaction management -->
-    <tx:annotation-driven />
+    <!-- 트랜잭션 활성화 -->
+    <tx:annotation-driven/>
 
     <!-- MyBatis SqlSessionFactory 설정 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="classpath:mybatis-config.xml"/>
-        <property name="mapperLocations" value="classpath:mapper/*.xml" />
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
     </bean>
 
+    <!-- SqlSessionTemplate 설정 -->
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg ref="sqlSessionFactory" />
+        <constructor-arg ref="sqlSessionFactory"/>
     </bean>
+
 </beans>

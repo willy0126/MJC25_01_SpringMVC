@@ -1,9 +1,19 @@
 /* ----------------- 기본 폰트 세팅 ----------------- */
+
+html
+{
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit; /* html 요소의 box-sizing 값을 상속받도록 함 */
+}
+
 html, body {
   margin: 0;
   padding: 0;
   font-family: "Noto Sans KR", sans-serif;
 }
+
 
 h1, h2, h3, h4, h5, h6, p, span, li, button {
   font-family: "Noto Sans KR", sans-serif !important;
