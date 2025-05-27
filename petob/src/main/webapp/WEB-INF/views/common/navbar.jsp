@@ -1,9 +1,22 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<style>
+    /* 환영 메시지와 기존 링크 사이의 간격을 위한 스타일 추가 */
+    .auth-links {
+        display: flex;
+        align-items: center; /* 세로 정렬을 위해 추가 */
+        gap: 10px; /* 링크 사이의 간격 */
+    }
+    .welcome-message {
+        color: #333; /* 텍스트 색상 */
+        font-weight: 500; /* 폰트 굵기 */
+        margin-right: 10px; /* 오른쪽 마이페이지 링크와의 간격 */
+        white-space: nowrap; /* 줄바꿈 방지 */
+    }
+</style>
 
 <div class="navbar-container">
-
 
   <div class="navbar-left">
     <a href="${pageContext.request.contextPath}/">
@@ -11,18 +24,19 @@
     </a>
   </div>
 
-
   <div class="navbar-right">
 
     <div class="auth-links">
       <c:choose>
-       
+        
         <c:when test="${empty sessionScope.userId}">
           <a href="${pageContext.request.contextPath}/login" class="auth-link">로그인</a>
           <a href="${pageContext.request.contextPath}/register" class="auth-link">회원가입</a>
         </c:when>
       
         <c:otherwise>
+          <%-- 로그인 시 환영 메시지 표시 --%>
+          <span class="welcome-message">${sessionScope.username}님, 소중한 기억과 함께합니다.</span>
           <a href="${pageContext.request.contextPath}/myPage" class="auth-link">마이페이지</a>
           <a href="${pageContext.request.contextPath}/logout" class="auth-link">로그아웃</a>
         </c:otherwise>
@@ -48,7 +62,7 @@
       <div class="menu-item">
         <a href="#" class="menu-link">커뮤니티</a>
         <ul class="dropdown">
-          <li><a href="#">장례 후기</a></li>
+          <li><a href="${pageContext.request.contextPath}/funeral-reviews">장례 후기</a></li>
           <li><a href="#">한 마디 나누기</a></li>
         </ul>
       </div>
@@ -58,13 +72,12 @@
       <div class="menu-item">
         <a href="#" class="menu-link">고객센터</a>
         <ul class="dropdown">
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">문의 게시판</a></li>
+          <li><a href="${pageContext.request.contextPath}/faq">FAQ</a></li>
+          <li><a href="${pageContext.request.contextPath}/inquiry/list">문의 게시판</a></li>
           <li><a href="#">공지사항</a></li>
         </ul>
       </div>
 
-      <!-- 상담 예약 버튼 (가장 오른쪽) -->
       <a href="${pageContext.request.contextPath}/reservation" class="reserve-button">상담 예약</a>
 
     </div>
