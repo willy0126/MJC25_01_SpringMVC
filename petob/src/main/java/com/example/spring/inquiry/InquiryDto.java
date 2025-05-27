@@ -14,7 +14,6 @@ public class InquiryDto {
     private String email;
     private Boolean isSecret;
     private String status;
-    private Integer viewCount;
     private String replyContent;
     private String replyBy;
     private LocalDateTime replyDate;
@@ -32,8 +31,8 @@ public class InquiryDto {
     public InquiryDto() {}
 
     public InquiryDto(Long inquiryId, String userId, String username, String category,
-                      String priority, String title, String content, String email,
-                      Boolean isSecret, String status, Integer viewCount,
+                      String title, String content, String email,
+                      Boolean isSecret, String status,
                       String replyContent, String replyBy, LocalDateTime replyDate,
                       LocalDateTime createdDate, LocalDateTime updatedDate) {
         this.inquiryId = inquiryId;
@@ -45,7 +44,6 @@ public class InquiryDto {
         this.email = email;
         this.isSecret = isSecret;
         this.status = status;
-        this.viewCount = viewCount != null ? viewCount : 0;
         this.replyContent = replyContent;
         this.replyBy = replyBy;
         this.replyDate = replyDate;
@@ -135,14 +133,6 @@ public class InquiryDto {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public Integer getViewCount() {
-        return viewCount != null ? viewCount : 0;
-    }
-
-    public void setViewCount(Integer viewCount) {
-        this.viewCount = viewCount;
     }
 
     public String getReplyContent() {
@@ -279,7 +269,6 @@ public String getCreatedDateFormatted() {
                 ", title='" + title + '\'' +
                 ", isSecret=" + isSecret +
                 ", status='" + status + '\'' +
-                ", viewCount=" + viewCount +
                 ", createdDate=" + createdDate +
                 '}';
     }

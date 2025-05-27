@@ -81,12 +81,7 @@ public interface InquiryService {
      * @param inquiryId 문의 ID
      * @return 성공 여부
      */
-    boolean increaseViewCount(Long inquiryId);
-    
-    /**
-     * 공지사항 목록 조회
-     * @return 공지사항 목록
-     */
+
     List<InquiryDto> getNoticeList();
     
     /**

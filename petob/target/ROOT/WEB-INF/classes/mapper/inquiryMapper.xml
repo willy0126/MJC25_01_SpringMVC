@@ -14,11 +14,9 @@
             title, 
             content, 
             category, 
-            priority,
             email,
             is_secret,
             status, 
-            view_count,
             created_date
         ) VALUES (
             #{userId}, 
@@ -26,11 +24,9 @@
             #{title}, 
             #{content}, 
             #{category}, 
-            #{priority},
             #{email},
             #{isSecret},
             #{status}, 
-            #{viewCount},
             #{createdDate}
         )
     </insert>
@@ -44,11 +40,9 @@
             title as title,
             content as content,
             category as category,
-            priority as priority,
             email as email,
             is_secret as isSecret,
             status as status,
-            view_count as viewCount,
             reply_content as replyContent,
             reply_by as replyBy,
             reply_date as replyDate,
@@ -67,11 +61,9 @@
             title as title,
             content as content,
             category as category,
-            priority as priority,
             email as email,
             is_secret as isSecret,
             status as status,
-            view_count as viewCount,
             reply_content as replyContent,
             reply_by as replyBy,
             reply_date as replyDate,
@@ -107,11 +99,9 @@
             title as title,
             content as content,
             category as category,
-            priority as priority,
             email as email,
             is_secret as isSecret,
             status as status,
-            view_count as viewCount,
             reply_content as replyContent,
             reply_by as replyBy,
             reply_date as replyDate,
@@ -158,9 +148,6 @@
             <if test="category != null and category != ''">
                 category = #{category},
             </if>
-            <if test="priority != null and priority != ''">
-                priority = #{priority},
-            </if>
             <if test="email != null">
                 email = #{email},
             </if>
@@ -169,9 +156,6 @@
             </if>
             <if test="status != null and status != ''">
                 status = #{status},
-            </if>
-            <if test="viewCount != null">
-                view_count = #{viewCount},
             </if>
             <if test="updatedDate != null">
                 updated_date = #{updatedDate}

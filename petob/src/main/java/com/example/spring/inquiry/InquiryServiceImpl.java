@@ -17,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("inquiryService")  // Bean 이름을 명시적으로 지정
 @Transactional              // 트랜잭션 처리 추가
-public class InquiryServiceImpl implements InquiryService {
 
+public class InquiryServiceImpl implements InquiryService {
     @Autowired
     private InquiryDao inquiryDao;
 
@@ -104,13 +104,6 @@ public class InquiryServiceImpl implements InquiryService {
     public InquiryDto read(Long inquiryId) {
         try {
             InquiryDto inquiry = inquiryDao.read(inquiryId);
-            
-            if (inquiry != null) {
-                // 조회수 증가
-                increaseViewCount(inquiryId);
-                logger.debug("문의 조회 완료 - inquiryId: {}", inquiryId);
-            }
-            
             return inquiry;
             
         } catch (Exception e) {
@@ -129,10 +122,6 @@ public class InquiryServiceImpl implements InquiryService {
             if (inquiry.getIsSecret() == null) {
                 inquiry.setIsSecret(false);
             }
-            if (inquiry.getViewCount() == null) {
-                inquiry.setViewCount(0);
-            }
-            
             // 작성일시 설정
             inquiry.setCreatedDate(LocalDateTime.now());
             
@@ -296,36 +285,6 @@ public class InquiryServiceImpl implements InquiryService {
         } catch (Exception e) {
             logger.error("문의 상태 변경 중 오류: {}", e.getMessage(), e);
             throw new RuntimeException("문의 상태 변경 중 오류가 발생했습니다.", e);
-        }
-    }
-
-    @Override
-    public boolean increaseViewCount(Long inquiryId) {
-        try {
-            // 현재 조회수 조회
-            InquiryDto inquiry = inquiryDao.read(inquiryId);
-            
-            if (inquiry != null) {
-                int newViewCount = inquiry.getViewCount() + 1;
-                
-                InquiryDto updateInquiry = new InquiryDto();
-                updateInquiry.setInquiryId(inquiryId);
-                updateInquiry.setViewCount(newViewCount);
-                
-                int result = inquiryDao.update(updateInquiry);
-                
-                if (result > 0) {
-                    logger.debug("조회수 증가 완료 - inquiryId: {}, viewCount: {}", inquiryId, newViewCount);
-                    return true;
-                }
-            }
-            
-            return false;
-            
-        } catch (Exception e) {
-            logger.error("조회수 증가 중 오류: {}", e.getMessage(), e);
-            // 조회수 증가 실패는 치명적이지 않으므로 예외를 던지지 않음
-            return false;
         }
     }
 
