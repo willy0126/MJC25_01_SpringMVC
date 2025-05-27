@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="reservationMapper">
+
+    <!-- ReservationDto resultMap -->
+    <resultMap id="reservationResultMap" type="com.example.spring.reservation.ReservationDto">
+        <id property="reservationId" column="reservation_id" />
+        <result property="username" column="username" />
+        <result property="phone" column="phone" />
+        <result property="email" column="email" />
+        <result property="date" column="date" />
+        <result property="time" column="time" />
+        <result property="createdAt" column="created_at" />
+    </resultMap>
+
+    <!-- 예약 등록 -->
+    <insert id="create" parameterType="com.example.spring.reservation.ReservationDto"
+            useGeneratedKeys="true" keyProperty="reservationId">
+        INSERT INTO reservations (
+            username,
+            phone,
+            email,
+            date,
+            time,
+            created_at
+        ) VALUES (
+            #{username},
+            #{phone},
+            #{email},
+            #{date},
+            #{time},
+            NOW()
+        )
+    </insert>
+
+    <!-- 특정 날짜/시간 중복 체크 -->
+    <select id="checkTimeSlot" parameterType="com.example.spring.reservation.ReservationDto" 
+            resultType="int">
+        SELECT COUNT(*)
+        FROM reservations
+        WHERE date = #{date}
+        AND time = #{time}
+    </select>
+
+    <!-- 특정 날짜의 예약된 시간들 조회 -->
+    <select id="getBookedTimes" parameterType="string" resultType="string">
+        SELECT time
+        FROM reservations
+        WHERE date = #{date}
+        ORDER BY time ASC
+    </select>
+
+    <!-- 전화번호로 예약 목록 조회 -->
+    <select id="getByPhone" parameterType="string" resultMap="reservationResultMap">
+        SELECT 
+            reservation_id,
+            username,
+            phone,
+            email,
+            date,
+            time,
+            created_at
+        FROM reservations
+        WHERE phone = #{phone}
+        ORDER BY date DESC, time DESC
+    </select>
+
+    <!-- 예약 단건 조회 -->
+    <select id="read" parameterType="com.example.spring.reservation.ReservationDto" 
+            resultMap="reservationResultMap">
+        SELECT 
+            reservation_id,
+            username,
+            phone,
+            email,
+            date,
+            time,
+            created_at
+        FROM reservations
+        <where>
+            <if test="reservationId != null">
+                AND reservation_id = #{reservationId}
+            </if>
+            <if test="phone != null and phone != ''">
+                AND phone = #{phone}
+            </if>
+            <if test="email != null and email != ''">
+                AND email = #{email}
+            </if>
+            <if test="date != null and date != ''">
+                AND date = #{date}
+            </if>
+            <if test="time != null and time != ''">
+                AND time = #{time}
+            </if>
+        </where>
+        ORDER BY created_at DESC
+        LIMIT 1
+    </select>
+
+    <!-- 오늘 예약 개수 -->
+    <select id="getTodayCount" resultType="int">
+        SELECT COUNT(*)
+        FROM reservations
+        WHERE date = CURDATE()
+    </select>
+
+    <!-- 특정 기간의 예약 개수 -->
+    <select id="getCountByDateRange" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM reservations
+        WHERE date BETWEEN #{startDate} AND #{endDate}
+    </select>
+
+</mapper>

@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: #f5f5f5;
+    background-color: #f8f9fa; /* 더 부드러운 배경색 */
 }
 
 /* 메인 컨텐츠 중앙 정렬 */
@@ -16,79 +16,267 @@
     margin: 40px 0; /* 위아래 여백 모두 적용 (navbar와 footer 사이) */
 }
 
-
-/* 로그인 박스 스타일 */
+/* 예약 박스 스타일 - 공통 테마 반영 */
 .reservation-container {
     background-color: white;
     padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    border-radius: 12px; /* 약간 더 둥근 모서리 */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08); /* 더 부드러운 그림자 */
     width: 90%;
-    max-width: 700px;  /* 기존 400px → 600px 등으로 늘림 */
+    max-width: 700px;
     text-align: center;
+    border: 1px solid rgba(198, 230, 251, 0.3); /* navbar 색상과 연결 */
 }
 
 /* 제목 스타일 */
 .reservation-container h2 {
-    margin-bottom: 30px; /* 이 값을 늘려주면 간격이 더 벌어짐 */
+    margin-bottom: 30px;
     font-size: 24px;
+    color: #333;
+    font-weight: 600;
 }
-
 
 /* 폼 그룹 스타일 */
 .form-group {
-    margin-bottom: 25px; /* 세로 간격을 좀 더 넓게 */
+    margin-bottom: 25px;
     text-align: left;
 }
 
 /* 라벨 정렬 */
 .form-group label {
     display: block;
-    margin-bottom: 6px;
-    font-weight: bold;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #444;
+    font-size: 15px;
 }
 
 /* 입력 필드 스타일 */
 .form-group input {
     width: 100%;
-    padding: 14px;  /* 입력창 내부 여백 */
+    padding: 14px 16px;
     font-size: 16px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+    border-radius: 8px;
+    border: 2px solid #e1ecf4; /* 부드러운 블루 계열 보더 */
     box-sizing: border-box;
-}
-.form-group select {
-    width: 100%;
-    padding: 14px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    box-sizing: border-box;
-    display: block;
+    transition: all 0.3s ease;
+    background-color: #fafbfc;
 }
 
-/* 버튼 스타일 */
+.form-group input:focus {
+    outline: none;
+    border-color: #c6e6fb; /* navbar 색상과 조화 */
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(198, 230, 251, 0.2);
+}
+
+.form-group select {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 16px;
+    border: 2px solid #e1ecf4;
+    border-radius: 8px;
+    box-sizing: border-box;
+    display: block;
+    background-color: #fafbfc;
+    transition: all 0.3s ease;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: #c6e6fb;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(198, 230, 251, 0.2);
+}
+
+/* 버튼 스타일 - navbar 테마와 조화 */
 button[type="submit"] {
     width: 100%;
-    padding: 12px;
+    padding: 14px 20px;
     font-size: 16px;
-    background-color: #ffe5dc;
-    color: white;
+    font-weight: 600;
+    background: linear-gradient(135deg, #c6e6fb 0%, #a8d5f2 100%); /* navbar 색상 기반 그라데이션 */
+    color: #2c3e50;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 button[type="submit"]:hover {
-    background-color: #ff9c5f;
+    background: linear-gradient(135deg, #b3ddf9 0%, #95c9ef 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(166, 213, 240, 0.4);
 }
 
-/* 에러 메시지 */
+button[type="submit"]:active {
+    transform: translateY(0);
+}
+
+/* 에러/성공 메시지 */
 .error-message {
-    color: red;
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 12px 16px;
+    border-radius: 8px;
     margin-top: 15px;
     font-size: 14px;
+    border-left: 4px solid #dc3545;
 }
+
+.success-message {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 14px;
+    border-left: 4px solid #28a745;
+}
+
+/* 네비게이션 링크 - 공통 테마 반영 */
+.navigation-links {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+    text-align: center;
+}
+
+.navigation-links a {
+    color: #6c757d;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 20px; /* navbar 버튼과 같은 스타일 */
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.navigation-links a:hover {
+    background-color: #f9e8ff; /* dropdown hover 색상과 조화 */
+    color: #333;
+    transform: translateY(-1px);
+}
+
+/* Flatpickr 캘린더 스타일 조정 */
 .flatpickr-calendar {
     z-index: 9999 !important;
+    border: 1px solid #c6e6fb;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.flatpickr-day.selected {
+    background: #c6e6fb;
+    border-color: #c6e6fb;
+    color: #2c3e50;
+}
+
+.flatpickr-day:hover {
+    background: rgba(198, 230, 251, 0.3);
+}
+
+/* 로딩 및 유효성 검사 스타일 */
+.form-group input.error {
+    border-color: #dc3545;
+    background-color: #fff5f5;
+}
+
+.form-group input.success {
+    border-color: #28a745;
+    background-color: #f8fff8;
+}
+
+.validation-message {
+    font-size: 12px;
+    margin-top: 5px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: none;
+}
+
+.validation-message.error {
+    color: #dc3545;
+    background-color: #f8d7da;
+    display: block;
+}
+
+.validation-message.success {
+    color: #155724;
+    background-color: #d4edda;
+    display: block;
+}
+
+/* 시간 선택 옵션 스타일 */
+select option:disabled {
+    color: #999;
+    background-color: #f5f5f5;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .reservation-container {
+        margin: 20px;
+        padding: 30px 20px;
+        max-width: 95%;
+    }
+    
+    .reservation-container h2 {
+        font-size: 22px;
+        margin-bottom: 25px;
+    }
+    
+    .form-group input,
+    .form-group select {
+        padding: 12px 14px;
+        font-size: 15px;
+    }
+    
+    button[type="submit"] {
+        padding: 12px 18px;
+        font-size: 15px;
+    }
+    
+    .navigation-links {
+        margin-top: 25px;
+    }
+    
+    .navigation-links a {
+        display: block;
+        margin: 8px 0;
+        padding: 10px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .reservation-container {
+        padding: 25px 15px;
+        margin: 15px;
+    }
+    
+    .reservation-container h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+    
+    .form-group input,
+    .form-group select,
+    button[type="submit"] {
+        padding: 11px 13px;
+        font-size: 14px;
+    }
 }
