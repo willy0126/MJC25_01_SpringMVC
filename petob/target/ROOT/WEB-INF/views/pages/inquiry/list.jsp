@@ -1,126 +1,16 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <jsp:include page="/WEB-INF/views/common/head.jsp" />
-    <title>문의 게시판 - Star's Haven, 반려동물 장례식장</title>
+    <title>문의 작성 - Star's Haven, 반려동물 장례식장</title>
     
     <!-- 문의 게시판 전용 CSS -->
-    <link rel="stylesheet" href="<c:url value='/resources/css/inquirystyle.css'/>" />
-    
-    <!-- 빈 상태 인라인 스타일 -->
-    <style>
-        .empty-state-container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-            margin: 40px 0;
-            padding: 80px 20px;
-            text-align: center;
-        }
-        
-        .empty-state-content {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        
-        .empty-state-icon {
-            font-size: 4rem;
-            margin-bottom: 30px;
-            opacity: 0.7;
-        }
-        
-        .empty-state-title {
-            font-size: 1.5rem;
-            color: #333;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-        
-        .empty-state-message {
-            color: #666;
-            margin-bottom: 40px;
-            font-size: 1rem;
-            line-height: 1.5;
-        }
-        
-        .empty-state-buttons {
-            margin-bottom: 30px;
-        }
-        
-        .empty-btn-primary {
-            background: #4285f4;
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
-        }
-        
-        .empty-btn-primary:hover {
-            background: #3367d6;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(66, 133, 244, 0.4);
-        }
-        
-        .empty-state-nav {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .empty-btn-secondary {
-            background: transparent;
-            color: #4285f4;
-            border: 2px solid #4285f4;
-            padding: 10px 20px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .empty-btn-secondary:hover {
-            background: #4285f4;
-            color: white;
-            text-decoration: none;
-            transform: translateY(-1px);
-        }
-        
-        @media (max-width: 768px) {
-            .empty-state-container {
-                padding: 60px 15px;
-                margin: 20px 0;
-            }
-            
-            .empty-state-icon {
-                font-size: 3rem;
-            }
-            
-            .empty-state-title {
-                font-size: 1.3rem;
-            }
-            
-            .empty-state-nav {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .empty-btn-secondary {
-                width: 200px;
-                text-align: center;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="<c:url value='/resources/css/inquiry/inquirystyle.css'/>" />
+  
 </head>
 
 <body>
@@ -129,321 +19,358 @@
         <jsp:include page="/WEB-INF/views/common/navbar.jsp" />
         
         <main class="main-wrapper">
-            <div class="inquiry-container">
-                <!-- 헤더 -->
-                <div class="inquiry-header">
-                    <h1 class="inquiry-title">문의 게시판</h1>
-                    <p class="inquiry-subtitle">궁금한 사항이나 요청사항을 남겨주시면 성심껏 답변드리겠습니다.</p>
+            <!-- 헤더 -->
+            <div class="inquiry-header">
+                <div class="container">
+                    <h1><i class="fas fa-question-circle me-3"></i>문의 게시판</h1>
+                    <p>궁금한 사항이나 문의사항을 남겨주세요.</p>
+                </div>
+            </div>
+
+            <!-- 콘텐츠 -->
+            <div class="inquiry-content">
+              <!-- 🔍 검색 영역 -->
+        <div class="search-section">
+            <h5 class="search-title">
+                <i class="fas fa-filter"></i>
+                검색 조건
+            </h5>
+            
+            <form id="searchForm" class="search-form" method="GET" action="<c:url value='/inquiry/list'/>">
+                <!-- 키워드 검색 -->
+                <div class="search-group">
+                    <label for="keyword" class="search-label">키워드</label>
+                    <input type="text" 
+                           id="keyword" 
+                           name="keyword" 
+                           class="search-input" 
+                           placeholder="제목이나 내용을 검색하세요"
+                           value="${param.keyword}">
                 </div>
                 
-                <!-- 검색 및 필터 영역 -->
-                <div class="inquiry-search">
-                    <form action="<c:url value='/inquiry'/>" method="get" class="search-form">
-                        <div class="search-controls">
-                            <select name="category" class="search-select">
-                                <option value="">전체 카테고리</option>
-                                <option value="SERVICE" ${param.category == 'SERVICE' ? 'selected' : ''}>서비스 문의</option>
-                                <option value="RESERVATION" ${param.category == 'RESERVATION' ? 'selected' : ''}>예약 문의</option>
-                                <option value="PRICE" ${param.category == 'PRICE' ? 'selected' : ''}>가격 문의</option>
-                                <option value="LOCATION" ${param.category == 'LOCATION' ? 'selected' : ''}>지점 문의</option>
-                                <option value="COMPLAINT" ${param.category == 'COMPLAINT' ? 'selected' : ''}>불만 접수</option>
-                                <option value="SUGGESTION" ${param.category == 'SUGGESTION' ? 'selected' : ''}>개선 제안</option>
-                                <option value="ETC" ${param.category == 'ETC' ? 'selected' : ''}>기타</option>
-                            </select>
-                            
-                            <select name="searchType" class="search-select">
-                                <option value="title" ${param.searchType == 'title' ? 'selected' : ''}>제목</option>
-                                <option value="content" ${param.searchType == 'content' ? 'selected' : ''}>내용</option>
-                                <option value="writer" ${param.searchType == 'writer' ? 'selected' : ''}>작성자</option>
-                                <option value="all" ${param.searchType == 'all' ? 'selected' : ''}>전체</option>
-                            </select>
-                            
-                            <input type="text" name="keyword" value="${param.keyword}" 
-                                   placeholder="검색어를 입력하세요" class="search-input">
-                            
-                            <button type="submit" class="btn btn-search">검색</button>
-                            <a href="<c:url value='/inquiry'/>" class="btn btn-reset">초기화</a>
-                        </div>
-                    </form>
+                <!-- 카테고리 필터 -->
+                <div class="search-group">
+                    <label for="category" class="search-label">카테고리</label>
+                    <select id="category" name="category" class="search-select">
+                        <option value="">전체 카테고리</option>
+                        <option value="SERVICE" ${param.category eq 'SERVICE' ? 'selected' : ''}>서비스 문의</option>
+                        <option value="RESERVATION" ${param.category eq 'RESERVATION' ? 'selected' : ''}>예약 문의</option>
+                        <option value="PRICE" ${param.category eq 'PRICE' ? 'selected' : ''}>가격 문의</option>
+                        <option value="LOCATION" ${param.category eq 'LOCATION' ? 'selected' : ''}>지점 문의</option>
+                        <option value="COMPLAINT" ${param.category eq 'COMPLAINT' ? 'selected' : ''}>불만 접수</option>
+                        <option value="SUGGESTION" ${param.category eq 'SUGGESTION' ? 'selected' : ''}>개선 제안</option>
+                        <option value="ETC" ${param.category eq 'ETC' ? 'selected' : ''}>기타</option>
+                    </select>
                 </div>
                 
-                <!-- 액션 바 -->
-                <div class="inquiry-actions">
-                    <div class="inquiry-stats">
-                        <span class="total-count">총 <strong>${totalCount}</strong>건</span>
-                        <c:if test="${not empty param.keyword}">
-                            <span class="search-result">| 검색결과 <strong>${searchResultCount}</strong>건</span>
-                        </c:if>
+                <!-- 검색 버튼들 -->
+                <div class="search-buttons">
+                    <button type="submit" class="btn-search">
+                        <i class="fas fa-search"></i>
+                        검색하기
+                    </button>
+                    <button type="button" class="btn-reset" onclick="resetForm()">
+                        <i class="fas fa-undo"></i>
+                        초기화
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- 🏷️ 검색 결과 정보 -->
+        <c:if test="${not empty param.keyword or not empty param.category}">
+            <div class="search-result-info">
+                <div class="result-count">
+                    <i class="fas fa-list-ul"></i>
+                    검색 결과: <strong>${totalCount}개</strong>의 문의사항
+                </div>
+                <div class="search-keywords">
+                    <c:if test="${not empty param.keyword}">
+                        <span class="keyword-tag">
+                            <i class="fas fa-search"></i> ${param.keyword}
+                        </span>
+                    </c:if>
+                    <c:if test="${not empty param.category}">
+                        <span class="keyword-tag">
+                            <i class="fas fa-tag"></i> 
+                            <c:choose>
+                                <c:when test="${param.category eq 'SERVICE'}">서비스 문의</c:when>
+                                <c:when test="${param.category eq 'RESERVATION'}">예약 문의</c:when>
+                                <c:when test="${param.category eq 'PRICE'}">가격 문의</c:when>
+                                <c:when test="${param.category eq 'LOCATION'}">지점 문의</c:when>
+                                <c:when test="${param.category eq 'COMPLAINT'}">불만 접수</c:when>
+                                <c:when test="${param.category eq 'SUGGESTION'}">개선 제안</c:when>
+                                <c:when test="${param.category eq 'ETC'}">기타</c:when>
+                            </c:choose>
+                        </span>
+                    </c:if>
+                </div>
+            </div>
+        </c:if>
+
+        <!-- 📝 문의하기 버튼 (하나만) -->
+        <c:choose>
+            <c:when test="${not empty sessionScope.userId}">
+                <div class="d-flex justify-content-end mb-3">
+                    <a href="<c:url value='/inquiry/write'/>" class="btn-write">
+                        <i class="fas fa-pen me-2"></i>문의하기
+                    </a>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div class="login-info" style="margin-bottom: 1.5rem;">
+                    <i class="fas fa-info-circle me-2"></i>
+                    문의 작성을 위해서는 <a href="<c:url value='/login'/>">로그인</a>이 필요합니다.
+                    <button type="button" class="btn-write ms-3" onclick="showLoginAlert()">
+                        <i class="fas fa-pen me-2"></i>문의하기
+                    </button>
+                </div>
+            </c:otherwise>
+        </c:choose>
+
+
+                <!-- 문의 테이블 -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h5>총 <span style="color: #2b6cb0;">${totalCount != null ? totalCount : 0}</span>건의 문의</h5>
                     </div>
-                    <div class="action-buttons">
-                        <button onclick="checkLoginAndWrite()" class="btn btn-write">
-                            📝 문의 작성
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- 문의 목록 테이블 -->
-                <c:choose>
-                    <c:when test="${empty inquiryList and empty noticeList}">
-                        <!-- 완전히 빈 상태 -->
-                        <div class="empty-state-container">
-                            <div class="empty-state-content">
-                                <div class="empty-state-icon">
-                                    📧
-                                </div>
-                                <h3 class="empty-state-title">등록된 문의가 없습니다.</h3>
-                                <p class="empty-state-message">궁금한 것이 있으시면 언제든지 문의해 주세요.</p>
-                                
-                                <div class="empty-state-buttons">
-                                    <button onclick="checkLoginAndWrite()" class="empty-btn-primary">
-                                        ✏️ 문의 작성
-                                    </button>
-                                </div>
-                                
-                                <div class="empty-state-nav">
-                                    <a href="javascript:checkLoginAndWrite()" class="empty-btn-secondary">
-                                        📝 문의 작성
+
+                    <c:choose>
+                        <c:when test="${empty inquiryList}">
+                            <div class="empty-state">
+                                <i class="fas fa-inbox"></i>
+                                <h5>등록된 문의가 없습니다.</h5>
+                                <p>첫 번째 문의를 작성해보세요!</p>
+                                <c:if test="${not empty sessionScope.userId}">
+                                    <a href="<c:url value='/inquiry/write'/>" class="btn-write">
+                                        <i class="fas fa-pen me-2"></i>문의하기
                                     </a>
-                                    <a href="<c:url value='/'/>" class="empty-btn-secondary">
-                                        🏠 메인으로
-                                    </a>
-                                </div>
+                                </c:if>
                             </div>
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        <!-- 기존 테이블 -->
-                        <div class="board-container">
-                            <table class="board-table">
-                                <thead>
-                                    <tr>
-                                        <th class="col-num">번호</th>
-                                        <th class="col-category">분류</th>
-                                        <th class="col-title">제목</th>
-                                        <th class="col-writer">작성자</th>
-                                        <th class="col-date">작성일</th>
-                                        <th class="col-status">상태</th>
-                                        <th class="col-views">조회</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                            
-                                    
-                                    <!-- 일반 문의 -->
-                                    <c:forEach var="inquiry" items="${inquiryList}" varStatus="status">
-                                        <tr class="inquiry-row">
-                                            <td>${totalCount - (currentPage - 1) * pageSize - status.index}</td>
-                                            <td>
-                                                <span class="category-badge category-${inquiry.category}">
-                                                    <c:choose>
-                                                        <c:when test="${inquiry.category == 'SERVICE'}">서비스</c:when>
-                                                        <c:when test="${inquiry.category == 'RESERVATION'}">예약</c:when>
-                                                        <c:when test="${inquiry.category == 'PRICE'}">가격</c:when>
-                                                        <c:when test="${inquiry.category == 'LOCATION'}">지점</c:when>
-                                                        <c:when test="${inquiry.category == 'COMPLAINT'}">불만</c:when>
-                                                        <c:when test="${inquiry.category == 'SUGGESTION'}">제안</c:when>
-                                                        <c:otherwise>기타</c:otherwise>
-                                                    </c:choose>
-                                                </span>
-                                            </td>
-                                            <td class="title-cell">
-                                                <a href="<c:url value='/inquiry/view/${inquiry.id}'/>" class="title-link">
-                                                    <c:if test="${inquiry.isPrivate}">
-                                                        <i class="fas fa-lock private-icon"></i>
-                                                    </c:if>
-                                                    ${inquiry.title}
-                                                    <c:if test="${inquiry.isHot}">
-                                                        <span class="hot-badge">HOT</span>
-                                                    </c:if>
-                                                    <c:if test="${inquiry.replyCount > 0}">
-                                                        <span class="reply-count">[${inquiry.replyCount}]</span>
-                                                    </c:if>
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${inquiry.isPrivate and sessionScope.userId != inquiry.writerId and sessionScope.role != 'ADMIN'}">
-                                                        <span class="private-writer">비공개</span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <span class="masked-name">
-                                                            <c:choose>
-                                                                <c:when test="${fn:length(inquiry.writer) == 2}">
-                                                                    ${fn:substring(inquiry.writer, 0, 1)}*
-                                                                </c:when>
-                                                                <c:when test="${fn:length(inquiry.writer) == 3}">
-                                                                    ${fn:substring(inquiry.writer, 0, 1)}**
-                                                                </c:when>
-                                                                <c:when test="${fn:length(inquiry.writer) >= 4}">
-                                                                    ${fn:substring(inquiry.writer, 0, 1)}${fn:substring(inquiry.writer, 1, 2)}**
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    ${inquiry.writer}
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                        </span>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${inquiry.isToday}">
-                                                        <fmt:formatDate value="${inquiry.createdDate}" pattern="HH:mm"/>
-                                                    </c:when>
-                                                    <c:when test="${inquiry.isThisYear}">
-                                                        <fmt:formatDate value="${inquiry.createdDate}" pattern="MM-dd"/>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <fmt:formatDate value="${inquiry.createdDate}" pattern="yy-MM-dd"/>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${inquiry.status == 'COMPLETED'}">
-                                                        <span class="status-badge status-completed">
-                                                            <i class="fas fa-check-circle"></i> 완료
-                                                        </span>
-                                                    </c:when>
-                                                    <c:when test="${inquiry.status == 'PROCESSING'}">
-                                                        <span class="status-badge status-processing">
-                                                            <i class="fas fa-clock"></i> 처리중
-                                                        </span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <span class="status-badge status-waiting">
-                                                            <i class="fas fa-hourglass-half"></i> 대기
-                                                        </span>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                            <td>${inquiry.viewCount}</td>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 8%;">번호</th>
+                                            <th style="width: 50%;">제목</th>
+                                            <th style="width: 15%;">작성자</th>
+                                            <th style="width: 20%;">처리상태</th>
+                                            <th style="width: 15%;">작성일</th>
                                         </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
-                
-                <!-- 페이지네이션 -->
-                <c:if test="${totalPages > 1}">
-                    <div class="pagination-container">
-                        <nav class="pagination">
-                            <c:if test="${currentPage > 1}">
-                                <a href="<c:url value='/inquiry?page=1${searchParams}'/>" class="page-link first">
-                                    <i class="fas fa-angle-double-left"></i>
-                                </a>
-                                <a href="<c:url value='/inquiry?page=${currentPage - 1}${searchParams}'/>" class="page-link prev">
-                                    <i class="fas fa-angle-left"></i>
-                                </a>
-                            </c:if>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="inquiry" items="${inquiryList}" varStatus="status">
+                                            <tr style="cursor: pointer;" data-inquiry-id="${inquiry.inquiryId}">
+                                                <!-- 🔢 번호 (전체 게시물 수에서 역순으로 계산) -->
+                                                <td class="text-center number-cell">
+                                                    <c:set var="currentPageNumber" value="${totalCount - ((currentPage - 1) * pageSize) - status.index}" />
+                                                    <span class="post-number">${currentPageNumber}</span>
+                                                </td>
+                                                
+                                                <!-- 📝 제목 -->
+                                                <td>
+                                                    <a href="javascript:void(0)" class="inquiry-title" data-inquiry-id="${inquiry.inquiryId}">
+                                                        <!-- 비밀글 아이콘 -->
+                                                        <c:if test="${inquiry.isSecret}">
+                                                            <i class="fas fa-lock text-warning me-1"></i>
+                                                        </c:if>
+                                                        
+                                                        ${inquiry.title}
+                                                        
+                                                        <!-- 오늘 작성글 NEW 아이콘 -->
+                                                        <c:if test="${inquiry.isToday}">
+                                                            <span class="badge bg-danger ms-2">NEW</span>
+                                                        </c:if>
+                                                    </a>
+                                                </td>
+                                                
+                                                <!-- 👤 작성자 -->
+                                                <td class="text-center">
+                                                    <c:choose>
+                                                        <c:when test="${not empty inquiry.username}">
+                                                            <span class="username">${inquiry.username}</span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="username anonymous">익명</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                
+                                                <!-- 📋 처리상태 -->
+                                                <td class="text-center">
+                                                    <c:choose>
+                                                        <c:when test="${inquiry.status == 'WAITING'}">
+                                                            <span class="status-badge status-waiting">답변대기</span>
+                                                        </c:when>
+                                                        <c:when test="${inquiry.status == 'PROCESSING'}">
+                                                            <span class="status-badge status-processing">처리중</span>
+                                                        </c:when>
+                                                        <c:when test="${inquiry.status == 'COMPLETED'}">
+                                                            <span class="status-badge status-completed">답변완료</span>
+                                                        </c:when>
+                                                        <c:when test="${inquiry.status == 'CLOSED'}">
+                                                            <span class="status-badge status-closed">종료</span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="status-badge status-waiting">답변대기</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                
+                                                <!-- 📅 작성일 -->
+                                                <td class="text-center">
+                                                     <c:choose>
+                                                     <c:when test="${not empty inquiry.createdDateFormatted}">
+                                                     <span class="date-unified">
+                                                          ${inquiry.createdDateFormatted}
+                                                     </span>
+                                                     </c:when>
+                                                      <c:otherwise>
+                                                  <span class="date-unified">-</span>
+                                                   </c:otherwise>
+                                                  </c:choose>
+
+                                                </td>
+                                                
+                                        
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
                             
-                            <c:forEach begin="${startPage}" end="${endPage}" var="pageNum">
-                                <c:choose>
-                                    <c:when test="${pageNum == currentPage}">
-                                        <span class="page-link current">${pageNum}</span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a href="<c:url value='/inquiry?page=${pageNum}${searchParams}'/>" class="page-link">${pageNum}</a>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:forEach>
-                            
-                            <c:if test="${currentPage < totalPages}">
-                                <a href="<c:url value='/inquiry?page=${currentPage + 1}${searchParams}'/>" class="page-link next">
-                                    <i class="fas fa-angle-right"></i>
-                                </a>
-                                <a href="<c:url value='/inquiry?page=${totalPages}${searchParams}'/>" class="page-link last">
-                                    <i class="fas fa-angle-double-right"></i>
-                                </a>
+                            <!-- 📄 페이징 -->
+                            <c:if test="${totalPages > 1}">
+                                <div class="pagination-container">
+                                    <nav aria-label="문의 목록 페이지 네비게이션">
+                                        <ul class="pagination">
+                                            <!-- 첫 페이지로 -->
+                                            <c:if test="${currentPage > 1}">
+                                                <li class="page-item">
+                                                    <a class="page-link" href="<c:url value='/inquiry/list?page=1'/>" aria-label="첫 페이지">
+                                                        <i class="fas fa-angle-double-left"></i>
+                                                    </a>
+                                                </li>
+                                            </c:if>
+                                            
+                                            <!-- 이전 그룹 -->
+                                            <c:if test="${pagination.hasPrevGroup}">
+                                                <li class="page-item">
+                                                    <a class="page-link" href="<c:url value='/inquiry/list?page=${pagination.startPage - 1}'/>" aria-label="이전">
+                                                        <i class="fas fa-angle-left"></i>
+                                                    </a>
+                                                </li>
+                                            </c:if>
+                                            
+                                            <!-- 페이지 번호들 -->
+                                            <c:forEach var="pageNum" begin="${pagination.startPage}" end="${pagination.endPage}">
+                                                <li class="page-item ${pageNum == currentPage ? 'active' : ''}">
+                                                    <a class="page-link" href="<c:url value='/inquiry/list?page=${pageNum}'/>">${pageNum}</a>
+                                                </li>
+                                            </c:forEach>
+                                            
+                                            <!-- 다음 그룹 -->
+                                            <c:if test="${pagination.hasNextGroup}">
+                                                <li class="page-item">
+                                                    <a class="page-link" href="<c:url value='/inquiry/list?page=${pagination.endPage + 1}'/>" aria-label="다음">
+                                                        <i class="fas fa-angle-right"></i>
+                                                    </a>
+                                                </li>
+                                            </c:if>
+                                            
+                                            <!-- 마지막 페이지로 -->
+                                            <c:if test="${currentPage < totalPages}">
+                                                <li class="page-item">
+                                                    <a class="page-link" href="<c:url value='/inquiry/list?page=${totalPages}'/>" aria-label="마지막 페이지">
+                                                        <i class="fas fa-angle-double-right"></i>
+                                                    </a>
+                                                </li>
+                                            </c:if>
+                                        </ul>
+                                    </nav>
+                                    
+                                    <!-- 페이지 정보 -->
+                                    <div class="page-info">
+                                        <span class="current-page">${currentPage}</span> / 
+                                        <span class="total-pages">${totalPages}</span> 페이지
+                                        <span class="total-count">(총 ${totalCount}건)</span>
+                                    </div>
+                                </div>
                             </c:if>
-                        </nav>
-                    </div>
-                </c:if>
-                
-                <!-- 하단 정보 -->
-                <div class="board-info">
-                    <div class="board-guide">
-                        <h4><i class="fas fa-info-circle"></i> 문의 게시판 이용안내</h4>
-                        <ul>
-                            <li>문의사항은 로그인 후 작성 가능합니다.</li>
-                            <li>개인정보가 포함된 문의는 비밀글로 작성해 주세요.</li>
-                            <li>답변은 영업일 기준 1-2일 내에 등록됩니다.</li>
-                            <li>욕설, 비방, 광고성 글은 관리자에 의해 삭제될 수 있습니다.</li>
-                        </ul>
-                    </div>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </main>
+        <!-- 공통 스크립트 -->
+        <jsp:include page="/WEB-INF/views/common/script.jsp" />
         
         <!-- Footer -->
         <jsp:include page="/WEB-INF/views/common/footer.jsp" />
-        
-        <!-- 공통 스크립트 -->
-        <jsp:include page="/WEB-INF/views/common/script.jsp" />
     </div>
-    
-    <script>
-        // 로그인 상태 확인 후 문의 작성 페이지로 이동
-        function checkLoginAndWrite() {
-            <c:choose>
-                <c:when test="${empty sessionScope.userId}">
-                    alert('로그인 후 이용 가능합니다.');
-                    location.href = '<c:url value="/login"/>';
-                </c:when>
-                <c:otherwise>
-                    location.href = '<c:url value="/inquiry/write"/>';
-                </c:otherwise>
-            </c:choose>
+
+<script>
+
+            // ⚠️ 로그인 안내 알림
+        function showLoginAlert() {
+            if (confirm('문의는 로그인 후 가능합니다.\n로그인 페이지로 이동하시겠습니까?')) {
+                window.location.href = '<c:url value="/login"/>';
+            }
         }
-        
-        // 검색 폼 엔터키 처리
+// JavaScript로 상세페이지 이동
+function goToDetail(inquiryId) {
+    if (inquiryId) {
+        window.location.href = '<c:url value="/inquiry/view/"/>' + inquiryId;
+    }
+}
+
+// 행 클릭으로도 이동 가능
+document.querySelectorAll('tbody tr').forEach(function(row) {
+    row.addEventListener('click', function(e) {
+        if (e.target.tagName !== 'A' && e.target.tagName !== 'I' && e.target.tagName !== 'SPAN') {
+            const inquiryId = this.getAttribute('data-inquiry-id');
+            if (inquiryId) {
+                goToDetail(inquiryId);
+            }
+        }
+    });
+});
         document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.querySelector('.search-input');
-            if (searchInput) {
-                searchInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        this.closest('form').submit();
-                    }
-                });
-            }
-            
-            // 검색어 하이라이트
-            const keyword = '${param.keyword}';
-            if (keyword) {
-                highlightKeyword(keyword);
-            }
-        });
-        
-        // 검색어 하이라이트 함수
-        function highlightKeyword(keyword) {
-            const titleLinks = document.querySelectorAll('.title-link');
-            titleLinks.forEach(function(link) {
-                const text = link.textContent;
-                if (text.includes(keyword)) {
-                    const highlightedText = text.replace(
-                        new RegExp(keyword, 'gi'), 
-                        '<mark>$&</mark>'
-                    );
-                    link.innerHTML = highlightedText;
-                }
-            });
-        }
-        
-        // 테이블 행 클릭 이벤트
-        document.querySelectorAll('.inquiry-row').forEach(function(row) {
-            row.addEventListener('click', function(e) {
-                if (e.target.tagName !== 'A') {
-                    const link = this.querySelector('.title-link');
-                    if (link) {
-                        window.location.href = link.href;
-                    }
-                }
+            const elements = document.querySelectorAll('.table-container, .button-container, .login-info, .user-info-section, .pagination-container');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    el.style.transition = 'all 0.5s ease';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 100);
             });
         });
-    </script>
+
+
+// 폼 초기화 함수
+function resetForm() {
+    document.getElementById('keyword').value = '';
+    document.getElementById('category').value = '';
+    window.location.href = '<c:url value="/inquiry/list"/>';
+}
+
+// 엔터키로 검색
+document.addEventListener('DOMContentLoaded', function() {
+    const keywordInput = document.getElementById('keyword');
+    if (keywordInput) {
+        keywordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('searchForm').submit();
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>
 

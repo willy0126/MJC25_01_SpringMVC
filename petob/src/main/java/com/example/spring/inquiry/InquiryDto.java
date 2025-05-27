@@ -1,6 +1,7 @@
 package com.example.spring.inquiry;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class InquiryDto {
 
@@ -8,7 +9,6 @@ public class InquiryDto {
     private String userId;
     private String username;
     private String category;
-    private String priority;
     private String title;
     private String content;
     private String email;
@@ -25,7 +25,6 @@ public class InquiryDto {
     private Boolean isPrivate;
     private String writerId;
     private String writer;
-    private Boolean isHot;
     private Integer replyCount;
     private Boolean isToday;
     private Boolean isThisYear;
@@ -41,7 +40,6 @@ public class InquiryDto {
         this.userId = userId;
         this.username = username;
         this.category = category;
-        this.priority = priority;
         this.title = title;
         this.content = content;
         this.email = email;
@@ -96,14 +94,6 @@ public class InquiryDto {
 
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    public String getPriority() {
-        return priority;
-    }
-
-    public void setPriority(String priority) {
-        this.priority = priority;
     }
 
     public String getTitle() {
@@ -179,9 +169,12 @@ public class InquiryDto {
         this.replyDate = replyDate;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
+    
+
+public String getCreatedDateFormatted() {
+    if (createdDate == null) return "";
+    return createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+}
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
@@ -224,14 +217,6 @@ public class InquiryDto {
 
     public void setWriter(String writer) {
         this.writer = writer;
-    }
-
-    public Boolean getIsHot() {
-        return viewCount != null && viewCount >= 50;
-    }
-
-    public void setIsHot(Boolean isHot) {
-        this.isHot = isHot;
     }
 
     public Integer getReplyCount() {
@@ -283,15 +268,6 @@ public class InquiryDto {
         }
     }
 
-    public String getPriorityName() {
-        if (priority == null) return "일반";
-        switch (priority) {
-            case "NORMAL": return "일반";
-            case "HIGH": return "높음";
-            case "URGENT": return "긴급";
-            default: return priority;
-        }
-    }
 
     @Override
     public String toString() {
@@ -300,7 +276,6 @@ public class InquiryDto {
                 ", userId='" + userId + '\'' +
                 ", username='" + username + '\'' +
                 ", category='" + category + '\'' +
-                ", priority='" + priority + '\'' +
                 ", title='" + title + '\'' +
                 ", isSecret=" + isSecret +
                 ", status='" + status + '\'' +

@@ -8,7 +8,7 @@
     <title>문의 작성 - Star's Haven, 반려동물 장례식장</title>
     
     <!-- 문의 게시판 전용 CSS -->
-    <link rel="stylesheet" href="<c:url value='/resources/css/inquirystyle.css'/>" />
+    <link rel="stylesheet" href="<c:url value='/resources/css/inquiry/writestyle.css'/>" />
 </head>
 
 <body>
@@ -20,13 +20,6 @@
             <div class="inquiry-container">
                 <!-- 헤더 -->
                 <div class="write-header">
-                    <div class="breadcrumb">
-                        <a href="<c:url value='/'/>" class="breadcrumb-link">홈</a>
-                        <span class="breadcrumb-separator">></span>
-                        <a href="<c:url value='/inquiry'/>" class="breadcrumb-link">문의 게시판</a>
-                        <span class="breadcrumb-separator">></span>
-                        <span class="breadcrumb-current">문의 작성</span>
-                    </div>
                     <h2>문의 작성</h2>
                     <p class="write-subtitle">궁금한 사항이나 요청사항을 자세히 적어주시면 신속하게 답변드리겠습니다.</p>
                 </div>
@@ -78,15 +71,6 @@
                                     <div class="error-message" id="categoryError">카테고리를 선택해주세요.</div>
                                 </div>
                                 
-                                <!-- 우선순위 -->
-                                <div class="form-group">
-                                    <label for="priority">우선순위</label>
-                                    <select id="priority" name="priority" class="form-select">
-                                        <option value="NORMAL">일반</option>
-                                        <option value="HIGH">높음</option>
-                                        <option value="URGENT">긴급</option>
-                                    </select>
-                                </div>
                                 
                                 <!-- 제목 -->
                                 <div class="form-group">
@@ -169,7 +153,6 @@
                                         <li><strong>일반문의:</strong> 1-2 영업일</li>
                                         <li><strong>서비스문의:</strong> 2-3 영업일</li>
                                         <li><strong>예약문의:</strong> 1 영업일</li>
-                                        <li><strong>긴급문의:</strong> 당일 처리</li>
                                     </ul>
                                 </div>
                                 <div class="guide-section">
@@ -177,8 +160,7 @@
                                     <ul>
                                         <li><strong>고객센터:</strong> 02-1234-5678</li>
                                         <li><strong>운영시간:</strong> 평일 09:00-18:00</li>
-                                        <li><strong>토요일:</strong> 09:00-13:00</li>
-                                        <li><strong>일요일:</strong> 휴무</li>
+                                        <li><strong>주말:</strong> 휴무</li>
                                     </ul>
                                 </div>
                             </div>

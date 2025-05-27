@@ -126,9 +126,6 @@ public class InquiryServiceImpl implements InquiryService {
             if (inquiry.getStatus() == null || inquiry.getStatus().isEmpty()) {
                 inquiry.setStatus("WAITING");
             }
-            if (inquiry.getPriority() == null || inquiry.getPriority().isEmpty()) {
-                inquiry.setPriority("NORMAL");
-            }
             if (inquiry.getIsSecret() == null) {
                 inquiry.setIsSecret(false);
             }
