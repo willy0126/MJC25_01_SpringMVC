@@ -204,7 +204,6 @@
         document.getElementById('obituaryReservationForm').addEventListener('submit', function(event) {
             event.preventDefault(); 
 
-
             const form = this; 
 
             const branchElement = document.getElementById('branchSelect');
@@ -213,19 +212,6 @@
             if (branchValue && branchElement.selectedIndex >= 0) { // selectedIndex가 유효한지 확인
                 // "지점을 선택해주세요" (value="")의 textContent도 가져올 수 있도록 조건 변경
                 branchName = branchElement.options[branchElement.selectedIndex].text;
-
-            let missingFields = [];
-            if (!branch) missingFields.push("지점");
-            if (!petName) missingFields.push("반려동물 이름");
-            if (!petWeight) missingFields.push("반려동물 체중");
-            if (!applicantName) missingFields.push("보호자(신청자) 성함");
-            if (!applicantPhone) missingFields.push("신청자 전화번호");
-            if (!funeralDate) missingFields.push("장례 희망 날짜");
-            if (!funeralTime) missingFields.push("장례 희망 시간");
-            if (missingFields.length > 0) {
-                event.preventDefault(); // 폼 제출 방지
-                alert(missingFields.join(", ") + " 항목을 입력(선택)해주세요.");
-                return false;
             }
 
             const applicantNameElement = document.getElementById('applicantName');
@@ -304,7 +290,7 @@
             if (!funeralDate) {
                 alert("장례 희망 날짜를 선택해주세요.");
                 return;
-            }    
+            }
             if (!funeralTime) {
                 alert("장례 희망 시간을 선택해주세요.");
                 funeralTimeElement.focus();
@@ -323,12 +309,6 @@
 
             if (confirm(confirmMessage)) {
                 form.submit(); 
-
-            // 최종 예약 확인
-            if (!confirm(`${funeralDate} ${funeralTime}에 ${applicantName}님 성함으로 장례 예약을 진행하시겠습니까?`)) {
-                event.preventDefault(); // 폼 제출 방지
-                return false;
-
             }
         });
     </script>
