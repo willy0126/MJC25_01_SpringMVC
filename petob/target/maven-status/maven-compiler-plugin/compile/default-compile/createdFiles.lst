@@ -1,13 +1,16 @@
 com\example\spring\ObituaryReservation\ObituaryReservationController.class
 com\example\spring\LocationController.class
 com\example\spring\MainController.class
+com\example\spring\ObituaryReservation\ObituaryReservationDto.class
 com\example\spring\FuneralReview\FuneralReviewDAO.class
 com\example\spring\inquiry\InquiryServiceImpl.class
 com\example\spring\libs\Pagination.class
+com\example\spring\ObituaryReservation\ObituaryReservationService.class
 com\example\spring\reservation\ReservationDto.class
 com\example\spring\FuneralReview\FuneralReviewService.class
 com\example\spring\reservation\ReservationDao.class
 com\example\spring\inquiry\InquiryDao.class
+com\example\spring\ObituaryReservation\ObituaryReservationDao.class
 com\example\spring\reservation\ReservationService.class
 com\example\spring\interceptor\AuthInterceptor.class
 com\example\spring\reservation\ReservationController.class
