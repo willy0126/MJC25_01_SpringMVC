@@ -46,7 +46,7 @@
                 </c:when>
                 <c:otherwise>
                     <%-- 일반 사용자일 경우 --%>
-                    <a href="${pageContext.request.contextPath}/myPage" class="auth-link">마이페이지</a>
+                    <a href="${pageContext.request.contextPath}/mypage" class="auth-link">마이페이지</a>
                 </c:otherwise>
             </c:choose>
             

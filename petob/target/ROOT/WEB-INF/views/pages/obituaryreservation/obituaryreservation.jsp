@@ -103,7 +103,8 @@
             minDate: "today",
             disable: [
                 function(date) {
-                    // return (date.getDay() === 0 || date.getDay() === 6);
+                    // 주말(토요일, 일요일) 비활성화
+                    return (date.getDay() === 0 || date.getDay() === 6);
                 }
             ],
             onChange: function(selectedDates, dateStr, instance) {
@@ -203,46 +204,40 @@
 
         document.getElementById('obituaryReservationForm').addEventListener('submit', function(event) {
             event.preventDefault(); 
+<<<<<<< HEAD
 
+=======
+>>>>>>> jiwon
             const form = this; 
 
             const branchElement = document.getElementById('branchSelect');
             const branchValue = branchElement.value; 
             let branchName = ""; 
-            if (branchValue && branchElement.selectedIndex >= 0) { // selectedIndex가 유효한지 확인
-                // "지점을 선택해주세요" (value="")의 textContent도 가져올 수 있도록 조건 변경
+            if (branchValue && branchElement.selectedIndex >= 0 && branchElement.options[branchElement.selectedIndex]) {
                 branchName = branchElement.options[branchElement.selectedIndex].text;
             }
 
-            const applicantNameElement = document.getElementById('applicantName');
-            const applicantName = applicantNameElement.value.trim();
-            
-            const petNameElement = document.getElementById('petName');
-            const petName = petNameElement.value.trim();
+    const petNameElement = document.getElementById('petName');
+    const petName = petNameElement ? petNameElement.value.trim() : ''; // null 체크 추가
 
-            const petWeightElement = document.getElementById('petWeight');
-            const petWeight = petWeightElement.value.trim();
-            
-            const applicantPhoneElement = document.getElementById('applicantPhone');
-            const applicantPhone = applicantPhoneElement.value.trim();
+    const petWeightElement = document.getElementById('petWeight');
+    const petWeight = petWeightElement ? petWeightElement.value.trim() : '';
 
-            const funeralDateElement = document.getElementById('funeralDate');
-            let funeralDate = '';
-            if (funeralDateElement && funeralDateElement._flatpickr && funeralDateElement._flatpickr.input && funeralDateElement._flatpickr.input.value) {
-                funeralDate = funeralDateElement._flatpickr.input.value;
-            } else if (funeralDateElement) { 
-                funeralDate = funeralDateElement.value;
-            }
+    const applicantNameElement = document.getElementById('applicantName');
+    const applicantName = applicantNameElement ? applicantNameElement.value.trim() : '';
 
-            const funeralTimeElement = document.getElementById('funeralTime');
-            const funeralTime = funeralTimeElement.value;
+    const applicantPhoneElement = document.getElementById('applicantPhone');
+    const applicantPhone = applicantPhoneElement ? applicantPhoneElement.value.trim() : '';
 
-            // --- 유효성 검사 전 변수 값 확인 ---
-            console.log("--- 값 할당 직후 ---");
-            console.log("지점 value (branchValue):", branchValue);
-            console.log("지점 텍스트 (branchName 초기 할당):", branchName); // .text 로 가져온 값
-            console.log("신청자 성함 (applicantName):", applicantName);
+    const funeralDateElement = document.getElementById('funeralDate');
+    let funeralDate = '';
+    if (funeralDateElement && funeralDateElement._flatpickr && funeralDateElement._flatpickr.input && funeralDateElement._flatpickr.input.value) {
+        funeralDate = funeralDateElement._flatpickr.input.value;
+    } else if (funeralDateElement) {
+        funeralDate = funeralDateElement.value; // Flatpickr 인스턴스가 없는 경우 대비
+    }
 
+<<<<<<< HEAD
             // 유효성 검사
             if (!branchValue || branchElement.selectedIndex === 0) { 
                 alert("지점을 선택해주세요.");
@@ -296,21 +291,86 @@
                 funeralTimeElement.focus();
                 return;
             }
+=======
+    const funeralTimeElement = document.getElementById('funeralTime');
+    const funeralTime = funeralTimeElement ? funeralTimeElement.value : '';
+>>>>>>> jiwon
 
-            // --- confirmMessage 생성 직전 값 확인 ---
-            console.log("--- Confirm 메시지 생성 직전 ---");
-            console.log("branchName:", branchName);
-            console.log("applicantName:", applicantName);
+    // 2. 유효성 검사를 수행합니다.
+    if (!branchValue || branchElement.selectedIndex === 0 || branchName === "지점을 선택해주세요") {
+        alert("지점을 선택해주세요.");
+        branchElement.focus();
+        return; // 함수 실행 중단
+    }
+    if (!petName) {
+        alert("반려동물 이름을 입력해주세요.");
+        if(petNameElement) petNameElement.focus();
+        return;
+    }
+    if (!petWeight) {
+        alert("반려동물 체중을 입력해주세요.");
+        if(petWeightElement) petWeightElement.focus();
+        return;
+    }
+    if (parseFloat(petWeight) <= 0 || isNaN(parseFloat(petWeight))) {
+        alert('반려동물 체중은 0보다 큰 숫자로 입력해주세요.');
+        if(petWeightElement) petWeightElement.focus();
+        return;
+    }
+    if (!applicantName) {
+        alert("보호자(신청자) 성함을 입력해주세요.");
+        if(applicantNameElement) applicantNameElement.focus();
+        return;
+    }
 
-            // === 문자열 더하기 방식으로 변경 ===
-            const confirmMessage = branchName + "에서 " + applicantName + "님 성함으로 장례 예약을 진행하시겠습니까?";
-            
-            console.log("생성된 Confirm 메시지 (문자열 더하기 사용):", confirmMessage);
+    const phoneCleaned = applicantPhone.replace(/-/g, "");
+    const phoneRegex = /^01[016789]\d{3,4}\d{4}$/;
+    if (!applicantPhone || !phoneRegex.test(phoneCleaned)) {
+        alert('올바른 형식의 전화번호를 입력해주세요. (예: 01012345678 또는 010-1234-5678)');
+        if(applicantPhoneElement) applicantPhoneElement.focus();
+        return;
+    }
+    if (!funeralDate) {
+        alert("장례 희망 날짜를 선택해주세요.");
+        // Flatpickr는 직접 focus()가 잘 안될 수 있으므로, 사용자가 다시 클릭하도록 유도
+        return;
+    }
+    if (!funeralTime) {
+        alert("장례 희망 시간을 선택해주세요.");
+        if(funeralTimeElement) funeralTimeElement.focus();
+        return;
+    }
 
+<<<<<<< HEAD
             if (confirm(confirmMessage)) {
                 form.submit(); 
             }
         });
+=======
+    // 3. (선택 사항) 불필요해진 missingFields 배열 관련 로직 제거
+    // let missingFields = []; ... 이 부분과 관련된 코드는 위의 상세 유효성 검사로 대체되었으므로 제거 가능
+
+    // 4. 최종 확인 메시지를 생성하고 사용자에게 확인받습니다.
+    const confirmMessage = `${branchName}에서 ${applicantName}님 성함으로\n${funeralDate} ${funeralTime}에\n반려동물(${petName})의 장례 예약을 진행하시겠습니까?`;
+
+    console.log("생성된 Confirm 메시지:", confirmMessage);
+
+    if (confirm(confirmMessage)) {
+        form.submit(); // 모든 검증 및 확인이 완료되면 폼을 제출합니다.
+    }
+    // 사용자가 '취소'를 누르면 아무것도 하지 않습니다 (event.preventDefault()에 의해 기본 제출은 막혀있음).
+    
+    // 기존 코드의 두 번째 confirm 로직은 중복되므로 하나로 통합하거나,
+    // 의도한 바가 있다면 명확히 구분하여 재구성하는 것이 좋습니다.
+    // 아래 코드는 현재 로직에서는 불필요하거나 혼란을 야기할 수 있어 주석 처리합니다.
+    /*
+    if (!confirm(`${funeralDate} ${funeralTime}에 ${applicantName}님 성함으로 장례 예약을 진행하시겠습니까?`)) {
+        // event.preventDefault(); // 이미 위에서 호출됨
+        return false;
+    }
+    */
+});
+>>>>>>> jiwon
     </script>
 </body>
 </html>
