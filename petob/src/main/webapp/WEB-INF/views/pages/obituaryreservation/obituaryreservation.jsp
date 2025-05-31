@@ -79,15 +79,25 @@
             console.log("LOG: DOMContentLoaded - 스크립트 실행 시작");
 
             const funeralDateInput = document.getElementById("funeralDate");
+            const branchSelectElement = document.getElementById("branchSelect"); // 지점 선택 요소
+            const timeSelectElement = document.getElementById("funeralTime"); // 시간 선택 요소
+
             if (funeralDateInput) {
                 flatpickr(funeralDateInput, {
                     locale: "ko",
                     dateFormat: "Y-m-d",
                     minDate: "today",
+                    disable: [
+                        function(date) {
+                            // 주말(토요일:6, 일요일:0) 비활성화 (원하시면 주석 해제)
+                            // return (date.getDay() === 0 || date.getDay() === 6);
+                        }
+                    ],
                     onChange: function(selectedDates, dateStr, instance) {
-                        console.log("LOG: Flatpickr onChange - 날짜:", dateStr);
-                        if (dateStr) {
-                            checkObituaryBookedTimes(dateStr);
+                        const currentBranch = branchSelectElement ? branchSelectElement.value : "";
+                        // console.log("LOG: Flatpickr onChange - 날짜:", dateStr, "현재 선택된 지점:", currentBranch);
+                        if (dateStr && currentBranch) {
+                            checkObituaryBookedTimes(dateStr, currentBranch);
                         } else {
                             resetTimeOptions();
                         }
@@ -102,7 +112,7 @@
                 "13:00", "14:00", "15:00", "16:00",
                 "17:00", "18:00"
             ];
-            const timeSelectElement = document.getElementById("funeralTime");
+
             if (timeSelectElement) {
                 timeSelectElement.innerHTML = '<option value="">시간을 선택해주세요</option>';
                 allObituaryTimes.forEach(time => {
@@ -115,20 +125,37 @@
                 console.error("ERROR: funeralTime select 요소를 찾을 수 없습니다.");
             }
 
-            if (funeralDateInput && funeralDateInput._flatpickr) {
+            // 지점 선택 변경 시 이벤트 리스너 추가
+            if (branchSelectElement) {
+                branchSelectElement.addEventListener('change', function() {
+                    const currentDate = funeralDateInput ? funeralDateInput.value : "";
+                    const currentBranch = this.value;
+                    // console.log("LOG: 지점 변경 - 선택된 지점:", currentBranch, "현재 선택된 날짜:", currentDate);
+                    if (currentDate && currentBranch) {
+                        checkObituaryBookedTimes(currentDate, currentBranch);
+                    } else {
+                        resetTimeOptions();
+                    }
+                });
+            }
+
+
+            // 페이지 로드 시 초기 날짜와 지점에 대한 예약 시간 확인
+            if (funeralDateInput && funeralDateInput._flatpickr && branchSelectElement) {
                 const initialDate = funeralDateInput._flatpickr.input.value;
-                if (initialDate) {
-                    console.log("LOG: 초기 날짜 발견:", initialDate, "-> 예약된 시간 확인 실행.");
-                    checkObituaryBookedTimes(initialDate);
+                const initialBranch = branchSelectElement.value;
+                if (initialDate && initialBranch) { // 초기 지점 값도 있는지 확인
+                    // console.log("LOG: 초기 날짜:", initialDate, "초기 지점:", initialBranch, "-> 예약된 시간 확인 실행.");
+                    checkObituaryBookedTimes(initialDate, initialBranch);
                 }
             }
 
             const obituaryForm = document.getElementById('obituaryReservationForm');
             if (obituaryForm) {
-                console.log("LOG: obituaryReservationForm 요소 발견, submit 이벤트 리스너 등록.");
+                // console.log("LOG: obituaryReservationForm 요소 발견, submit 이벤트 리스너 등록.");
                 obituaryForm.addEventListener('submit', function(event) {
                     event.preventDefault();
-                    console.log("LOG: --- Submit Handler 시작 ---");
+                    // console.log("LOG: --- Submit Handler 시작 ---");
 
                     const branchEl = document.getElementById('branchSelect');
                     const petNameEl = document.getElementById('petName');
@@ -145,7 +172,7 @@
                         if (branchEl.selectedIndex >= 0 && branchEl.options[branchEl.selectedIndex]) {
                             valBranchName = branchEl.options[branchEl.selectedIndex].text;
                         }
-                    } else { console.error("ERROR-SUBMIT: branchSelect 요소를 찾지 못했습니다!"); }
+                    }
 
                     const valPetName = petNameEl ? petNameEl.value.trim() : "";
                     const valPetWeight = petWeightEl ? petWeightEl.value.trim() : "";
@@ -154,15 +181,13 @@
                     const valFuneralDate = funeralDateEl ? funeralDateEl.value : "";
                     const valFuneralTime = funeralTimeEl ? funeralTimeEl.value : "";
 
-                    console.log("LOG: --- [Submit Handler] 값 추출 직후 ---");
-                    console.log("LOG: 지점 Value: \"" + valBranchValue + "\"");
-                    console.log("LOG: 지점 Text: \"" + valBranchName + "\"");
-                    console.log("LOG: 펫 이름: \"" + valPetName + "\"");
-                    console.log("LOG: 펫 무게: \"" + valPetWeight + "\"");
-                    console.log("LOG: 신청자명: \"" + valApplicantName + "\"");
-                    console.log("LOG: 전화번호: \"" + valApplicantPhone + "\"");
-                    console.log("LOG: 장례날짜: \"" + valFuneralDate + "\"");
-                    console.log("LOG: 장례시간: \"" + valFuneralTime + "\"");
+                    // console.log("LOG: --- [Submit Handler] 값 추출 직후 ---");
+                    // console.log("LOG: 지점 Value: \"" + valBranchValue + "\"");
+                    // console.log("LOG: 지점 Text: \"" + valBranchName + "\"");
+                    // console.log("LOG: 펫 이름: \"" + valPetName + "\"");
+                    // console.log("LOG: 신청자명: \"" + valApplicantName + "\"");
+                    // console.log("LOG: 장례날짜: \"" + valFuneralDate + "\"");
+                    // console.log("LOG: 장례시간: \"" + valFuneralTime + "\"");
 
                     // 유효성 검사
                     if (!valBranchValue || valBranchName === "지점을 선택해주세요" || valBranchName === "") { alert("지점을 선택해주세요."); if(branchEl) branchEl.focus(); return; }
@@ -178,20 +203,22 @@
                     if (!valFuneralTime) { alert("장례 희망 시간을 선택해주세요."); if(funeralTimeEl) funeralTimeEl.focus(); return; }
 
                     // Confirm 메시지 생성 (문자열 결합 방식 사용)
-                    const confirmMessage = valBranchName + "에서 " + valApplicantName + "님 성함으로 " + valFuneralTime + "에 반려동물(" + valPetName + ")의 장례 예약을 진행하시겠습니까?";
-                    console.log("LOG: 생성된 최종 Confirm 메시지: \"" + confirmMessage + "\"");
+                    const confirmMessage = valBranchName + "에서 " + valApplicantName + "님 성함으로 " +
+                                           valFuneralDate + " " + valFuneralTime + "에 반려동물(" + valPetName + ")의 " +
+                                           "장례 예약을 진행하시겠습니까?";
+                    // console.log("LOG: 생성된 최종 Confirm 메시지: \"" + confirmMessage + "\"");
 
                     if (confirm(confirmMessage)) {
-                        console.log("LOG: 사용자가 확인을 눌렀습니다. 폼을 제출합니다.");
+                        // console.log("LOG: 사용자가 확인을 눌렀습니다. 폼을 제출합니다.");
                         this.submit(); // 여기서 this는 obituaryForm을 가리킵니다.
                     } else {
-                        console.log("LOG: 사용자가 취소를 눌렀습니다.");
+                        // console.log("LOG: 사용자가 취소를 눌렀습니다.");
                     }
                 });
             } else {
-                console.error("ERROR: obituaryReservationForm 요소를 찾을 수 없습니다 (DOMContentLoaded 내부에서).");
+                console.error("ERROR: obituaryReservationForm 요소를 찾을 수 없습니다.");
             }
-            console.log("LOG: DOMContentLoaded - 모든 설정 완료");
+            // console.log("LOG: DOMContentLoaded - 모든 설정 완료");
         }); // End of DOMContentLoaded
 
         function resetTimeOptions() {
@@ -208,13 +235,23 @@
             }
         }
 
-        function checkObituaryBookedTimes(selectedDate) {
-            console.log("LOG: checkObituaryBookedTimes 호출됨 - 날짜:", selectedDate);
+        function checkObituaryBookedTimes(selectedDate, selectedBranch) { // selectedBranch 파라미터 추가
+            // console.log("LOG: checkObituaryBookedTimes 호출됨 - 날짜:", selectedDate, "지점:", selectedBranch);
+            if (!selectedDate || !selectedBranch) { // 지점 정보도 확인
+                // console.log("LOG: checkObituaryBookedTimes - 날짜 또는 지점 정보 누락, 실행 중단.");
+                resetTimeOptions();
+                return;
+            }
+
             const checkUrl = "${pageContext.request.contextPath}/obituary-reservation/check-booked-times";
+            const params = new URLSearchParams();
+            params.append('date', selectedDate);
+            params.append('branch', selectedBranch); // branch 파라미터 추가
+
             fetch(checkUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded', },
-                body: 'date=' + encodeURIComponent(selectedDate)
+                body: params.toString()
             })
             .then(response => {
                 if (!response.ok) {
@@ -227,7 +264,7 @@
                 return response.json();
             })
             .then(data => {
-                console.log("LOG: checkObituaryBookedTimes - Response Data:", data);
+                // console.log("LOG: checkObituaryBookedTimes - Response Data:", data);
                 const timeSelect = document.getElementById("funeralTime");
                 if (!timeSelect) {
                     console.error("ERROR: funeralTime select 요소를 찾을 수 없습니다 (checkObituaryBookedTimes).");
