@@ -221,7 +221,6 @@
             if (!applicantPhone) missingFields.push("신청자 전화번호");
             if (!funeralDate) missingFields.push("장례 희망 날짜");
             if (!funeralTime) missingFields.push("장례 희망 시간");
-
             if (missingFields.length > 0) {
                 event.preventDefault(); // 폼 제출 방지
                 alert(missingFields.join(", ") + " 항목을 입력(선택)해주세요.");
@@ -245,7 +244,7 @@
                 document.getElementById('petWeight').focus();
                 return false;
             }
-
+            
             // 최종 예약 확인
             if (!confirm(`${funeralDate} ${funeralTime}에 ${applicantName}님 성함으로 장례 예약을 진행하시겠습니까?`)) {
                 event.preventDefault(); // 폼 제출 방지
