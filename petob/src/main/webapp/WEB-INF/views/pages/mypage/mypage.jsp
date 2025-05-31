@@ -129,7 +129,6 @@
                                             <table class="reservation-table table table-hover">
                                                 <thead class="table-light">
                                                     <tr>
-                                                        <th>예약번호</th>
                                                         <th>지점</th>
                                                         <th>반려동물 이름</th>
                                                         <th>신청자명</th>
@@ -143,7 +142,6 @@
                                                 <tbody>
                                                     <c:forEach var="reservation" items="${funeralReservationList}">
                                                         <tr>
-                                                            <td>${reservation.reservationId}</td>
                                                             <td>${fn:escapeXml(reservation.branch)}</td>
                                                             <td>${fn:escapeXml(reservation.petName)}</td>
                                                             <td>${fn:escapeXml(reservation.applicantName)}</td>

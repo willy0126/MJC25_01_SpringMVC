@@ -202,7 +202,7 @@ body {
 }
 
 .password-verification-container .instruction-text strong {
-    color: #0d6efd; /* Bootstrap primary color */
+    color: #0d6efd;
 }
 
 .password-form .input-group {
