@@ -1,6 +1,9 @@
 package com.example.spring.ObituaryReservation;
 
+import java.util.HashMap;
 import java.util.List; // List import 추가
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +40,12 @@ public class ObituaryReservationService {
         }
     }
 
-    public List<String> getBookedTimesByDate(String obDate) {
-        return obituaryReservationDao.getBookedTimesByDate(obDate);
-    }
+    
+public List<String> getBookedTimesByDateAndBranch(String obDate, String branch) {
+    Map<String, Object> params = new HashMap<>();
+    params.put("obDate", obDate);
+    params.put("branch", branch);
+    return obituaryReservationDao.getBookedTimesByDateAndBranch(params);
+}
+    
 }

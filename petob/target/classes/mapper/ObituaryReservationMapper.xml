@@ -29,10 +29,10 @@
         )
     </insert>
 
-    <select id="getBookedTimesByDate" parameterType="java.lang.String" resultType="java.lang.String">
-        SELECT ob_time 
-        FROM obreserve
-        WHERE ob_date = #{obDate}
-    </select>
+   <select id="getBookedTimesByDateAndBranch" resultType="java.lang.String" parameterType="map">
+    SELECT ob_time
+    FROM obreserve
+    WHERE ob_date = #{obDate} AND branch = #{branch}
+</select>
 
 </mapper>

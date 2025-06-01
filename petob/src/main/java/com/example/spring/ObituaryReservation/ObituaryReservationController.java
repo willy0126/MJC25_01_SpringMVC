@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -114,20 +115,23 @@ public class ObituaryReservationController {
     }
 
     @PostMapping("/check-booked-times")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> checkBookedTimes(@RequestParam("date") String date) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            List<String> bookedTimes = obituaryReservationService.getBookedTimesByDate(date); //
-            response.put("bookedTimes", bookedTimes);
-            response.put("success", true);
-            logger.debug("날짜 [{}]의 예약된 시간 조회: {}", date, bookedTimes);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            logger.error("예약된 시간 조회 중 오류 발생 (날짜: {})", date, e);
-            response.put("success", false);
-            response.put("message", "예약된 시간을 가져오는 중 오류가 발생했습니다.");
-            return ResponseEntity.status(500).body(response);
-        }
+@ResponseBody
+public ResponseEntity<Map<String, Object>> checkBookedTimes(
+        @RequestParam("date") String date,
+        @RequestParam("branch") String branch) { // 지점 파라미터 추가
+    Map<String, Object> response = new HashMap<>();
+    try {
+        // 서비스 호출 시 지점 정보 전달
+        List<String> bookedTimes = obituaryReservationService.getBookedTimesByDateAndBranch(date, branch);
+        response.put("bookedTimes", bookedTimes);
+        response.put("success", true);
+        logger.debug("날짜 [{}] 및 지점 [{}]의 예약된 시간 조회: {}", date, branch, bookedTimes);
+        return ResponseEntity.ok(response);
+    } catch (Exception e) {
+        logger.error("예약된 시간 조회 중 오류 발생 (날짜: {}, 지점: {}): {}", date, branch, e.getMessage(), e);
+        response.put("success", false);
+        response.put("message", "예약된 시간을 가져오는 중 오류가 발생했습니다.");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
+}
 }
