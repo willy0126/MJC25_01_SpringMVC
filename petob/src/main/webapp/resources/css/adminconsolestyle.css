@@ -1,0 +1,85 @@
+/* src/main/webapp/resources/css/adminconsolestyle.css */
+
+/* 활성 관리자 사이드바 메뉴 스타일 */
+.admin-sidebar .sidebar-nav .nav-item.active a {
+    background-color: #0d6efd; /* Bootstrap primary color */
+    color: white;
+    font-weight: bold;
+}
+
+/* 테이블 반응형 및 스타일 개선 */
+.table-responsive {
+    margin-top: 20px;
+}
+
+.reservation-table th {
+    white-space: nowrap; /* 테이블 헤더 줄바꿈 방지 */
+    background-color: #f8f9fa; /* 헤더 배경색 */
+}
+
+.reservation-table td {
+    vertical-align: middle; /* 셀 내용 수직 중앙 정렬 */
+}
+
+/* 데이터 없음 메시지 스타일 */
+.no-data-message {
+    text-align: center;
+    padding: 50px 20px;
+    border: 1px dashed #ced4da; /* Bootstrap border color */
+    border-radius: .375rem; /* Bootstrap border radius */
+    background-color: #f8f9fa; /* 밝은 배경색 */
+    margin-top: 20px;
+    color: #6c757d; /* 부드러운 텍스트 색상 */
+}
+
+.no-data-message .icon {
+    font-size: 3em; /* 아이콘 크기 */
+    color: #adb5bd; /* 아이콘 색상 */
+    margin-bottom: 15px;
+}
+
+.no-data-message .lead {
+    font-size: 1.15rem; /* 설명 텍스트 크기 */
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+/* 관리자 콘텐츠 영역 스타일 */
+.mypage-content h2 { /* .mypage-content 클래스를 재활용하거나 admin-content 등으로 변경 가능 */
+    font-size: 1.75rem;
+    color: #212529;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* 아이콘과 제목 사이 간격 */
+}
+
+.mypage-content .sub-text {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+}
+
+.mypage-content .title-divider {
+    margin-top: 0.5rem;
+    margin-bottom: 1.75rem;
+    border-color: #dee2e6;
+}
+
+/* 관리자 섹션 컨테이너 스타일 */
+.quick-counseling-container,
+.reservations-container {
+    padding: 1rem 0;
+}
+
+/* 모바일 화면 대응 */
+@media (max-width: 767.98px) {
+    .reservation-table {
+        font-size: 0.85rem; /* 모바일에서 테이블 폰트 크기 축소 */
+    }
+    .reservation-table th,
+    .reservation-table td {
+        padding: 0.6rem 0.5rem; /* 모바일에서 셀 패딩 축소 */
+    }
+}

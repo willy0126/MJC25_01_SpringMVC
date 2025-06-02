@@ -90,7 +90,7 @@
                     disable: [
                         function(date) {
                             // 주말(토요일:6, 일요일:0) 비활성화 (원하시면 주석 해제)
-                            // return (date.getDay() === 0 || date.getDay() === 6);
+                            return (date.getDay() === 0 || date.getDay() === 6);
                         }
                     ],
                     onChange: function(selectedDates, dateStr, instance) {

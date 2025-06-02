@@ -163,8 +163,8 @@
                                 rules: {
                                     userId: {
                                         required: true,
-                                        noAdmin: true,  // 관리자 계정 방지 (admin 포함 방지)
-                                        minlength: 6,
+                                        // noAdmin: true,  // 관리자 계정 방지 (admin 포함 방지)
+                                        minlength: 5,
                                         maxlength: 12,
                                         remote: {
                                             url: '/check-user-id',
@@ -232,9 +232,9 @@
                                 messages: {
                                     userId: {
                                         required: '아이디를 입력하세요.',
-                                        noAdmin: "아이디에는 'admin'이라는 단어를 사용할 수 없습니다.", // 관리자 계정 방지 (admin 포함 방지)
-                                        minlength: '아이디는 6자 이상 12자 이하로 입력하세요.',
-                                        maxlength: '아이디는 6자 이상 12자 이하로 입력하세요.',
+                                        // noAdmin: "아이디에는 'admin'이라는 단어를 사용할 수 없습니다.", // 관리자 계정 방지 (admin 포함 방지)
+                                        minlength: '아이디는 5자 이상 12자 이하로 입력하세요.',
+                                        maxlength: '아이디는 5자 이상 12자 이하로 입력하세요.',
                                         remote: '이미 사용중인 아이디입니다.'
                                     },
                                     password: {

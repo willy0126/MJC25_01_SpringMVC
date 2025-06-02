@@ -39,10 +39,10 @@
           <span class="welcome-message">${sessionScope.username}님, 소중한 기억과 함께합니다.</span>
             <%-- 역할(role)에 따라 다른 링크 표시 --%>
             <c:choose>
-                <c:when test="${sessionScope.role == 'ADMIN'}">
+                <c:when test="${sessionScope.userId == 'admin'}">
                     <%-- 관리자(ADMIN)일 경우 --%>
                     <%-- TODO: 실제 관리자 콘솔 페이지 경로로 수정해주세요. --%>
-                    <a href="${pageContext.request.contextPath}/admin/console" class="auth-link">CONSOLE</a>
+                    <a href="${pageContext.request.contextPath}/admin/console" class="auth-link"><b>CONSOLE</b></a>
                 </c:when>
                 <c:otherwise>
                     <%-- 일반 사용자일 경우 --%>
