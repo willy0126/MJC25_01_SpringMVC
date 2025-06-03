@@ -32,7 +32,7 @@
               <!-- 🔍 검색 영역 -->
         <div class="search-section">
             <h5 class="search-title">
-                <i class="fas fa-filter"></i>
+                <i class="fas fa-filter" name="search"></i>
                 검색 조건
             </h5>
             
@@ -42,10 +42,10 @@
                     <label for="keyword" class="search-label">키워드</label>
                     <input type="text" 
                            id="keyword" 
-                           name="keyword" 
+                           name="search" 
                            class="search-input" 
                            placeholder="제목이나 내용을 검색하세요"
-                           value="${param.keyword}">
+                           value="${search}">
                 </div>
                 
                 <!-- 카테고리 필터 -->
@@ -76,7 +76,7 @@
                 </div>
             </form>
         </div>
-        
+         
         <!-- 🏷️ 검색 결과 정보 -->
         <c:if test="${not empty param.keyword or not empty param.category}">
             <div class="search-result-info">

@@ -49,7 +49,6 @@ public class InquiryDto {
         this.replyDate = replyDate;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
-
         this.isPrivate = isSecret;
         this.writerId = userId;
         this.writer = username;
