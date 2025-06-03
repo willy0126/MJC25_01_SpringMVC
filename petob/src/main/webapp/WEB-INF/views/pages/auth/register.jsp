@@ -146,117 +146,131 @@
                             }
                         });
 
-                        // 회원가입 폼 검증
-                        $('#registerForm').validate({
-                            rules: {
-                                userId: {
-                                    required: true,
-                                    minlength: 6,
-                                    maxlength: 12,
-                                    remote: {
-                                        url: '/check-user-id',
-                                        type: 'post',
-                                        data: {
-                                            userId: function () {
-                                                return $('#userId').val();
-                                            },
-                                        },
-                                        dataFilter: function (response) {
-                                            const data = JSON.parse(response);
-                                            return !data.exists;
-                                        }
-                                    }
-                                },
-                                password: {
-                                    required: true,
-                                    minlength: 8,
-                                    maxlength: 20
-                                },
-                                password2: {
-                                    required: true,
-                                    equalTo: '#password'
-                                },
-                                username: {
-                                    required: true,
-                                    minlength: 2,
-                                    maxlength: 10
-                                },
-                                phone: {
-                                    required: true,
-                                    remote: {
-                                        url: '/check-phone',
-                                        type: 'post',
-                                        data: {
-                                            phone: function () {
-                                                return $('#phone').val();
-                                            },
-                                        },
-                                        dataFilter: function (response) {
-                                            const data = JSON.parse(response);
-                                            return !data.exists;
-                                        }
-                                    }
-                                },
-                                email: {
-                                    required: true,
-                                    email: true,
-                                    maxlength: 50,
-                                    remote: {
-                                        url: '/check-email',
-                                        type: 'post',
-                                        data: {
-                                            email: function () {
-                                                return $('#email').val();
-                                            },
-                                        },
-                                        dataFilter: function (response) {
-                                            const data = JSON.parse(response);
-                                            return !data.exists;
-                                        }
-                                    }
-                                }
-                            },
-                            messages: {
-                                userId: {
-                                    required: '아이디를 입력하세요.',
-                                    minlength: '아이디는 6자 이상 12자 이하로 입력하세요.',
-                                    maxlength: '아이디는 6자 이상 12자 이하로 입력하세요.',
-                                    remote: '이미 사용중인 아이디입니다.'
-                                },
-                                password: {
-                                    required: '비밀번호를 입력하세요.',
-                                    minlength: '비밀번호는 8자 이상 20자 이하로 입력하세요.',
-                                    maxlength: '비밀번호는 8자 이상 20자 이하로 입력하세요.'
-                                },
-                                password2: {
-                                    required: '비밀번호 확인을 입력하세요.',
-                                    equalTo: '비밀번호가 일치하지 않습니다.'
-                                },
-                                username: {
-                                    required: '이름을 입력하세요.',
-                                    maxlength: '이름은 2자 이상 4자 이하로 입력하세요.'
-                                },
-                                phone: {
-                                    required: '전화번호를 입력하세요.',
-                                    remote: '이미 사용중인 전화번호입니다.'
-                                },
-                                email: {
-                                    required: '이메일을 입력하세요.',
-                                    email: '올바른 이메일 형식이 아닙니다.',
-                                    maxlength: '이메일은 최대 50자까지 가능합니다.',
-                                    remote: '이미 사용중인 이메일입니다.'
-                                }
-                            },
-                            errorClass: 'is-invalid',
-                            validClass: 'is-valid',
-                            errorPlacement: function (error, element) {
-                                error.addClass('invalid-feedback');
-                                element.closest('.mb-3').append(error);
-                            },
-                            submitHandler: function (form) {
-                                form.submit();
+                        $.validator.addMethod("noAdmin", function (value, element) {
+                            // 필드가 비어있으면 이 규칙은 통과 (required:true가 별도로 처리)
+                            if (this.optional(element)) {
+                                return true;
                             }
-                        });
+                            // "admin" 문자열을 대소문자 구분 없이 포함하는지 검사
+                            // 포함하면 false (유효성 실패), 포함하지 않으면 true (유효성 통과)
+                            return !/admin/i.test(value);
+                        },
+                        "아이디에는 'admin'이라는 단어를 사용할 수 없습니다."
+                        );
+
+                            // 회원가입 폼 검증
+                            $('#registerForm').validate({
+                                rules: {
+                                    userId: {
+                                        required: true,
+                                        // noAdmin: true,  // 관리자 계정 방지 (admin 포함 방지)
+                                        minlength: 5,
+                                        maxlength: 12,
+                                        remote: {
+                                            url: '/check-user-id',
+                                            type: 'post',
+                                            data: {
+                                                userId: function () {
+                                                    return $('#userId').val();
+                                                },
+                                            },
+                                            dataFilter: function (response) {
+                                                const data = JSON.parse(response);
+                                                return !data.exists;
+                                            }
+                                        }
+                                    },
+                                    password: {
+                                        required: true,
+                                        minlength: 8,
+                                        maxlength: 20
+                                    },
+                                    password2: {
+                                        required: true,
+                                        equalTo: '#password'
+                                    },
+                                    username: {
+                                        required: true,
+                                        minlength: 2,
+                                        maxlength: 10
+                                    },
+                                    phone: {
+                                        required: true,
+                                        remote: {
+                                            url: '/check-phone',
+                                            type: 'post',
+                                            data: {
+                                                phone: function () {
+                                                    return $('#phone').val();
+                                                },
+                                            },
+                                            dataFilter: function (response) {
+                                                const data = JSON.parse(response);
+                                                return !data.exists;
+                                            }
+                                        }
+                                    },
+                                    email: {
+                                        required: true,
+                                        email: true,
+                                        maxlength: 50,
+                                        remote: {
+                                            url: '/check-email',
+                                            type: 'post',
+                                            data: {
+                                                email: function () {
+                                                    return $('#email').val();
+                                                },
+                                            },
+                                            dataFilter: function (response) {
+                                                const data = JSON.parse(response);
+                                                return !data.exists;
+                                            }
+                                        }
+                                    }
+                                },
+                                messages: {
+                                    userId: {
+                                        required: '아이디를 입력하세요.',
+                                        // noAdmin: "아이디에는 'admin'이라는 단어를 사용할 수 없습니다.", // 관리자 계정 방지 (admin 포함 방지)
+                                        minlength: '아이디는 5자 이상 12자 이하로 입력하세요.',
+                                        maxlength: '아이디는 5자 이상 12자 이하로 입력하세요.',
+                                        remote: '이미 사용중인 아이디입니다.'
+                                    },
+                                    password: {
+                                        required: '비밀번호를 입력하세요.',
+                                        minlength: '비밀번호는 8자 이상 20자 이하로 입력하세요.',
+                                        maxlength: '비밀번호는 8자 이상 20자 이하로 입력하세요.'
+                                    },
+                                    password2: {
+                                        required: '비밀번호 확인을 입력하세요.',
+                                        equalTo: '비밀번호가 일치하지 않습니다.'
+                                    },
+                                    username: {
+                                        required: '이름을 입력하세요.',
+                                        maxlength: '이름은 2자 이상 4자 이하로 입력하세요.'
+                                    },
+                                    phone: {
+                                        required: '전화번호를 입력하세요.',
+                                        remote: '이미 사용중인 전화번호입니다.'
+                                    },
+                                    email: {
+                                        required: '이메일을 입력하세요.',
+                                        email: '올바른 이메일 형식이 아닙니다.',
+                                        maxlength: '이메일은 최대 50자까지 가능합니다.',
+                                        remote: '이미 사용중인 이메일입니다.'
+                                    }
+                                },
+                                errorClass: 'is-invalid',
+                                validClass: 'is-valid',
+                                errorPlacement: function (error, element) {
+                                    error.addClass('invalid-feedback');
+                                    element.closest('.mb-3').append(error);
+                                },
+                                submitHandler: function (form) {
+                                    form.submit();
+                                }
+                            });
                     });
                 </script>
         </body>

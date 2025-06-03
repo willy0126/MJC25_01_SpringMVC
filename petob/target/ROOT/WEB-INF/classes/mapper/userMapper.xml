@@ -4,10 +4,6 @@
 
 <mapper namespace="userMapper">
 
-    <!-- 
-        사용자 정보를 Java 객체(UserDto)와 DB 컬럼 간 매핑해주는 resultMap
-        - DB 컬럼명과 UserDto 필드명을 수동으로 매핑함
-     -->
     <resultMap id="userResultMap" type="com.example.spring.user.UserDto">
         <result property="userId" column="USER_ID" />
         <result property="password" column="PASSWORD" />
@@ -19,11 +15,6 @@
         <result property="updatedAt" column="UPDATED_AT" />
     </resultMap>
 
-    <!-- 
-        사용자 등록 쿼리
-        - 회원가입 시 사용자의 정보를 USERS 테이블에 삽입
-        - 입력 파라미터는 UserDto 객체이며, 필드 값이 각각 매핑됨
-     -->
     <insert id="create" parameterType="com.example.spring.user.UserDto">
         <![CDATA[
         INSERT INTO USERS (
@@ -32,6 +23,8 @@
             USERNAME,     -- 사용자 이름
             PHONE,        -- 전화번호
             EMAIL         -- 이메일
+            -- ROLE은 기본값(예: 'USER')이 있거나, 별도 관리자 기능으로 추가한다고 가정
+            -- CREATED_AT, UPDATED_AT은 DB에서 CURRENT_TIMESTAMP 등으로 자동 관리되도록 설정 권장
         ) VALUES (
             #{userId},
             #{password},
@@ -42,13 +35,6 @@
         ]]>
     </insert>
 
-    <!-- 
-        사용자 단건 조회 쿼리
-        - 주어진 조건(userId, username, phone, email)에 따라 사용자 정보 조회
-        - 입력 파라미터는 UserDto이며, 조건은 동적으로 적용됨
-        - WHERE 절은 1=1로 시작하여 조건이 있는 항목만 필터링
-        - 결과는 userResultMap을 사용하여 UserDto로 매핑됨
-     -->
     <select id="read" resultMap="userResultMap" parameterType="com.example.spring.user.UserDto">
         <![CDATA[
         SELECT
@@ -64,22 +50,22 @@
             USERS
         WHERE 1=1 
         ]]>
-        <if test="userId != null">
+        <if test="userId != null and userId != ''">
             <![CDATA[
             AND USER_ID = #{userId}
             ]]>
         </if>
-        <if test="username != null">
+        <if test="username != null and username != ''">
             <![CDATA[
             AND USERNAME = #{username}
             ]]>
         </if>
-        <if test="phone != null">
+        <if test="phone != null and phone != ''">
             <![CDATA[
             AND PHONE = #{phone}
             ]]>
         </if>
-        <if test="email != null">
+        <if test="email != null and email != ''">
             <![CDATA[
             AND EMAIL = #{email}
             ]]>
@@ -88,41 +74,36 @@
         LIMIT 1
         ]]>
     </select>
-  <!-- 
-        사용자 정보 수정 쿼리
-        - 전달된 UserDto의 값 중 null이 아닌 항목만 수정 대상에 포함됨
-        - USER_ID는 PK이며, WHERE 조건으로 사용 (자기 자신을 기준으로 업데이트)
-        - LIMIT 1은 실수로 다수의 행이 수정되는 것을 방지함
-        - password, username, phone, email 등을 선택적으로 수정할 수 있음
-    -->
-    <update id="update" parameterType="com.example.spring.user.UserDto">
-        <![CDATA[
-        UPDATE USERS 
-        SET USER_ID = #{userId}
-        ]]>
-        <if test="username != null">
-            <![CDATA[
-            , USERNAME = #{username}
-            ]]>
-        </if>
-        <if test="phone != null">
-            <![CDATA[
-            , PHONE = #{phone}
-            ]]>
-        </if>
-        <if test="email != null">
-            <![CDATA[
-            , EMAIL = #{email}
-            ]]>
-        </if>
-        <if test="password != null">
-            <![CDATA[
-            , PASSWORD = #{password}
-            ]]>
-        </if>
-        <![CDATA[
+
+  <update id="update" parameterType="com.example.spring.user.UserDto">
+        UPDATE USERS
+        <set>
+            <if test="username != null and username != ''">
+                USERNAME = #{username},
+            </if>
+            <if test="phone != null and phone != ''">
+                PHONE = #{phone},
+            </if>
+            <if test="email != null and email != ''">
+                EMAIL = #{email},
+            </if>
+            <if test="password != null and password != ''">
+                PASSWORD = #{password},
+            </if>
+            UPDATED_AT = NOW()
+        </set>
         WHERE USER_ID = #{userId}
-        LIMIT 1
-        ]]>
-    </update>
+        LIMIT 1 </update>
+
+    <select id="selectPasswordByUserId" parameterType="String" resultType="String">
+        SELECT PASSWORD 
+        FROM USERS 
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <delete id="delete" parameterType="String">
+        DELETE FROM USERS 
+        WHERE USER_ID = #{userId}
+    </delete>
+
 </mapper>

@@ -1,0 +1,381 @@
+/* === 기존 mypagestyle.css 내용 시작 === */
+.mypage-container {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    width: 90%;
+    max-width: 1000px;
+    margin: 30px auto;
+}
+
+/* 기존 mypage-container h2 는 아래 mypage-content h2로 통합 또는 조정 */
+
+.reservation-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.9em; /* 전반적인 테이블 폰트 크기 조정 */
+}
+
+.reservation-table th,
+.reservation-table td {
+    border: 1px solid #e0e0e0;
+    padding: 10px 12px; /* 패딩 조정 */
+    text-align: left;
+    vertical-align: middle;
+    word-break: keep-all; /* 내용이 길어도 줄바꿈 최소화 (필요시) */
+}
+
+.reservation-table th {
+    background-color: #f8f9fa; /* Bootstrap table-light 유사 */
+    font-weight: 600;
+    color: #212529; /* Bootstrap 기본 텍스트 색상 */
+}
+
+.reservation-table tbody tr:hover { /* Bootstrap table-hover 효과 */
+    background-color: #f1f1f1;
+}
+
+.no-reservations {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6c757d; /* Bootstrap muted text color */
+    font-size: 1.1em;
+    border: 1px dashed #ced4da; /* Bootstrap border color */
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.no-reservations i { /* FontAwesome 아이콘 스타일 */
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.btn-primary-action {
+    display: inline-block;
+    padding: 0.5rem 1.25rem; /* Bootstrap 버튼 패딩 유사하게 조정 */
+    background-color: #0d6efd; /* Bootstrap primary color */
+    color: white;
+    text-decoration: none;
+    border-radius: 0.375rem; /* Bootstrap 버튼 radius */
+    font-weight: 600;
+    transition: background-color 0.15s ease-in-out;
+    border: 1px solid #0d6efd;
+}
+
+.btn-primary-action:hover {
+    background-color: #0b5ed7; /* Bootstrap primary hover color */
+    border-color: #0a58ca;
+}
+
+.flash-message { /* Bootstrap alert 스타일과 유사하게 */
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.375rem;
+}
+
+.flash-message.success {
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+}
+
+.flash-message.error {
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+}
+/* === 기존 mypagestyle.css 내용 끝 === */
+
+
+/* === 신규/통합 스타일 시작 === */
+
+body {
+    background-color: #f4f7f6; /* 전체 페이지 배경색 약간 변경 */
+}
+
+.main-wrapper {
+    background-color: transparent; /* main-wrapper 자체 배경은 투명하게 */
+}
+
+/* 전체 마이페이지 레이아웃 (Bootstrap container 클래스 활용) */
+.mypage-layout-container {
+    display: flex;
+    gap: 2rem; /* 사이드바와 메인 콘텐츠 사이 간격 */
+    align-items: flex-start; /* 상단 정렬 */
+}
+
+/* 왼쪽 사이드바 스타일 */
+.mypage-sidebar {
+    flex: 0 0 240px; /* 사이드바 너비 고정 (이미지와 유사하게) */
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 0.5rem; /* Bootstrap card radius */
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Bootstrap card shadow */
+    height: fit-content; /* 내용만큼 높이 */
+}
+
+.mypage-sidebar .sidebar-title {
+    font-size: 1.5rem; /* h3 정도 크기 */
+    font-weight: 600; /* Bootstrap heading weight */
+    color: #212529;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #dee2e6; /* Bootstrap border color */
+}
+
+.mypage-sidebar .sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mypage-sidebar .sidebar-nav .nav-item {
+    margin-bottom: 0.5rem; /* 메뉴 아이템 간 간격 */
+}
+
+.mypage-sidebar .sidebar-nav .nav-item a {
+    display: block;
+    padding: 0.75rem 1rem; /* Bootstrap nav-link padding 유사 */
+    text-decoration: none;
+    color: #495057; /* Bootstrap muted text */
+    font-weight: 500;
+    border-radius: 0.375rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.mypage-sidebar .sidebar-nav .nav-item a:hover {
+    background-color: #e9ecef; /* Bootstrap light gray */
+    color: #0d6efd; /* Bootstrap primary color */
+}
+
+/* .mypage-sidebar .sidebar-nav .nav-item.active a 는 JSP 내 style 블록 또는 이 파일 하단에 유지 */
+
+
+/* 오른쪽 콘텐츠 영역 스타일 */
+.mypage-content {
+    flex: 1; /* 남은 공간 모두 차지 */
+    background-color: #ffffff;
+    padding: 2rem; /* 콘텐츠 영역 내부 패딩 */
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.mypage-content h2 {
+    font-size: 1.75rem; /* Bootstrap h2 size */
+    color: #212529;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.mypage-content .sub-text {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+}
+
+.mypage-content .title-divider {
+    margin-top: 0.5rem;
+    margin-bottom: 1.75rem;
+    border-color: #dee2e6;
+}
+
+/* 비밀번호 확인 영역 스타일 (이미지와 유사하게) */
+.password-verification-container {
+    padding: 1rem 0; /* 상하 패딩만, 좌우는 mypage-content 패딩 사용 */
+    text-align: left;
+}
+
+.password-verification-container .sub-text {
+    /* mypage-content .sub-text 스타일 상속 */
+    margin-bottom: 1rem;
+}
+
+.password-verification-container .instruction-text {
+    font-size: 1rem;
+    color: #212529;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.password-verification-container .instruction-text strong {
+    color: #0d6efd;
+}
+
+.password-form .input-group {
+    max-width: 450px; /* 입력 필드 최대 너비 (이미지 참고) */
+}
+
+
+.password-form .input-group .btn-primary {
+    background-color: #daeeff;
+    border-color: #6c757d;
+    font-weight: 500;
+}
+.password-form .input-group .btn-primary:hover {
+    background-color: #98d2ff;
+    border-color: #545b62;
+}
+
+/* 회원정보 수정 폼 컨테이너 */
+.profile-edit-container,
+.reservations-container,
+.withdrawal-container {
+    padding: 1rem 0;
+}
+
+/* 회원 탈퇴 영역 */
+.withdrawal-container .alert {
+    font-size: 0.95rem;
+}
+.withdrawal-container .alert-heading {
+    font-size: 1.25rem;
+}
+.withdrawal-container .btn-danger {
+    font-weight: 500;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 991.98px) { /* Bootstrap lg breakpoint */
+    .mypage-layout-container {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    .mypage-sidebar {
+        flex: 0 0 auto;
+        width: 100%;
+        margin-bottom: 0; /* flex-direction: column 시 gap으로 간격 처리 */
+    }
+}
+
+@media (max-width: 767.98px) { /* Bootstrap md breakpoint */
+    .mypage-content {
+        padding: 1.5rem;
+    }
+    .mypage-content h2 {
+        font-size: 1.5rem;
+    }
+    .password-form .input-group {
+        max-width: none; /* 모바일에서는 너비 제한 해제 */
+    }
+    .reservation-table {
+        font-size: 0.85rem;
+    }
+    .reservation-table th,
+    .reservation-table td {
+        padding: 0.6rem 0.75rem;
+    }
+}
+
+/* 활성 사이드바 메뉴 스타일 (JSP 내 style 블록에서 이동) */
+.mypage-sidebar .sidebar-nav .nav-item.active a {
+    background-color: #0d6efd; /* Bootstrap primary color */
+    color: white;
+    font-weight: bold;
+}
+.password-verification-container .input-group .form-control {
+    border-right: 0; /* 비밀번호 필드와 버튼 사이 선 제거 */
+}
+.password-verification-container .input-group .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+/* 개인정보 수정 / 비밀번호 변경 / 회원 탈퇴 폼 컨테이너 공통 */
+.profile-edit-container,
+.password-change-container,
+.password-verification-container, /* 비밀번호 확인 페이지용 */
+.withdrawal-container {
+    padding: 1rem 0; /* 상하 패딩 */
+}
+
+.profile-edit-container .form-label,
+.password-change-container .form-label,
+.password-verification-container .form-label,
+.withdrawal-container .form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.profile-edit-container .form-control,
+.password-change-container .form-control,
+.password-verification-container .form-control,
+.withdrawal-container .form-control {
+    border-radius: 0.375rem; /* Bootstrap 기본 radius */
+    border: 1px solid #ced4da; /* Bootstrap 기본 border */
+    padding: 0.5rem 0.75rem; /* Bootstrap 기본 padding */
+}
+
+.profile-edit-container .form-control:focus,
+.password-change-container .form-control:focus,
+.password-verification-container .form-control:focus,
+.withdrawal-container .form-control:focus {
+    border-color: #86b7fe; /* Bootstrap focus color */
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); /* Bootstrap focus shadow */
+}
+
+/* 회원 탈퇴 주의사항 */
+.withdrawal-container .alert {
+    font-size: 0.95rem;
+    background-color: #fff3cd; /* Bootstrap warning background */
+    border-color: #ffeeba; /* Bootstrap warning border */
+    color: #664d03; /* Bootstrap warning text */
+}
+.withdrawal-container .alert-heading {
+    font-size: 1.25rem;
+    color: #664d03;
+}
+.withdrawal-container .alert ul {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+.withdrawal-container .alert li {
+    margin-bottom: 0.3rem;
+}
+
+.withdrawal-container .form-check-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* 버튼 스타일 (기존 .btn-primary-action 재활용 또는 신규 정의) */
+.profile-edit-container .btn,
+.password-change-container .btn,
+.password-verification-container .btn,
+.withdrawal-container .btn {
+    padding: 0.5rem 1.25rem;
+    font-weight: 500;
+    border-radius: 0.375rem;
+}
+
+.withdrawal-container .btn-danger {
+    background-color: #dc3545; /* Bootstrap danger color */
+    border-color: #dc3545;
+}
+.withdrawal-container .btn-danger:hover {
+    background-color: #bb2d3b;
+    border-color: #b02a37;
+}
+
+/* 비밀번호 확인 페이지 스타일 */
+.password-verification-container .instruction-text {
+    font-size: 1rem;
+    color: #212529;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+.password-verification-container .input-group .form-control {
+    border-right: 0; 
+}
+.password-verification-container .input-group .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    background-color: #0d6efd; /* Bootstrap primary */
+    color: white;
+}
+.password-verification-container .input-group .btn:hover {
+    background-color: #0b5ed7;
+}
