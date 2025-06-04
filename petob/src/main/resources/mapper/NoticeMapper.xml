@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.spring.notice.NoticeMapper">
+    
+    <!-- 공지사항 결과 매핑 -->
+    <resultMap id="NoticeResultMap" type="com.example.spring.notice.NoticeDto">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="author" column="author"/>
+        <result property="createdDate" column="created_date"/>
+        <result property="updatedDate" column="updated_date"/>
+    </resultMap>
+
+    <!-- 모든 공지사항 조회 (최신순) -->
+    <select id="selectAllNotices" resultMap="NoticeResultMap">
+        SELECT id, title, content, author, created_date, updated_date
+        FROM notice
+        ORDER BY id DESC
+    </select>
+
+    <!-- ID로 공지사항 조회 -->
+    <select id="selectNoticeById" parameterType="long" resultMap="NoticeResultMap">
+        SELECT id, title, content, author, created_date, updated_date
+        FROM notice
+        WHERE id = #{id}
+    </select>
+
+    <!-- 공지사항 등록 -->
+    <insert id="insertNotice" parameterType="com.example.spring.notice.NoticeDto" 
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO notice (title, content, author, created_date, updated_date)
+        VALUES (#{title}, #{content}, #{author}, NOW(), NOW())
+    </insert>
+
+    <!-- 공지사항 수정 -->
+    <update id="updateNotice" parameterType="com.example.spring.notice.NoticeDto">
+        UPDATE notice
+        SET title = #{title}, 
+            content = #{content}, 
+            updated_date = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <!-- 공지사항 삭제 -->
+    <delete id="deleteNotice" parameterType="long">
+        DELETE FROM notice WHERE id = #{id}
+    </delete>
+
+    <!-- 전체 공지사항 개수 -->
+    <select id="selectTotalCount" resultType="int">
+        SELECT COUNT(*) FROM notice
+    </select>
+
+    <!-- 제목으로 공지사항 검색 -->
+    <select id="selectNoticesByTitle" parameterType="string" resultMap="NoticeResultMap">
+        SELECT id, title, content, author, created_date, updated_date
+        FROM notice
+        WHERE title LIKE CONCAT('%', #{title}, '%')
+        ORDER BY id DESC
+    </select>
+
+    <!-- 메인페이지용 최신 공지사항 조회 -->
+    <select id="selectRecentNotices" parameterType="int" resultMap="NoticeResultMap">
+        SELECT id, title, content, author, created_date, updated_date
+        FROM notice
+        ORDER BY id DESC
+        LIMIT #{limit}
+    </select>
+    
+    <!-- 이전 공지사항 조회 (현재 ID보다 작은 것 중 가장 큰 ID) -->
+    <select id="selectPrevNotice" parameterType="long" resultMap="NoticeResultMap">
+        SELECT id, title, content, author, created_date, updated_date
+        FROM notice
+        WHERE id &lt; #{id}
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+    
+    <!-- 다음 공지사항 조회 (현재 ID보다 큰 것 중 가장 작은 ID) -->
+    <select id="selectNextNotice" parameterType="long" resultMap="NoticeResultMap">
+        SELECT id, title, content, author, created_date, updated_date
+        FROM notice
+        WHERE id &gt; #{id}
+        ORDER BY id ASC
+        LIMIT 1
+    </select>
+    
+</mapper>

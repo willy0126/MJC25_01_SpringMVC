@@ -57,4 +57,25 @@ public interface NoticeService {
      * @return 유효성 검증 결과
      */
     boolean validateNotice(NoticeDto noticeDto);
+
+    /**
+     * 최근 공지사항을 조회합니다.
+     * @param limit 조회할 개수
+     * @return 최근 공지사항 리스트
+     */
+    List<NoticeDto> getRecentNotices(int limit);
+    
+    /**
+     * 이전 공지사항을 조회합니다.
+     * @param currentId 현재 공지사항 ID
+     * @return 이전 공지사항
+     */
+    NoticeDto getPrevNotice(Long currentId);
+    
+    /**
+     * 다음 공지사항을 조회합니다.
+     * @param currentId 현재 공지사항 ID
+     * @return 다음 공지사항
+     */
+    NoticeDto getNextNotice(Long currentId);
 }

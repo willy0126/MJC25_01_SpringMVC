@@ -374,7 +374,7 @@ public class InquiryController {
             redirectAttributes.addFlashAttribute("errorMessage", "문의 삭제 중 오류가 발생했습니다.");
         }
 
-        return "redirect:/inquiry/list";
+        return "redirect:/mypage";
     }
 
     /**

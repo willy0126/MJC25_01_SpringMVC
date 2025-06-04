@@ -1,53 +1,48 @@
 package com.example.spring.notice;
+
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import java.util.List;
 
-public interface NoticeDao {
-    
-    /**
-     * 모든 공지사항을 조회합니다. (최신순 정렬)
-     * @return 공지사항 리스트
-     */
-    List<NoticeDto> selectAllNotices();
-    
-    /**
-     * ID로 특정 공지사항을 조회합니다.
-     * @param id 공지사항 ID
-     * @return 공지사항 정보
-     */
-    NoticeDto selectNoticeById(Long id);
-    
-    /**
-     * 새로운 공지사항을 등록합니다.
-     * @param noticeDto 등록할 공지사항 정보
-     * @return 등록된 행의 수 (성공시 1, 실패시 0)
-     */
-    int insertNotice(NoticeDto noticeDto);
-    
-    /**
-     * 공지사항을 수정합니다.
-     * @param noticeDto 수정할 공지사항 정보
-     * @return 수정된 행의 수 (성공시 1, 실패시 0)
-     */
-    int updateNotice(NoticeDto noticeDto);
-    
-    /**
-     * 공지사항을 삭제합니다.
-     * @param id 삭제할 공지사항 ID
-     * @return 삭제된 행의 수 (성공시 1, 실패시 0)
-     */
-    int deleteNotice(Long id);
-    
-    /**
-     * 공지사항 총 개수를 조회합니다.
-     * @return 전체 공지사항 개수
-     */
-    int countNotices();
-    
-    /**
-     * 제목으로 공지사항을 검색합니다.
-     * @param title 검색할 제목
-     * @return 검색된 공지사항 리스트
-     */
-    List<NoticeDto> selectNoticesByTitle(String title);
-}
+@Repository
+public class NoticeDao {
 
+    @Autowired
+    private SqlSession sqlSession;
+
+    private final String namespace = "com.example.spring.notice.NoticeMapper";
+
+    public List<NoticeDto> selectAllNotices() {
+        return sqlSession.selectList(namespace + ".selectAllNotices");
+    }
+
+    public NoticeDto selectNoticeById(Long id) {
+        return sqlSession.selectOne(namespace + ".selectNoticeById", id);
+    }
+
+    public int insertNotice(NoticeDto dto) {
+        return sqlSession.insert(namespace + ".insertNotice", dto);
+    }
+
+    public int updateNotice(NoticeDto dto) {
+        return sqlSession.update(namespace + ".updateNotice", dto);
+    }
+
+    public int deleteNotice(Long id) {
+        return sqlSession.delete(namespace + ".deleteNotice", id);
+    }
+
+    public int selectTotalCount() {
+        return sqlSession.selectOne(namespace + ".selectTotalCount");
+    }
+
+    public List<NoticeDto> selectNoticesByTitle(String title) {
+        return sqlSession.selectList(namespace + ".selectNoticesByTitle", title);
+    }
+
+    public List<NoticeDto> selectRecentNotices(int limit) {
+        return sqlSession.selectList(namespace + ".selectRecentNotices", limit);
+    }
+}
