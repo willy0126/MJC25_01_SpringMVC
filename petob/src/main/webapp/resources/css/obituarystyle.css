@@ -1,0 +1,65 @@
+/* obituarystyle.css - 부고장 작성 페이지 전용 */
+
+.obituary-form {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 30px 35px;
+    border-radius: 16px;
+    max-width: 520px;
+    margin: 50px auto;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.obituary-form h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #222;
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.obituary-form .form-group {
+    margin-bottom: 20px;
+}
+
+.obituary-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #444;
+}
+
+.obituary-form input[type="text"],
+.obituary-form input[type="date"],
+.obituary-form input[type="file"],
+.obituary-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.obituary-form textarea {
+    resize: vertical;
+    height: 120px;
+}
+
+.obituary-form .submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #4472c4;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.obituary-form .submit-btn:hover {
+    background-color: #365f9c;
+}
