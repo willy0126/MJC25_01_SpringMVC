@@ -187,38 +187,17 @@ public class InquiryServiceImpl implements InquiryService {
     }
 
     @Override
-    public boolean delete(Long inquiryId, String userId, boolean isAdmin) {
-        try {
-            // 기존 문의 조회
-            InquiryDto existingInquiry = inquiryDao.read(inquiryId);
-            
-            if (existingInquiry == null) {
-                logger.warn("삭제할 문의가 존재하지 않음 - inquiryId: {}", inquiryId);
-                return false;
-            }
-            
-            // 권한 확인 (관리자이거나 작성자인 경우)
-            if (!isAdmin && !existingInquiry.getUserId().equals(userId)) {
-                logger.warn("문의 삭제 권한 없음 - inquiryId: {}, requestUserId: {}, ownerUserId: {}", 
-                           inquiryId, userId, existingInquiry.getUserId());
-                return false;
-            }
-            
-            int result = inquiryDao.delete(inquiryId);
-            
-            if (result > 0) {
-                logger.info("문의 삭제 완료 - inquiryId: {}", inquiryId);
-                return true;
-            } else {
-                logger.warn("문의 삭제 실패 - 결과값: {}", result);
-                return false;
-            }
-            
-        } catch (Exception e) {
-            logger.error("문의 삭제 중 오류: {}", e.getMessage(), e);
-            throw new RuntimeException("문의 삭제 중 오류가 발생했습니다.", e);
-        }
+public boolean delete(Long inquiryId, String userId, boolean isAdmin) {
+    InquiryDto inquiry = inquiryMapper.read(inquiryId);
+    if (inquiry == null) return false;
+
+    if (!isAdmin && !userId.equals(inquiry.getUserId())) {
+        return false;
     }
+
+    return inquiryMapper.delete(inquiryId) > 0;
+}
+
 
     @Override
     public boolean reply(Long inquiryId, String reply, String replyBy) {
@@ -319,5 +298,11 @@ public class InquiryServiceImpl implements InquiryService {
             logger.error("전체 문의 개수 조회 중 오류: {}", e.getMessage(), e);
             throw new RuntimeException("전체 문의 개수 조회 중 오류가 발생했습니다.", e);
         }
+    }
+
+    @Override
+    public boolean delete(Long inquiryId, String userId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 }

@@ -131,19 +131,45 @@
                             </section>
 
                             <section id="notices">
-                                <div class="notice-list">
-                                    <h4>사이트 공지사항</h4>
-                                    <ul>
-                                        <li><span class="title">공지사항 예시 1 입니다.</span><span
-                                                class="date">2025.05.02</span></li>
-                                        <li><span class="title">mini carousel 사진 변경 및 수정</span><span
-                                                class="date">2025.05.03</span></li>
-                                        <li><span class="title">margin값 변경하기</span><span class="date">2025.05.05</span>
-                                        </li>
-                                        <li><span class="title">공지사항 게시판과 연동하기 (상위 3~4개 컨텐츠만)</span><span
-                                                class="date">2025.05.08</span></li>
-                                    </ul>
-                                </div>
+
+<div class="notice-list">
+    <h4>사이트 공지사항</h4>
+    <ul>
+        <c:choose>
+            <c:when test="${not empty recentNotices}">
+                <c:forEach var="notice" items="${recentNotices}" varStatus="status">
+                    <li>
+                        <a href="<c:url value='/notice/detail/${notice.id}'/>" class="notice-link">
+                            <span class="title">${notice.title}</span>
+                            <span class="date">
+                                <c:choose>
+                                    <c:when test="${notice.createdDate != null}">
+                                        ${notice.createdDate.toString().substring(0, 10).replace('-', '.')}
+                                    </c:when>
+                                    <c:otherwise>
+                                        날짜없음
+                                    </c:otherwise>
+                                </c:choose>
+                            </span>
+                        </a>
+                    </li>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <!-- 공지사항이 없을 때 기본 메시지 -->
+                <li>
+                    <span class="title">등록된 공지사항이 없습니다.</span>
+                    <span class="date">-</span>
+                </li>
+            </c:otherwise>
+        </c:choose>
+    </ul>
+    
+    <!-- 더보기 링크 -->
+    <div class="notice-more">
+        <a href="<c:url value='/notice/list'/>" class="btn-more">공지사항 더보기 →</a>
+    </div>
+</div>
 
                                 <div class="mini-carousel">
                                     <h4>개발 비하인드</h4>
