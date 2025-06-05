@@ -30,7 +30,6 @@
                             게시글 등록 (<span class="text-danger">*</span> 표시는 필수항목입니다.)
                         </div>
                         <div class="card-body">
-                            <%-- DTO의 필드명과 일치하도록 name 속성 변경 (FuneralReviewDTO 기준) --%>
                             <%-- 제목 --%>
                             <div class="mb-3">
                                 <label for="reviewTitle" class="form-label">제목<span class="text-danger">*</span></label>
