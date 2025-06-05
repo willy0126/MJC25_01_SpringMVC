@@ -30,12 +30,12 @@
             ob_time         AS obTime,
             notes,
             user_id         AS userId,
-            created_at      AS createdAt
-            /* 필요한 경우 'status' 컬럼 추가 (테이블에 존재 시) */
+            created_at      AS createdAt,
+            status          AS status -- status 컬럼 추가
         FROM
             obreserve
         ORDER BY
             STR_TO_DATE(CONCAT(ob_date, ' ', ob_time), '%Y-%m-%d %H:%i') DESC, created_at DESC
     </select>
 
-</mapper> 
+</mapper>

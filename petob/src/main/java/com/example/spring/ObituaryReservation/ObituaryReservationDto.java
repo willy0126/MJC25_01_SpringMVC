@@ -1,20 +1,20 @@
 package com.example.spring.ObituaryReservation;
 
 import java.util.Date;
-// import org.springframework.format.annotation.DateTimeFormat; // 날짜/시간을 String으로 받으므로 불필요
 
 public class ObituaryReservationDto {
     private int reservationId;
     private String branch;
     private String petName;
-    private Double petWeight; // Double 또는 BigDecimal로 변경
-    private String applicantName; // 보호자(신청자) 성함
-    private String applicantPhone; // 신청자 전화번호
+    private Double petWeight;
+    private String applicantName;
+    private String applicantPhone;
     private String obDate;
     private String obTime;
-    private String notes; // 기타 요청사항
-    private String userId; // 로그인 사용자 ID
+    private String notes;
+    private String userId;
     private Date createdAt;
+    private String status; // 새로운 필드
 
     // Getters and Setters
     public int getReservationId() {
@@ -105,6 +105,14 @@ public class ObituaryReservationDto {
         this.createdAt = createdAt;
     }
 
+    public String getStatus() { // status 필드 Getter
+        return status;
+    }
+
+    public void setStatus(String status) { // status 필드 Setter
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "ObituaryReservationDto{" +
@@ -119,6 +127,7 @@ public class ObituaryReservationDto {
                 ", notes='" + notes + '\'' +
                 ", userId='" + userId + '\'' +
                 ", createdAt=" + createdAt +
+                ", status='" + status + '\'' + // toString에 status 포함
                 '}';
     }
 }

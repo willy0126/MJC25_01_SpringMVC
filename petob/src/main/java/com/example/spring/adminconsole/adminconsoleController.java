@@ -9,55 +9,78 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable; // PathVariable을 위해 추가
+import org.springframework.web.bind.annotation.PostMapping; // PostMapping을 위해 추가
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes; // RedirectAttributes를 위해 추가
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
-public class adminconsoleController { 
+public class adminconsoleController {
 
-    private static final Logger logger = LoggerFactory.getLogger(adminconsoleController.class); // 클래스명 일치 권장
+    private static final Logger logger = LoggerFactory.getLogger(adminconsoleController.class);
 
     @Autowired
-    private adminconsoleService adminConsoleService;
+    private adminconsoleService adminConsoleService; // 일관성을 위해 이름 변경
 
     @GetMapping("/console")
     public String showAdminConsole(
-            @RequestParam(value = "section", required = false) String section,
+            @RequestParam(value = "section", required = false, defaultValue = "quick_counseling") String section,
             Model model,
             HttpSession session) {
 
-        // 관리자 권한 체크: 세션에 저장된 userId가 'admin'인지 확인
-        String userId = (String) session.getAttribute("userId"); // AuthController에서 "userId"로 저장한 값을 가져옴
+        String userId = (String) session.getAttribute("userId");
         if (!"admin".equals(userId)) {
-            logger.warn("Unauthorized access attempt to admin console by user with ID: {}", userId);
+            logger.warn("관리자 콘솔에 대한 무단 접근 시도: 사용자 ID {}", userId);
             return "redirect:/login";
         }
 
-        logger.info("Admin console page request. User ID: {}, Section: {}", userId, section);
+        logger.info("관리자 콘솔 페이지 요청. 사용자 ID: {}, 섹션: {}", userId, section);
 
-        // AdminConsoleDto를 사용하여 데이터를 한 번에 가져올 수도 있습니다.
-        // AdminConsoleDto consoleData = adminConsoleService.getAdminConsoleData();
-        // model.addAttribute("quickCounselingList", consoleData.getQuickCounselingList());
-        // model.addAttribute("funeralReservationList", consoleData.getFuneralReservationList());
-
-        // 또는 각 목록을 개별적으로 가져와서 모델에 추가
         List<ReservationDto> quickCounselingList = adminConsoleService.getAllQuickCounselingReservations();
         List<ObituaryReservationDto> funeralReservationList = adminConsoleService.getAllFuneralReservations();
 
         model.addAttribute("quickCounselingList", quickCounselingList);
         model.addAttribute("funeralReservationList", funeralReservationList);
+        model.addAttribute("currentSection", section);
 
-        // section 파라미터가 없거나 'quick_counseling'일 때 기본으로 간편 상담을 보여줌
-        if (section == null || section.isEmpty() || "quick_counseling".equals(section)) {
-            model.addAttribute("currentSection", "quick_counseling");
-        } else {
-            model.addAttribute("currentSection", section);
+        return "adminconsole/adminconsole";
+    }
+
+    @PostMapping("/obituary/{reservationId}/accept")
+    public String acceptObituaryReservation(
+            @PathVariable("reservationId") int reservationId,
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
+        return updateObituaryStatus(reservationId, "수락", session, redirectAttributes);
+    }
+
+    @PostMapping("/obituary/{reservationId}/reject")
+    public String rejectObituaryReservation(
+            @PathVariable("reservationId") int reservationId,
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
+        return updateObituaryStatus(reservationId, "거절", session, redirectAttributes);
+    }
+
+    private String updateObituaryStatus(int reservationId, String status, HttpSession session, RedirectAttributes redirectAttributes) {
+        String adminId = (String) session.getAttribute("userId");
+        if (!"admin".equals(adminId)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "권한이 없습니다.");
+            return "redirect:/login";
         }
-        
-        return "adminconsole/adminconsole"; 
+
+        boolean success = adminConsoleService.updateObituaryReservationStatus(reservationId, status);
+
+        if (success) {
+            redirectAttributes.addFlashAttribute("successMessage", "예약 상태가 '" + status + "'(으)로 변경되었습니다.");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "예약 상태 변경에 실패했습니다.");
+        }
+        return "redirect:/admin/console?section=funeral_reservations"; // 장례 예약 섹션으로 다시 리디렉션
     }
 }

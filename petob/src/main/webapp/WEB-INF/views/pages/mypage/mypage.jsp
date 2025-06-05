@@ -9,6 +9,7 @@
     <title>마이페이지 - Star's Haven</title>
     <%-- 공통 스타일 및 라이브러리 --%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet"> <%-- Bootstrap Icons 추가 --%>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypagestyle.css">
     <style>
@@ -27,14 +28,15 @@
         }
         /* 성공/에러 메시지 스타일 */
         .flash-message { margin-bottom: 1rem; }
+        .badge {
+            font-size: 0.85em;
+            padding: 0.4em 0.6em;
+        }
     </style>
 </head>
 <body>
     <div class="page-wrapper">
-        <%-- navbar.jsp 경로는 프로젝트 구조에 맞게 확인해주세요. --%>
-        <%-- 예시: <jsp:include page="../../common/navbar.jsp" /> 또는 /WEB-INF/views/common/navbar.jsp --%>
         <jsp:include page="/WEB-INF/views/common/navbar.jsp" />
-
 
         <div class="main-wrapper">
             <div class="mypage-layout-container container mt-4 mb-4">
@@ -70,14 +72,7 @@
                         <div class="alert alert-danger flash-message" role="alert">${errorMessage}</div>
                     </c:if>
 
-                    <%-- 
-                        mypage.jsp는 이제 각 기능별 JSP를 include 하는 대신,
-                        컨트롤러가 직접 해당 기능의 JSP를 렌더링하도록 변경되었습니다.
-                        따라서 이 mypage.jsp는 주로 "예약 확인" 내용을 기본으로 보여주거나,
-                        또는 사용자가 처음 /mypage 로 접속했을 때의 기본 화면을 구성합니다.
-                        개인정보 수정, 비밀번호 변경, 회원 탈퇴는 각각 editProfile.jsp, changePassword.jsp, withdraw.jsp 에서 처리합니다.
-                        여기서는 예약 확인을 기본 콘텐츠로 가정합니다.
-                    --%>
+                  
 
                     <h2><i class="fas fa-calendar-alt"></i> 예약 확인</h2>
                     <p class="sub-text">고객님의 장례 예약 현황입니다.</p>
@@ -99,6 +94,7 @@
                                                 <th>장례시간</th>
                                                 <th style="min-width: 150px;">요청사항</th>
                                                 <th>신청일</th>
+                                                <th>신청 상태</th> 
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -113,6 +109,22 @@
                                                     <td>${fn:escapeXml(reservation.obTime)}</td>
                                                     <td>${fn:escapeXml(reservation.notes)}</td>
                                                     <td><fmt:formatDate value="${reservation.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
+                                                    <td> 
+                                                        <c:choose>
+                                                            <c:when test="${reservation.status == '신청대기중'}">
+                                                                <span class="badge bg-warning text-dark">${fn:escapeXml(reservation.status)}</span>
+                                                            </c:when>
+                                                            <c:when test="${reservation.status == '수락'}">
+                                                                <span class="badge bg-success">${fn:escapeXml(reservation.status)}</span>
+                                                            </c:when>
+                                                            <c:when test="${reservation.status == '거절'}">
+                                                                <span class="badge bg-danger">${fn:escapeXml(reservation.status)}</span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="badge bg-secondary">${fn:escapeXml(reservation.status)}</span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
