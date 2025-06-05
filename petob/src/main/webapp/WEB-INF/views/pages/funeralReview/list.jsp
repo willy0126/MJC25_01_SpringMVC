@@ -6,11 +6,12 @@
 <html lang="ko">
 <%@ include file="../../common/head.jsp" %>
 <body>
-    <div class="container">
-        <%-- 네비게이션 --%>
+     <%-- 네비게이션 --%>
         <%@ include file="../../common/navbar.jsp" %>
         <%--// 네비게이션 --%>
 
+    <div class="container">
+       
         <%-- 페이지 제목 --%>
         <%@ include file="../../common/title.jsp" %>
         <%--// 페이지 제목 --%>
