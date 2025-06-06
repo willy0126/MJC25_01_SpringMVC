@@ -1,7 +1,5 @@
-// 📁 ObituaryController.java
 package com.example.spring.obituary;
 
-import com.example.spring.qr.QRCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,22 +20,25 @@ public class ObituaryController {
     @Autowired
     private ObituaryService obituaryService;
 
+    // 부고장 작성 폼 페이지
     @GetMapping("/info/obituary")
     public String showObituaryForm() {
         return "obituary";
     }
 
+    // 부고장 제출 처리
     @PostMapping("/obituary/submit")
     public String submitObituary(@ModelAttribute ObituaryDto dto,
                                  @RequestParam("photo") MultipartFile photoFile,
                                  HttpServletRequest request,
                                  Model model) {
 
-        // 업로드 경로 (톰캣 기준)
+        // 파일 업로드 경로 설정
         String realPath = request.getServletContext().getRealPath("/resources/uploads/");
         File uploadDir = new File(realPath);
         if (!uploadDir.exists()) uploadDir.mkdirs();
 
+        // 파일 저장 처리
         if (!photoFile.isEmpty()) {
             try {
                 String fileName = UUID.randomUUID() + "_" + photoFile.getOriginalFilename();
@@ -50,32 +51,14 @@ public class ObituaryController {
             }
         }
 
+        // DB에 저장 + 최신 부고장 가져오기
         obituaryService.insertObituary(dto);
         ObituaryDto latest = obituaryService.selectLatestObituary();
         model.addAttribute("obituary", latest);
 
         return "obituary_result";
     }
-
-    @GetMapping("/obituary/qrcode")
-    public String generateQRCode(HttpServletRequest request, Model model) {
-        ObituaryDto dto = obituaryService.selectLatestObituary();
-
-        try {
-            String realPath = request.getServletContext().getRealPath("/resources/uploads/");
-            String url = "http://localhost:8080/obituary/submit"; // 필요 시 실제 URL 수정
-
-            String qrPath = QRCodeUtil.createQRImage(url, realPath);
-            model.addAttribute("qrCodePath", qrPath);
-            model.addAttribute("obituary", dto);
-
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", "QR 코드 생성 실패: " + e.getMessage());
-            model.addAttribute("obituary", dto);
-        }
-
-        return "obituary_result";
-    }
 }
+
 
 

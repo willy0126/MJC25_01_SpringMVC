@@ -4,7 +4,6 @@ com\example\spring\MainController.class
 com\example\spring\FuneralReview\FuneralReviewDAO.class
 com\example\spring\inquiry\InquiryServiceImpl.class
 com\example\spring\libs\Pagination.class
-com\example\spring\qr\QRCodeUtil.class
 com\example\spring\reservation\ReservationDto.class
 com\example\spring\FuneralReview\FuneralReviewService.class
 com\example\spring\reservation\ReservationDao.class

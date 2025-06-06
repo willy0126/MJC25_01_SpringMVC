@@ -7,9 +7,11 @@
     <meta charset="UTF-8">
     <title>반려동물 부고장</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
         body {
             background: #e6f4ff;
-            font-family: '맑은 고딕', sans-serif;
+            font-family: 'Nunito', '맑은 고딕', sans-serif;
             color: #333;
             display: flex;
             justify-content: center;
@@ -19,8 +21,8 @@
         }
 
         .obituary-card {
-            background-color: #ffffff;
-            padding: 40px 30px;
+            background: linear-gradient(to bottom, #ffffff, #f7fbff);
+            padding: 50px 40px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             text-align: center;
@@ -28,12 +30,28 @@
             max-width: 480px;
         }
 
-        .obituary-card img {
+        .logo-area {
+            margin-bottom: 30px;
+        }
+
+        .logo-area img {
+            width: 80px;
+            display: block;
+            margin: 0 auto 10px auto;
+        }
+
+        .logo-area span {
+            font-size: 20px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .obituary-card img.pet-photo {
             width: 220px;
             height: 220px;
             object-fit: cover;
             border-radius: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 40px;
             box-shadow: 0 0 10px rgba(0,0,0,0.05);
         }
 
@@ -43,85 +61,119 @@
             color: #007acc;
         }
 
-        .obituary-card .label {
-            font-weight: bold;
-            color: #555;
+        .divider {
+            width: 60px;
+            border: 0;
+            border-top: 2px solid #007acc;
+            margin: 12px auto 24px;
         }
 
-        .obituary-card p {
-            margin: 10px 0;
-            line-height: 1.5;
-            color: #444;
+        .label {
+            font-weight: bold;
+            color: #6c6f93;
+        }
+
+        .info-line {
+            text-align: left;
+            margin: 20px 0;
         }
 
         .obituary-card .date {
-            font-size: 0.85em;
+            font-size: 0.9em;
             color: #888;
-            margin-top: 20px;
         }
 
-        .qr-button {
-            margin-top: 25px;
+        .footer-info {
+            margin-top: 40px;
+            font-size: 0.8em;
+            color: #aaa;
+            text-align: center;
         }
 
-        .qr-button button {
-            padding: 10px 20px;
-            background-color: #007acc;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
+        .footer-source {
+            font-size: 0.75em;
+            color: #ccc;
+            margin-top: 5px;
+            text-align: center;
         }
 
-        .qr-section {
-            margin-top: 20px;
-        }
-
-        .qr-section img {
-            margin-top: 10px;
-            width: 160px;
-            height: 160px;
+        .paw-icon {
+            font-size: 22px;
+            color: #ddd;
+            margin-top: 30px;
         }
     </style>
 </head>
 <body>
-<div class="obituary-card">
+<div class="obituary-card" id="capture-target">
 
+    <!-- 로고 + 텍스트 -->
+    <div class="logo-area">
+        <img src="${pageContext.request.contextPath}/resources/img/logo.png" alt="로고" />
+        <span>Star's Haven</span>
+    </div>
+
+    <!-- 반려동물 사진 -->
     <c:if test="${not empty obituary.photoPath}">
-        <img src="${pageContext.request.contextPath}${obituary.photoPath}" alt="반려동물 사진" />
+        <img class="pet-photo" src="${pageContext.request.contextPath}${obituary.photoPath}" alt="반려동물 사진" />
     </c:if>
 
-    <h2>${obituary.petName}</h2>
+    <!-- 이름 + 하단 강조선 -->
+    <h2><c:out value="${obituary.petName}" /></h2>
+    <hr class="divider" />
 
-    <p><span class="label">이별한 날:</span> 
+    <!-- 좌측 정렬 항목들 -->
+    <p class="info-line">
+        <span class="label">이별한 날:</span> 
         <fmt:formatDate value="${obituary.passedDate}" pattern="yyyy-MM-dd"/>
     </p>
 
-    <p><span class="label">추모 메시지:</span></p>
-    <p>${obituary.message}</p>
+    <p class="info-line"><span class="label">추모 메시지:</span></p>
+    <p class="info-line"><c:out value="${obituary.message}" /></p>
 
-    <p class="date">
+    <p class="info-line date">
         <span class="label">작성일:</span> 
         <fmt:formatDate value="${obituary.createdAt}" pattern="yyyy-MM-dd"/>
     </p>
 
-    <div class="qr-button">
-        <form method="get" action="${pageContext.request.contextPath}/obituary/qrcode">
-            <button type="submit">QR 코드 생성</button>
-        </form>
+    <!-- 하단 안내 -->
+    <div class="footer-info">
+        본 페이지는 추모를 위한 목적으로 제작되었습니다.
+    </div>
+    <div class="footer-source">
+        Star's Haven - 반려동물 장례 서비스
     </div>
 
-    <c:if test="${not empty qrCodePath}">
-        <div class="qr-section">
-            <p>부고장 QR 코드</p>
-            <img src="${pageContext.request.contextPath}${qrCodePath}" alt="QR 코드" />
-        </div>
-    </c:if>
-
+    <!-- 감성용 아이콘 -->
+    <div class="paw-icon">🐾</div>
 </div>
+
+<!-- html2canvas: 카드만 캡처 -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
+    window.onload = function () {
+        setTimeout(() => {
+            const card = document.querySelector("#capture-target");
+            html2canvas(card).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'obituary.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }, 1000);
+    };
+</script>
+
 </body>
 </html>
+
+
+
+
+
+
+
+
 
 
 

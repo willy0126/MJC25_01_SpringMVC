@@ -18,7 +18,6 @@
 
     <main class="main-wrapper">
         <div class="site-container">
-            <h2>반려동물 부고장 작성</h2>
             <form action="${pageContext.request.contextPath}/obituary/submit" method="post" enctype="multipart/form-data" class="obituary-form">
                 <div class="form-group">
                     <label for="petName">반려동물 이름</label>
