@@ -9,10 +9,28 @@
     <meta charset="UTF-8">
     <title>관리자 콘솔 - Star's Haven</title>
     <%-- 공통 스타일 및 라이브러리 --%>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <%-- Font Awesome --%>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet"> <%-- Bootstrap Icons --%>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css"> <%-- 공통 메인 스타일 --%>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypagestyle.css"> <%-- 마이페이지 레이아웃 스타일 재활용 --%>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/adminconsole.css"> <%-- 관리자 콘솔 전용 스타일 --%>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/adminconsolestyle.css"> <%-- 관리자 콘솔 전용 스타일 --%>
+    <style>
+        /* JSP 내 간단한 추가 스타일 (adminconsolestyle.css로 이동 권장) */
+        .admin-sidebar .sidebar-nav .nav-item.active a {
+            background-color: #0d6efd; /* Bootstrap primary color */
+            color: white;
+            font-weight: bold;
+        }
+        .badge {
+            font-size: 0.85em;
+            padding: 0.4em 0.6em;
+        }
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.2rem;
+        }
+    </style>
 </head>
 <body>
     <div class="page-wrapper">
@@ -25,10 +43,10 @@
                     <h3 class="sidebar-title">관리자 메뉴</h3>
                     <nav class="sidebar-nav">
                         <ul>
-                            <li class="nav-item ${empty param.section or param.section == 'quick_counseling' ? 'active' : ''}">
+                            <li class="nav-item ${currentSection == 'quick_counseling' ? 'active' : ''}">
                                 <a href="${pageContext.request.contextPath}/admin/console?section=quick_counseling">간편 상담 예약 현황</a>
                             </li>
-                            <li class="nav-item ${param.section == 'funeral_reservations' ? 'active' : ''}">
+                            <li class="nav-item ${currentSection == 'funeral_reservations' ? 'active' : ''}">
                                 <a href="${pageContext.request.contextPath}/admin/console?section=funeral_reservations">장례 예약 현황</a>
                             </li>
                         </ul>
@@ -37,11 +55,25 @@
 
                 <%-- 오른쪽 콘텐츠 영역 --%>
                 <main class="mypage-content">
+                    <%-- 성공/에러 메시지 표시 --%>
+                    <c:if test="${not empty successMessage}">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            ${successMessage}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </c:if>
+                    <c:if test="${not empty errorMessage}">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            ${errorMessage}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </c:if>
+
                     <c:choose>
                         <%-- 1. 간편 상담 예약 현황 섹션 --%>
-                        <c:when test="${empty param.section or param.section == 'quick_counseling'}">
+                        <c:when test="${currentSection == 'quick_counseling'}">
                             <div class="quick-counseling-container">
-                                <h2><i class="fas fa-headset"></i> 간편 상담 예약 현황</h2>
+                                <h2><i class="bi bi-headset"></i> 간편 상담 예약 현황</h2>
                                 <p class="sub-text">접수된 모든 간편 상담 예약 목록입니다.</p>
                                 <hr class="title-divider">
                                 <c:choose>
@@ -50,27 +82,25 @@
                                             <table class="reservation-table table table-hover">
                                                 <thead class="table-light">
                                                     <tr>
-                                                        <th>번호</th>
+                                                        <th>예약ID</th>
                                                         <th>예약자명</th>
                                                         <th>연락처</th>
                                                         <th>이메일</th>
                                                         <th>상담 희망일</th>
                                                         <th>상담 희망 시간</th>
                                                         <th>신청일</th>
-                                                        <%-- <th>관리</th> --%>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <c:forEach var="counseling" items="${quickCounselingList}" varStatus="status">
+                                                    <c:forEach var="counseling" items="${quickCounselingList}">
                                                         <tr>
-                                                            <td>${status.count}</td>
+                                                            <td>${counseling.reservationId}</td>
                                                             <td>${fn:escapeXml(counseling.username)}</td>
                                                             <td>${fn:escapeXml(counseling.phone)}</td>
                                                             <td>${fn:escapeXml(counseling.email)}</td>
                                                             <td>${fn:escapeXml(counseling.date)}</td>
                                                             <td>${fn:escapeXml(counseling.time)}</td>
                                                             <td><fmt:formatDate value="${counseling.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
-                                                            <%-- <td><button class="btn btn-sm btn-outline-primary">상세</button></td> --%>
                                                         </tr>
                                                     </c:forEach>
                                                 </tbody>
@@ -79,7 +109,7 @@
                                     </c:when>
                                     <c:otherwise>
                                         <div class="no-data-message">
-                                            <div class="icon"><i class="fas fa-info-circle"></i></div>
+                                            <div class="icon"><i class="bi bi-info-circle-fill"></i></div>
                                             <p class="lead">현재 접수된 간편 상담 예약이 없습니다.</p>
                                         </div>
                                     </c:otherwise>
@@ -88,10 +118,10 @@
                         </c:when>
 
                         <%-- 2. 장례 예약 현황 섹션 --%>
-                        <c:when test="${param.section == 'funeral_reservations'}">
+                        <c:when test="${currentSection == 'funeral_reservations'}">
                             <div class="reservations-container">
-                                <h2><i class="fas fa-paw"></i> 장례 예약 현황</h2>
-                                <p class="sub-text">접수된 모든 장례 예약 목록입니다.</p>
+                                <h2><i class="bi bi-calendar-heart-fill"></i> 장례 진행 예약 현황</h2>
+                                <p class="sub-text">전체 장례 진행 예약 내역을 확인하고 관리합니다.</p>
                                 <hr class="title-divider">
                                 <c:choose>
                                     <c:when test="${not empty funeralReservationList}">
@@ -99,33 +129,64 @@
                                             <table class="reservation-table table table-hover">
                                                 <thead class="table-light">
                                                     <tr>
-                                                        <th>번호</th>
+                                                        <th>예약ID</th>
                                                         <th>지점</th>
-                                                        <th>반려동물 이름</th>
-                                                        <th>신청자명</th>
+                                                        <th>아이명</th>
+                                                        <th>무게(kg)</th>
+                                                        <th>신청자</th>
                                                         <th>연락처</th>
-                                                        <th>장례일</th>
-                                                        <th>장례시간</th>
-                                                        <th style="min-width: 150px;">요청사항</th>
-                                                        <th>신청자 ID</th>
-                                                        <th>신청일</th>
-                                                        <%-- <th>관리</th> --%>
+                                                        <th>희망날짜</th>
+                                                        <th>희망시간</th>
+                                                        <th style="min-width: 120px;">요청사항</th>
+                                                        <th>사용자ID</th>
+                                                        <th>신청일시</th>
+                                                        <th>신청 상태</th>
+                                                        <th style="min-width: 130px;">관리</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <c:forEach var="reservation" items="${funeralReservationList}" varStatus="status">
+                                                    <c:forEach var="reservation" items="${funeralReservationList}">
                                                         <tr>
-                                                            <td>${status.count}</td>
-                                                            <td>${fn:escapeXml(reservation.branch)}</td>
-                                                            <td>${fn:escapeXml(reservation.petName)}</td>
-                                                            <td>${fn:escapeXml(reservation.applicantName)}</td>
-                                                            <td>${fn:escapeXml(reservation.applicantPhone)}</td>
-                                                            <td>${fn:escapeXml(reservation.obDate)}</td>
-                                                            <td>${fn:escapeXml(reservation.obTime)}</td>
-                                                            <td>${fn:escapeXml(reservation.notes)}</td>
-                                                            <td>${fn:escapeXml(reservation.userId)}</td>
+                                                            <td>${reservation.reservationId}</td>
+                                                            <td><c:out value="${reservation.branch}"/></td>
+                                                            <td><c:out value="${reservation.petName}"/></td>
+                                                            <td><fmt:formatNumber value="${reservation.petWeight}" pattern="#,##0.0"/></td>
+                                                            <td><c:out value="${reservation.applicantName}"/></td>
+                                                            <td><c:out value="${reservation.applicantPhone}"/></td>
+                                                            <td><c:out value="${reservation.obDate}"/></td>
+                                                            <td><c:out value="${reservation.obTime}"/></td>
+                                                            <td><c:out value="${reservation.notes}"/></td>
+                                                            <td><c:out value="${reservation.userId}"/></td>
                                                             <td><fmt:formatDate value="${reservation.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
-                                                            <%-- <td><button class="btn btn-sm btn-outline-success">상태변경</button></td> --%>
+                                                            <td>
+                                                                <c:choose>
+                                                                    <c:when test="${reservation.status == '신청대기중'}">
+                                                                        <span class="badge bg-warning text-dark">${reservation.status}</span>
+                                                                    </c:when>
+                                                                    <c:when test="${reservation.status == '수락'}">
+                                                                        <span class="badge bg-success">${reservation.status}</span>
+                                                                    </c:when>
+                                                                    <c:when test="${reservation.status == '거절'}">
+                                                                        <span class="badge bg-danger">${reservation.status}</span>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <span class="badge bg-secondary">${fn:escapeXml(reservation.status)}</span>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </td>
+                                                            <td>
+                                                                <c:if test="${reservation.status == '신청대기중'}">
+                                                                    <form action="${pageContext.request.contextPath}/admin/obituary/${reservation.reservationId}/accept" method="post" style="display: inline-block; margin-right: 5px;">
+                                                                        <button type="submit" class="btn btn-sm btn-success">수락</button>
+                                                                    </form>
+                                                                    <form action="${pageContext.request.contextPath}/admin/obituary/${reservation.reservationId}/reject" method="post" style="display: inline-block;">
+                                                                        <button type="submit" class="btn btn-sm btn-danger">거절</button>
+                                                                    </form>
+                                                                </c:if>
+                                                                <c:if test="${reservation.status != '신청대기중'}">
+                                                                    <span>-</span>
+                                                                </c:if>
+                                                            </td>
                                                         </tr>
                                                     </c:forEach>
                                                 </tbody>
@@ -134,13 +195,60 @@
                                     </c:when>
                                     <c:otherwise>
                                         <div class="no-data-message">
-                                            <div class="icon"><i class="fas fa-calendar-times"></i></div>
-                                            <p class="lead">현재 접수된 장례 예약이 없습니다.</p>
+                                            <div class="icon"><i class="bi bi-calendar-x-fill"></i></div>
+                                            <p class="lead">현재 접수된 장례 진행 예약이 없습니다.</p>
+                                            <p>새로운 예약이 접수되면 여기에 표시됩니다.</p>
                                         </div>
                                     </c:otherwise>
                                 </c:choose>
                             </div>
                         </c:when>
+                        <c:otherwise>
+                             <div class="quick-counseling-container"> <%-- 기본적으로 간편 상담을 보여주도록 처리 --%>
+                                <h2><i class="bi bi-headset"></i> 간편 상담 예약 현황</h2>
+                                <p class="sub-text">접수된 모든 간편 상담 예약 목록입니다.</p>
+                                <hr class="title-divider">
+                                <c:choose>
+                                    <c:when test="${not empty quickCounselingList}">
+                                       <%-- 간편 상담 목록 테이블 (위와 동일) --%>
+                                        <div class="table-responsive">
+                                            <table class="reservation-table table table-hover">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>예약ID</th>
+                                                        <th>예약자명</th>
+                                                        <th>연락처</th>
+                                                        <th>이메일</th>
+                                                        <th>상담 희망일</th>
+                                                        <th>상담 희망 시간</th>
+                                                        <th>신청일</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <c:forEach var="counseling" items="${quickCounselingList}">
+                                                        <tr>
+                                                            <td>${counseling.reservationId}</td>
+                                                            <td>${fn:escapeXml(counseling.username)}</td>
+                                                            <td>${fn:escapeXml(counseling.phone)}</td>
+                                                            <td>${fn:escapeXml(counseling.email)}</td>
+                                                            <td>${fn:escapeXml(counseling.date)}</td>
+                                                            <td>${fn:escapeXml(counseling.time)}</td>
+                                                            <td><fmt:formatDate value="${counseling.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="no-data-message">
+                                            <div class="icon"><i class="bi bi-info-circle-fill"></i></div>
+                                            <p class="lead">현재 접수된 간편 상담 예약이 없습니다.</p>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                        </c:otherwise>
                     </c:choose>
                 </main>
             </div>
@@ -156,14 +264,27 @@
                 section = 'quick_counseling';
             }
             
+            // 동적으로 active 클래스 설정 (이미 컨트롤러에서 currentSection으로 처리하고 있지만, 클라이언트 사이드에서도 보강)
             const navLinks = document.querySelectorAll('.admin-sidebar .sidebar-nav .nav-item a');
-
             navLinks.forEach(link => {
                 link.parentElement.classList.remove('active');
-                const linkSection = new URL(link.href).searchParams.get('section');
+                // href에서 section 파라미터 값 추출
+                const linkSection = new URL(link.href, window.location.origin).searchParams.get('section');
                 if (linkSection === section) {
                     link.parentElement.classList.add('active');
                 }
+            });
+
+            // Flash 메시지 자동 닫기 (선택 사항)
+            const alertList = document.querySelectorAll('.alert-dismissible');
+            alertList.forEach(function (alert) {
+                new bootstrap.Alert(alert); // Bootstrap 알림 초기화 (닫기 버튼 기능 활성화)
+                // setTimeout(() => {
+                //     const bsAlert = bootstrap.Alert.getInstance(alert);
+                //     if (bsAlert) {
+                //         bsAlert.close();
+                //     }
+                // }, 5000); // 5초 후 자동 닫기
             });
         });
     </script>

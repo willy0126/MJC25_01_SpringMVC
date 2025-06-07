@@ -132,8 +132,13 @@
 
                             <section id="notices">
 
-<div class="notice-list">
-    <h4>사이트 공지사항</h4>
+                                <div class="notice-list">
+    <!-- 헤더 부분: 제목과 더보기를 양쪽 끝에 배치 -->
+    <div class="notice-header">
+        <h4>사이트 공지사항</h4>
+        <a href="<c:url value='/notice/list'/>" class="btn-more">공지사항 더보기 →</a>
+    </div>
+    
     <ul>
         <c:choose>
             <c:when test="${not empty recentNotices}">
@@ -158,17 +163,14 @@
             <c:otherwise>
                 <!-- 공지사항이 없을 때 기본 메시지 -->
                 <li>
-                    <span class="title">등록된 공지사항이 없습니다.</span>
-                    <span class="date">-</span>
+                    <div class="no-notice">
+                        <span class="title">등록된 공지사항이 없습니다.</span>
+                        <span class="date">-</span>
+                    </div>
                 </li>
             </c:otherwise>
         </c:choose>
     </ul>
-    
-    <!-- 더보기 링크 -->
-    <div class="notice-more">
-        <a href="<c:url value='/notice/list'/>" class="btn-more">공지사항 더보기 →</a>
-    </div>
 </div>
 
                                 <div class="mini-carousel">

@@ -1,28 +1,29 @@
 package com.example.spring.mypage;
 
-import java.math.BigDecimal; // pet_weight가 DECIMAL 타입이므로 BigDecimal 사용 권장
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class mypageDto {
 
-    private int reservationId;      // reservation_id
-    private String branch;          // branch
-    private String petName;         // pet_name
-    private BigDecimal petWeight;   // pet_weight (DECIMAL(5,1) -> BigDecimal)
-    private String applicantName;   // applicant_name
-    private String applicantPhone;  // applicant_phone
-    private String obDate;          // ob_date (YYYY-MM-DD 문자열)
-    private String obTime;          // ob_time (HH:MM 문자열)
-    private String notes;           // notes (기타 요청사항)
-    private String userId;          // user_id = 로그인 사용자 ID
-    private Timestamp createdAt;    // created_at
+    private int reservationId;
+    private String branch;
+    private String petName;
+    private BigDecimal petWeight;
+    private String applicantName;
+    private String applicantPhone;
+    private String obDate;
+    private String obTime;
+    private String notes;
+    private String userId;
+    private Timestamp createdAt;
+    private String status; // 새로운 필드
 
     // 기본 생성자
     public mypageDto() {
     }
 
-    // 모든 필드를 포함하는 생성자 (필요에 따라 추가)
-    public mypageDto(int reservationId, String branch, String petName, BigDecimal petWeight, String applicantName, String applicantPhone, String obDate, String obTime, String notes, String userId, Timestamp createdAt) {
+    // 모든 필드를 포함하는 생성자 (status 포함)
+    public mypageDto(int reservationId, String branch, String petName, BigDecimal petWeight, String applicantName, String applicantPhone, String obDate, String obTime, String notes, String userId, Timestamp createdAt, String status) {
         this.reservationId = reservationId;
         this.branch = branch;
         this.petName = petName;
@@ -34,6 +35,7 @@ public class mypageDto {
         this.notes = notes;
         this.userId = userId;
         this.createdAt = createdAt;
+        this.status = status; // status 초기화
     }
 
     // Getters and Setters
@@ -125,6 +127,14 @@ public class mypageDto {
         this.createdAt = createdAt;
     }
 
+    public String getStatus() { // status 필드 Getter
+        return status;
+    }
+
+    public void setStatus(String status) { // status 필드 Setter
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "mypageDto{" +
@@ -139,6 +149,7 @@ public class mypageDto {
                 ", notes='" + notes + '\'' +
                 ", userId='" + userId + '\'' +
                 ", createdAt=" + createdAt +
+                ", status='" + status + '\'' + // toString에 status 포함
                 '}';
     }
 }
