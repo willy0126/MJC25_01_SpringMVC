@@ -4,6 +4,8 @@ com\example\spring\LocationController.class
 com\example\spring\MainController.class
 com\example\spring\ObituaryReservation\ObituaryReservationDto.class
 com\example\spring\notice\NoticeDto.class
+com\example\spring\shortreview\shortreviewController.class
+com\example\spring\shortreview\shortreviewDto.class
 com\example\spring\FuneralReview\FuneralReviewDAO.class
 com\example\spring\inquiry\InquiryServiceImpl.class
 com\example\spring\notice\NoticeService.class
@@ -27,6 +29,8 @@ com\example\spring\inquiry\InquiryDto.class
 com\example\spring\PolicyController.class
 com\example\spring\user\UserDto.class
 com\example\spring\mypage\mypageController.class
+com\example\spring\shortreview\shortreviewService.class
+com\example\spring\shortreview\shortreviewDao.class
 com\example\spring\notice\NoticeDao.class
 com\example\spring\libs\Pagination.class
 com\example\spring\ObituaryReservation\ObituaryReservationService.class
@@ -34,7 +38,6 @@ com\example\spring\notice\NoticeServiceImpl.class
 com\example\spring\reservation\ReservationDao.class
 com\example\spring\inquiry\InquiryDao.class
 com\example\spring\ObituaryReservation\ObituaryReservationDao.class
-com\example\spring\notice\NoticeMapper.class
 com\example\spring\InfoController.class
 com\example\spring\FuneralReview\FuneralReviewController.class
 com\example\spring\FuneralReview\FuneralReviewDTO.class

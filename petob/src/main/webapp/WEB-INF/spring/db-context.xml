@@ -47,7 +47,7 @@
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-    <property name="basePackage" value="com.example.spring.mypage, com.example.spring.user, com.example.spring.inquiry, com.example.spring.FuneralReview, com.example.spring.ObituaryReservation, com.example.spring.reservation  com.example.spring.adminconsole" />
+    <property name="basePackage" value="com.example.spring.mypage, com.example.spring.user, com.example.spring.inquiry, com.example.spring.FuneralReview, com.example.spring.ObituaryReservation, com.example.spring.reservation  com.example.spring.adminconsole, com.example.spring.shortreview"  />
     <property name="annotationClass" value="org.apache.ibatis.annotations.Mapper"/>
     <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
 </bean>
