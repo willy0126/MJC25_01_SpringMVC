@@ -146,11 +146,5 @@
         <jsp:include page="/WEB-INF/views/common/footer.jsp" />
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <%-- 
-        기존 JavaScript로 active 클래스를 제어하는 부분은 
-        컨트롤러에서 'currentSection'이라는 모델 속성을 전달하고,
-        JSP EL을 사용하여 li 태그의 class에 직접 'active'를 부여하는 방식으로 변경했습니다.
-        따라서 하단의 스크립트는 더 이상 필요하지 않거나, 다른 용도로 사용될 수 있습니다.
-    --%>
 </body>
 </html>
