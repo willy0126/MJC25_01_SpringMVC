@@ -288,7 +288,7 @@ body {
 .password-change-container,
 .password-verification-container, /* 비밀번호 확인 페이지용 */
 .withdrawal-container {
-    padding: 1rem 0; /* 상하 패딩 */
+    padding: 2rem;
 }
 
 .profile-edit-container .form-label,
