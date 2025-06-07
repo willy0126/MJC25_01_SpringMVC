@@ -4,21 +4,13 @@
 
 <!DOCTYPE html>
 <html lang="ko">
-<%@ include file="../../common/head.jsp" %>
+<head>
+    <jsp:include page="/WEB-INF/views/common/head.jsp" />
+    <title>이용 후기 - Star's Haven, 반려동물 장례식장</title>
+</head>
 <body>
+    <jsp:include page="/WEB-INF/views/common/navbar.jsp" />
     <div class="container">
-        <%-- 네비게이션 --%>
-        <%@ include file="../../common/navbar.jsp" %>
-        <%--// 네비게이션 --%>
-
-        <%-- 페이지 제목 --%>
-        <%@ include file="../../common/title.jsp" %>
-        <%--// 페이지 제목 --%>
-
-        <%-- 메시지 --%>
-        <%@ include file="../../common/message.jsp" %>
-        <%--// 메시지 --%>
-
         <%-- 페이지 내용 --%>
         <div class="row">
             <div class="col-12">
@@ -30,7 +22,6 @@
                             게시글 등록 (<span class="text-danger">*</span> 표시는 필수항목입니다.)
                         </div>
                         <div class="card-body">
-                            <%-- DTO의 필드명과 일치하도록 name 속성 변경 (FuneralReviewDTO 기준) --%>
                             <%-- 제목 --%>
                             <div class="mb-3">
                                 <label for="reviewTitle" class="form-label">제목<span class="text-danger">*</span></label>

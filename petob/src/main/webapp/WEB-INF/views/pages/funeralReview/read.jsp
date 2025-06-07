@@ -6,21 +6,13 @@
 
 <!DOCTYPE html>
 <html lang="ko">
-<%@ include file="../../common/head.jsp" %>
+<head>
+    <jsp:include page="/WEB-INF/views/common/head.jsp" />
+    <title>이용 후기 - Star's Haven, 반려동물 장례식장</title>
+</head>
 <body>
+    <jsp:include page="/WEB-INF/views/common/navbar.jsp" />
     <div class="container">
-        <%-- 네비게이션 --%>
-        <%@ include file="../../common/navbar.jsp" %>
-        <%--// 네비게이션 --%>
-
-        <%-- 페이지 제목 --%>
-        <%@ include file="../../common/title.jsp" %>
-        <%--// 페이지 제목 --%>
-
-        <%-- 메시지 --%>
-        <%@ include file="../../common/message.jsp" %>
-        <%--// 메시지 --%>
-
         <%-- 페이지 내용 --%>
         <div class="row">
             <div class="col-12">

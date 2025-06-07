@@ -245,46 +245,86 @@
     padding-top: 2rem;
     gap: 50px;
     border-top: 1px solid #ccc;
-  }
+}
 
-  /* Notice List Styles */
-  .notice-list {
+/* Notice List Styles */
+.notice-list {
     flex: 6;
-  }
+}
 
-  .notice-list h4 {
-    margin-bottom: 1.5rem;
-    font-size: 20px;
-    font-weight: 600;
-  }
-
-  .notice-list ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .notice-list li {
+/* 헤더 - 제목과 더보기를 같은 줄 양쪽 끝에 */
+.notice-list .notice-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.notice-list .notice-header h4 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.notice-list .btn-more {
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.notice-list .btn-more:hover {
+    color: #007bff;
+}
+
+.notice-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* 각 공지사항 항목 수정 */
+.notice-list li {
     margin-bottom: 1rem;
     font-size: 16px;
     padding-left: 10px;
-    gap: 20px;
-  }
+}
 
-  .notice-list .title {
+/* 공지사항 링크 - 제목과 날짜를 양쪽 끝에 */
+.notice-list .notice-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
     color: #333;
-    flex: 1;
-  }
+    gap: 20px;
+}
 
-  .notice-list .date {
+.notice-list .notice-link:hover {
+    color: #007bff;
+}
+
+.notice-list .title {
+    color: inherit;
+    flex: 1;
+}
+
+.notice-list .date {
     font-size: 14px;
     color: #888;
     white-space: nowrap;
-  }
+}
 
+/* 공지사항이 없을 때 */
+.notice-list .no-notice {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.notice-list .no-notice .title {
+    color: #999;
+}
   /* Mini Carousel Styles */
   .mini-carousel {
     flex: 4;

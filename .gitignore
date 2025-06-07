@@ -23,3 +23,5 @@
 hs_err_pid*
 replay_pid*
 
+petob/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+petob/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst

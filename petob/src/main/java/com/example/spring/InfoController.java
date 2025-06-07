@@ -22,10 +22,10 @@ public class InfoController {
     }
 
     // 부고장 작성 페이지
-    @GetMapping("/info/obituary")
-    public String showObituaryPage() {
-        logger.debug("InfoController: 부고장 작성 요청이 처리되었습니다.");
+    //@GetMapping("/info/obituary")
+    //public String showObituaryPage() {
+        //logger.debug("InfoController: 부고장 작성 요청이 처리되었습니다.");
 
-        return "obituary";
+        //return "obituary";
     }
-}
+
