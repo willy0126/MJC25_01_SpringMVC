@@ -1,3 +1,4 @@
+com\example\spring\obituary\ObituaryMapper.class
 com\example\spring\ObituaryReservation\ObituaryReservationController.class
 com\example\spring\adminconsole\adminconsoleDao.class
 com\example\spring\LocationController.class
@@ -18,6 +19,11 @@ com\example\spring\reservation\ReservationService.class
 com\example\spring\interceptor\AuthInterceptor.class
 com\example\spring\mypage\mypageDao.class
 com\example\spring\reservation\ReservationController.class
+com\example\spring\obituary\ObituaryService.class
+com\example\spring\CommunityController.class
+com\example\spring\CSController.class
+com\example\spring\InfoController.class
+com\example\spring\obituary\ObituaryController.class
 com\example\spring\adminconsole\adminconsoleService.class
 com\example\spring\CSController.class
 com\example\spring\user\UserService.class
@@ -41,6 +47,8 @@ com\example\spring\ObituaryReservation\ObituaryReservationDao.class
 com\example\spring\InfoController.class
 com\example\spring\FuneralReview\FuneralReviewController.class
 com\example\spring\FuneralReview\FuneralReviewDTO.class
+com\example\spring\obituary\ObituaryDto.class
+com\example\spring\BranchController.class
 com\example\spring\inquiry\InquiryController.class
 com\example\spring\user\AuthController.class
 com\example\spring\user\UserDao.class

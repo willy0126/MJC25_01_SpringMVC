@@ -8,7 +8,6 @@
   <packaging>war</packaging>
   <version>1.0.0-BUILD-SNAPSHOT</version>
 
-  <!-- 버전 설정 -->
   <properties>
     <spring.version>5.3.39</spring.version>
     <spring.security.version>5.8.11</spring.security.version>
@@ -16,7 +15,6 @@
     <log4j.version>2.20.0</log4j.version>
   </properties>
 
-  <!-- 의존성 목록 -->
   <dependencies>
     <!-- Spring Core 및 웹 관련 의존성 -->
     <dependency>
@@ -163,13 +161,23 @@
       <artifactId>jackson-annotations</artifactId>
       <version>2.15.3</version>
     </dependency>
+
+    <!-- ZXing for QR Code -->
+    <dependency>
+      <groupId>com.google.zxing</groupId>
+      <artifactId>core</artifactId>
+      <version>3.4.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.zxing</groupId>
+      <artifactId>javase</artifactId>
+      <version>3.4.1</version>
+    </dependency>
   </dependencies>
 
-  <!-- 빌드 설정 -->
   <build>
     <finalName>ROOT</finalName>
     <plugins>
-      <!-- Maven 컴파일러 플러그인 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -181,7 +189,6 @@
         </configuration>
       </plugin>
 
-      <!-- Maven WAR 플러그인 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -193,3 +200,4 @@
     </plugins>
   </build>
 </project>
+
