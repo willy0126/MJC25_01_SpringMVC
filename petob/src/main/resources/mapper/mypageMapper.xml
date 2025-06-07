@@ -15,16 +15,14 @@
             ob_time         AS obTime,
             notes,
             user_id         AS userId,
-            created_at      AS createdAt
+            created_at      AS createdAt,
+            status          AS status  -- status 컬럼 추가
         FROM
-            obreserve  -- 실제 테이블명 확인
+            obreserve
         WHERE
-            user_id = #{userId} -- 파라미터로 받은 userId와 일치하는 예약만 조회
+            user_id = #{userId}
         ORDER BY
-            -- ob_date와 ob_time을 합쳐서 날짜/시간으로 변환 후 최신순 정렬 (DB 종류에 따라 함수 상이)
-            -- MariaDB/MySQL의 경우:
             STR_TO_DATE(CONCAT(ob_date, ' ', ob_time), '%Y-%m-%d %H:%i') DESC, created_at DESC
-            -- 다른 DB의 경우 해당 DB에 맞는 날짜 변환 함수 사용
     </select>
 
 </mapper>
