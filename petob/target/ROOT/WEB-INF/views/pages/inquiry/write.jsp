@@ -19,11 +19,7 @@
         <main class="main-wrapper">
             <div class="inquiry-container">
                 <!-- 헤더 -->
-                <div class="write-header">
-                    <h2>문의 작성</h2>
-                    <p class="write-subtitle">궁금한 사항이나 요청사항을 자세히 적어주시면 신속하게 답변드리겠습니다.</p>
-                </div>
-                
+                 <h2>${mode == 'edit' ? "문의 수정" : "문의 작성"}</h2>
                 <!-- 성공/에러 메시지 표시 -->
                 <c:if test="${not empty successMessage}">
                     <div class="success-message">${successMessage}</div>
@@ -54,84 +50,91 @@
                     <c:otherwise>
                         <!-- 문의 작성 폼 -->
                         <div class="write-form-container">
-                            <form action="<c:url value='/inquiry/write'/>" method="post" id="inquiryForm" class="write-form">
+                            <!-- 수정 모드에 따라 form action 설정 -->
+                            <c:choose>
+                                <c:when test="${mode == 'edit'}">
+                                    <form id="inquiryForm" action="<c:url value='/inquiry/edit/${inquiry.inquiryId}'/>" method="post">
+                                </c:when>
+                                <c:otherwise>
+                                    <form id="inquiryForm" action="<c:url value='/inquiry/write'/>" method="post">
+                                </c:otherwise>
+                            </c:choose>
+                            
                                 <!-- 카테고리 -->
                                 <div class="form-group">
                                     <label for="category">문의 카테고리 <span class="required">*</span></label>
                                     <select id="category" name="category" class="form-select" required>
                                         <option value="">카테고리를 선택해주세요</option>
-                                        <option value="SERVICE">서비스 문의</option>
-                                        <option value="RESERVATION">예약 문의</option>
-                                        <option value="PRICE">가격 문의</option>
-                                        <option value="LOCATION">지점 문의</option>
-                                        <option value="COMPLAINT">불만 접수</option>
-                                        <option value="SUGGESTION">개선 제안</option>
-                                        <option value="ETC">기타</option>
+                                        <option value="SERVICE" ${inquiry.category == 'SERVICE' ? 'selected' : ''}>서비스 문의</option>
+                                        <option value="RESERVATION" ${inquiry.category == 'RESERVATION' ? 'selected' : ''}>예약 문의</option>
+                                        <option value="PRICE" ${inquiry.category == 'PRICE' ? 'selected' : ''}>가격 문의</option>
+                                        <option value="LOCATION" ${inquiry.category == 'LOCATION' ? 'selected' : ''}>지점 문의</option>
+                                        <option value="COMPLAINT" ${inquiry.category == 'COMPLAINT' ? 'selected' : ''}>불만 접수</option>
+                                        <option value="SUGGESTION" ${inquiry.category == 'SUGGESTION' ? 'selected' : ''}>개선 제안</option>
+                                        <option value="ETC" ${inquiry.category == 'ETC' ? 'selected' : ''}>기타</option>
                                     </select>
-                                    <div class="error-message" id="categoryError">카테고리를 선택해주세요.</div>
+                                    <span id="categoryError" class="error-text"></span>
                                 </div>
-                                
-                                
+
                                 <!-- 제목 -->
                                 <div class="form-group">
                                     <label for="title">제목 <span class="required">*</span></label>
-                                    <input type="text" id="title" name="title" class="form-input" 
-                                           placeholder="문의 제목을 입력해주세요" maxlength="200" required>
-                                    <div class="input-info">
-                                        <span class="char-counter">
-                                            <span id="titleCount">0</span>/200
-                                        </span>
-                                    </div>
-                                    <div class="error-message" id="titleError">제목을 입력해주세요.</div>
+                                    <input type="text" id="title" name="title" class="form-input"
+                                           value="${inquiry.title}" placeholder="문의 제목을 입력해주세요" maxlength="200" required />
+                                    <span id="titleError" class="error-text"></span>
+                                    <div class="char-count"><span id="titleCount">0</span>/200</div>
                                 </div>
-                                
+
                                 <!-- 내용 -->
                                 <div class="form-group">
                                     <label for="content">문의 내용 <span class="required">*</span></label>
                                     <textarea id="content" name="content" class="form-textarea" rows="12"
-                                              placeholder="문의하실 내용을 자세히 적어주세요.&#10;&#10;예시:&#10;- 언제, 어디서 발생한 문제인지&#10;- 구체적인 상황 설명&#10;- 원하시는 해결 방안&#10;&#10;자세한 내용을 적어주실수록 더 정확한 답변을 드릴 수 있습니다." 
-                                              maxlength="2000" required></textarea>
-                                    <div class="input-info">
-                                        <span class="char-counter">
-                                            <span id="contentCount">0</span>/2000
-                                        </span>
-                                    </div>
-                                    <div class="error-message" id="contentError">문의 내용을 입력해주세요.</div>
+                                              placeholder="문의하실 내용을 자세히 적어주세요"
+                                              maxlength="2000" required>${inquiry.content}</textarea>
+                                    <span id="contentError" class="error-text"></span>
+                                    <div class="char-count"><span id="contentCount">0</span>/2000</div>
                                 </div>
-                                
-                                <!-- 답변 받을 이메일 -->
+
+                                <!-- 이메일 -->
                                 <div class="form-group">
                                     <label for="email">답변 받을 이메일</label>
                                     <input type="email" id="email" name="email" class="form-input"
-                                           placeholder="답변을 받을 이메일 주소 (선택사항)" maxlength="100">
-                                    <div class="form-help">
-                                        💡 빠른 답변이 필요한 경우 이메일을 남겨주세요.
-                                    </div>
+                                           value="${inquiry.email}" placeholder="답변을 받을 이메일 주소 (선택사항)" maxlength="100" />
                                 </div>
-                                
-                                <!-- 비밀글 설정 -->
+
+                                <!-- 비밀글 -->
                                 <div class="form-group">
-                                    <div class="checkbox-container">
-                                        <label class="checkbox-label">
-                                            <input type="checkbox" id="isSecret" name="isSecret" class="checkbox-input" value="true">
-                                            <span class="checkbox-custom"></span>
-                                            <span class="checkbox-text">
-                                                🔒 비밀글로 설정 (작성자와 관리자만 볼 수 있습니다)
-                                            </span>
-                                        </label>
-                                    </div>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="isSecret" value="true"
+                                               ${inquiry.isSecret ? 'checked' : ''} />
+                                        비밀글로 설정
+                                    </label>
                                 </div>
-                                
+
                                 <!-- 버튼 -->
-                                <div class="form-buttons">
-                                    <button type="submit" class="btn btn-primary">
-                                        📝 문의 등록
-                                </button>
-                                    <a href="<c:url value='/inquiry/list'/>" class="btn btn-secondary">
-                                        📋 목록으로
-                                    </a>
+                                <div class="button-group">
+                                    <c:choose>
+                                        <c:when test="${mode == 'edit'}">
+                                            <button type="submit" class="btn btn-primary">✏️ 수정하기</button>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <button type="submit" class="btn btn-primary">📝 등록하기</button>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <a href="<c:url value='/inquiry/list'/>" class="btn btn-secondary">📋 목록으로</a>
                                 </div>
                             </form>
+
+                            <!-- 삭제는 별도의 form (form 중첩 방지) -->
+                            <c:if test="${mode == 'edit'}">
+                                <form action="<c:url value='/inquiry/delete/${inquiry.inquiryId}'/>" method="post"
+                                      onsubmit="return confirm('정말 삭제하시겠습니까?');" style="margin-top: 15px;">
+                                    <input type="hidden" name="returnUrl" value="/inquiry/list" />
+                                    <div class="button-group">
+                                        <button type="submit" class="btn btn-danger">🗑️ 삭제하기</button>
+                                    </div>
+                                </form>
+                            </c:if>
                         </div>
                         
                         <!-- 도움말 -->
@@ -182,6 +185,11 @@
         function updateCharCount(inputId, counterId, maxLength) {
             const input = document.getElementById(inputId);
             const counter = document.getElementById(counterId);
+            
+            if (!input || !counter) return;
+            
+            // 초기 카운트 설정
+            counter.textContent = input.value.length;
             
             input.addEventListener('input', function() {
                 const currentLength = this.value.length;
@@ -243,7 +251,9 @@
             }
             
             if (isValid) {
-                return confirm('문의를 등록하시겠습니까?');
+                const mode = '${mode}';
+                const message = mode === 'edit' ? '문의를 수정하시겠습니까?' : '문의를 등록하시겠습니까?';
+                return confirm(message);
             }
             
             return isValid;
@@ -251,6 +261,7 @@
         
         // 에러 표시
         function showError(errorElement, message) {
+            if (!errorElement) return;
             errorElement.textContent = message;
             errorElement.style.display = 'block';
             errorElement.closest('.form-group').classList.add('has-error');
@@ -258,6 +269,7 @@
         
         // 에러 숨김
         function hideError(errorElement) {
+            if (!errorElement) return;
             errorElement.style.display = 'none';
             errorElement.closest('.form-group').classList.remove('has-error');
         }

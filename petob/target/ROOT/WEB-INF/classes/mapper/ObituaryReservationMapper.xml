@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="obituaryReservationMapper">
+
+    <insert id="create" parameterType="com.example.spring.ObituaryReservation.ObituaryReservationDto" useGeneratedKeys="true" keyProperty="reservationId">
+        INSERT INTO obreserve (
+            branch,
+            pet_name,
+            pet_weight,
+            applicant_name,
+            applicant_phone,
+            ob_date,
+            ob_time,
+            notes,
+            user_id,
+            created_at,
+            status ) VALUES (
+            #{branch},
+            #{petName},
+            #{petWeight},
+            #{applicantName},
+            #{applicantPhone},
+            #{obDate},
+            #{obTime},
+            #{notes},
+            #{userId},
+            NOW(),
+            #{status} )
+    </insert>
+
+   <select id="getBookedTimesByDateAndBranch" resultType="java.lang.String" parameterType="map">
+    SELECT ob_time
+    FROM obreserve
+    WHERE ob_date = #{obDate} AND branch = #{branch} AND status = '수락' </select>
+
+ <update id="updateStatus" parameterType="map">
+        UPDATE obreserve
+        SET status = #{status}
+        WHERE reservation_id = #{reservationId}
+    </update>
+
+</mapper>

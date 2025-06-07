@@ -54,10 +54,9 @@ public interface InquiryService {
      * 문의 삭제
      * @param inquiryId 삭제할 문의 ID
      * @param userId 삭제하는 사용자 ID
-     * @param isAdmin 관리자 여부
      * @return 성공 여부
      */
-    boolean delete(Long inquiryId, String userId, boolean isAdmin);
+    boolean delete(Long inquiryId, String userId);
     
     /**
      * 관리자 답변 등록
@@ -92,4 +91,6 @@ public interface InquiryService {
      * @return 전체 개수
      */
     int getTotalCount(String category, String search, String status);
+
+    boolean delete(Long inquiryId, String currentUserId, boolean isAdmin);
 }

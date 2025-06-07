@@ -1,84 +1,179 @@
-.login-container {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 350px;
-}
+/* /resources/css/loginstyle.css */
 
-h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    color: #555;
-}
-
-input[type="text"],
-input[type="password"] {
-    width: calc(100% - 12px);
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-.error-message {
-    color: red;
-    margin-top: 10px;
-    text-align: center;
-}
-
-.link-to-register {
-    margin-top: 15px;
-    text-align: center;
-    color: #777;
-}
-
-.link-to-register a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.link-to-register a:hover {
-    text-decoration: underline;
+/* ------------------
+ * 전체 레이아웃 (중앙 정렬의 핵심)
+ * ------------------ */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa; /* 부드러운 배경색 */
 }
 
 .page-wrapper {
-    /* 다른 스타일 유지 */
-    display: flex; /* flexbox 레이아웃 사용 */
-    justify-content: center; /* 가로 중앙 정렬 */
-    align-items: flex-start; /* 세로 상단 정렬 (필요에 따라 변경) */
-    padding-left: 20px; /* 좌우 여백 조절 */
-    padding-right: 20px;
-    /* max-width: 1200px; /* 최대 너비 제한 (필요에 따라) */
-    margin: 0 auto; /* 페이지 자체를 중앙에 배치 (필요에 따라) */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* 뷰포트 전체 높이를 차지하도록 설정 */
 }
 
-.login-container {
-    /* 기존 스타일 유지 */
-    width: 350px; /* 적절한 로그인 폼 너비 설정 */
-    margin: 20px auto; /* 상하 여백 및 중앙 정렬 */
+.main-wrapper {
+    flex: 1; /* navbar와 footer를 제외한 모든 공간 차지 */
+    display: flex;
+    align-items: center;    /* 수직 중앙 정렬 */
+    justify-content: center;/* 수평 중앙 정렬 */
+    padding: 2rem 1rem;
+}
+
+/* ------------------
+ * 인증(로그인/회원가입) 공통 컨테이너
+ * ------------------ */
+.auth-container {
+    width: 100%;
+    max-width: 420px; /* 최대 너비 살짝 증가 */
+    background-color: #fff;
+    padding: 2.5rem; /* 내부 여백 증가 */
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e9ecef;
+
+     /* ▼▼▼ 애니메이션 효과 추가 ▼▼▼ */
+    animation: fadeInUp 0.7s ease-out both;
+}
+
+.auth-container h2 {
+    text-align: center;
+    color: #2c3e50; /* 짙은 네이비 색상 */
+    margin-bottom: 2rem;
+    font-weight: 600;
+}
+
+/* ------------------
+ * 폼 요소 스타일
+ * ------------------ */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #495057;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #86b7fe; /* 부드러운 파란색 */
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* ------------------
+ * 버튼 스타일
+ * ------------------ */
+.btn {
+    display: inline-block;
+    padding: 0.85rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 600;
+    font-size: 1rem;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5c636a;
+}
+
+/* ------------------
+ * 피드백 및 링크
+ * ------------------ */
+.flash-message {
+    padding: 1rem;
+    margin-top: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.flash-message.error {
+    color: #842029;
+    background-color: #f8d7da;
+    border: 1px solid #f5c2c7;
+}
+
+.flash-message.success {
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border: 1px solid #badbcc;
+}
+
+/* === [수정됨] 로그인 폼 하단 링크 전용 스타일 === */
+.auth-helpers {
+    margin-top: 1.5rem;
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.auth-helpers a {
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-helpers a:hover {
+    text-decoration: underline;
+}
+
+.auth-helpers .link-group {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.auth-helpers .link-group a {
+    color: #495057;
+}
+
+/* --- ▼▼▼ 추가된 애니메이션 스타일 ▼▼▼ --- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px); /* 아래에서 위로 25px 이동하며 나타남 */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

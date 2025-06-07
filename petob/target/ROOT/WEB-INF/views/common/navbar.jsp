@@ -37,8 +37,20 @@
         <c:otherwise>
           <%-- 로그인 시 환영 메시지 표시 --%>
           <span class="welcome-message">${sessionScope.username}님, 소중한 기억과 함께합니다.</span>
-          <a href="${pageContext.request.contextPath}/myPage" class="auth-link">마이페이지</a>
-          <a href="${pageContext.request.contextPath}/logout" class="auth-link">로그아웃</a>
+            <%-- 역할(role)에 따라 다른 링크 표시 --%>
+            <c:choose>
+                <c:when test="${sessionScope.userId == 'admin'}">
+                    <%-- 관리자(ADMIN)일 경우 --%>
+                    <%-- TODO: 실제 관리자 콘솔 페이지 경로로 수정해주세요. --%>
+                    <a href="${pageContext.request.contextPath}/admin/console" class="auth-link"><b>CONSOLE</b></a>
+                </c:when>
+                <c:otherwise>
+                    <%-- 일반 사용자일 경우 --%>
+                    <a href="${pageContext.request.contextPath}/mypage" class="auth-link">마이페이지</a>
+                </c:otherwise>
+            </c:choose>
+            
+            <a href="${pageContext.request.contextPath}/logout" class="auth-link">로그아웃</a>
         </c:otherwise>
       </c:choose>
     </div>
@@ -63,7 +75,7 @@
         <a href="#" class="menu-link">커뮤니티</a>
         <ul class="dropdown">
           <li><a href="${pageContext.request.contextPath}/funeral-reviews">장례 후기</a></li>
-          <li><a href="#">한 마디 나누기</a></li>
+          <li><a href="${pageContext.request.contextPath}/short-reviews">한 마디 나누기</a></li>
         </ul>
       </div>
       <div class="menu-item">
@@ -74,7 +86,7 @@
         <ul class="dropdown">
           <li><a href="${pageContext.request.contextPath}/faq">FAQ</a></li>
           <li><a href="${pageContext.request.contextPath}/inquiry/list">문의 게시판</a></li>
-          <li><a href="#">공지사항</a></li>
+          <li><a href="${pageContext.request.contextPath}/notice/list">공지사항</a></li>
         </ul>
       </div>
 

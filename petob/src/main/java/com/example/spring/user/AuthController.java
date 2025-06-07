@@ -30,7 +30,7 @@ public class AuthController {
     // SLF4J Logger 인스턴스 생성
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     
-    // 절차 및 비용 페이지
+    // 로그인 페이지
     @GetMapping("/login")
     public String showLoginPage() {
         logger.debug("AuthController: 로그인 페이지 요청이 처리되었습니다.");
@@ -38,7 +38,7 @@ public class AuthController {
         return "auth/login"; 
     }
 
-       @GetMapping("/register")
+    @GetMapping("/register")
     public String register(HttpServletRequest request) {
         // 회원가입 화면으로 이동
         return "auth/register";
@@ -47,11 +47,11 @@ public class AuthController {
     @PostMapping("/register")
     public String registerPost(UserDto user, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
-            // --- 디버깅 로그 추가 ---
-    logger.debug("Register attempt with UserDto: userId={}, username={}, phone={}, email={}, password (length)={}",
-            user.getUserId(), user.getUsername(), user.getPhone(), user.getEmail(),
-            (user.getPassword() != null ? user.getPassword().length() : "null"));
-    // --- 디버깅 로그 끝 ---
+        // --- 디버깅 로그 추가 ---
+        logger.debug("Register attempt with UserDto: userId={}, username={}, phone={}, email={}, password (length)={}",
+                user.getUserId(), user.getUsername(), user.getPhone(), user.getEmail(),
+                (user.getPassword() != null ? user.getPassword().length() : "null"));
+        // --- 디버깅 로그 끝 ---
 
         // 회원 가입 처리 (비밀번호 암호화 포함)
         boolean result = userService.create(user);
@@ -67,7 +67,7 @@ public class AuthController {
         return "redirect:/register";
     }
 
-      
+    
     @GetMapping("/find-user-id")
     public String findUserIdGet(HttpServletRequest request) {
         // 아이디 찾기 화면으로 이동
@@ -116,8 +116,8 @@ public class AuthController {
             String newPassword = String.format("%06d", iValue); // 앞자리 0 포함되도록
 
             // 비밀번호 초기화 및 업데이트
-            existsUser.setPassword(newPassword);
-            boolean result = userService.update(existsUser);
+            // existsUser.setPassword(newPassword); // UserDto에 직접 설정하는 대신 서비스 메서드에 일반 텍스트 암호 전달
+            boolean result = userService.resetUserPassword(existsUser.getUserId(), newPassword); // 수정된 호출
 
             if (result) {
                 redirectAttributes.addFlashAttribute("successMessage", "임시 비밀번호는 " + newPassword + " 입니다.");
@@ -145,7 +145,7 @@ public class AuthController {
             session.setAttribute("username", existsUser.getUsername());
             session.setAttribute("role", existsUser.getRole());
 
-            return "redirect:/"; // /profile 로 이동
+            return "redirect:/"; 
         }
 
         // 로그인 실패: 에러 메시지와 함께 로그인 페이지로 리다이렉트

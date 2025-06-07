@@ -6,7 +6,6 @@
 <head>
     <jsp:include page="/WEB-INF/views/common/head.jsp" />
     <title>부고장 작성 - Star's Haven, 반려동물 장례식장</title>
-
     <!-- 부고장 전용 CSS -->
     <link rel="stylesheet" href="<c:url value='/resources/css/obituarystyle.css'/>" />
 </head>

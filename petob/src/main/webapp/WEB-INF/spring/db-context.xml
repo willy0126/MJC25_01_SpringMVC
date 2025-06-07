@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:tx="http://www.springframework.org/schema/tx"
-    xsi:schemaLocation="
-        http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/tx https://www.springframework.org/schema/tx/spring-tx.xsd">
-
+    xmlns:tx="http://www.springframework.org/schema/tx" 
+    xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/tx
+                http://www.springframework.org/schema/tx/spring-tx.xsd
+                http://mybatis.org/schema/mybatis-spring
+                http://mybatis.org/schema/mybatis-spring.xsd">
+  
     <!-- DataSource 설정 -->
     <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
         <property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
@@ -38,6 +42,12 @@
         <property name="configLocation" value="classpath:mybatis-config.xml"/>
         <property name="mapperLocations" value="classpath:mapper/*.xml"/>
     </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <property name="basePackage" value="com.example.spring.mypage, com.example.spring.user, com.example.spring.inquiry, com.example.spring.FuneralReview, com.example.spring.ObituaryReservation, com.example.spring.reservation  com.example.spring.adminconsole, com.example.spring.shortreview"  />
+    <property name="annotationClass" value="org.apache.ibatis.annotations.Mapper"/>
+    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+</bean>
 
     <!-- SqlSessionTemplate 설정 -->
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
