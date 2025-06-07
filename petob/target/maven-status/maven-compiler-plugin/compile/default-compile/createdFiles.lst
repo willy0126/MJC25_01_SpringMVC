@@ -34,7 +34,6 @@ com\example\spring\notice\NoticeServiceImpl.class
 com\example\spring\reservation\ReservationDao.class
 com\example\spring\inquiry\InquiryDao.class
 com\example\spring\ObituaryReservation\ObituaryReservationDao.class
-com\example\spring\notice\NoticeMapper.class
 com\example\spring\InfoController.class
 com\example\spring\FuneralReview\FuneralReviewController.class
 com\example\spring\FuneralReview\FuneralReviewDTO.class
