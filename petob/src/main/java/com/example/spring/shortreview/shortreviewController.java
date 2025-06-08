@@ -20,6 +20,7 @@ public class shortreviewController {
 
     /**
      * 한 마디 남기기 목록 페이지를 보여줍니다.
+     * 
      * @param model 뷰에 데이터를 전달할 모델 객체
      * @return 뷰의 논리적 이름
      */
@@ -27,19 +28,21 @@ public class shortreviewController {
     public String showReviewPage(Model model) {
         // 1. 서비스에서 모든 리뷰 목록을 가져옵니다.
         List<shortreviewDto> reviews = shortReviewService.getAllReviews();
-        
+
         // 2. 모델에 리뷰 목록을 담아 JSP로 전달합니다.
         model.addAttribute("shortReviews", reviews);
-        
+
         // 3. 뷰 파일을 렌더링합니다.
-        // InternalResourceViewResolver 설정에 따라 /WEB-INF/views/pages/shortreview/shortreview.jsp를 찾게 됩니다.
+        // InternalResourceViewResolver 설정에 따라
+        // /WEB-INF/views/pages/shortreview/shortreview.jsp를 찾게 됩니다.
         return "shortreview/shortreview";
     }
 
     /**
      * 한 마디 리뷰 작성 요청을 처리합니다.
-     * @param dto 폼에서 전송된 리뷰 데이터
-     * @param session 현재 세션
+     * 
+     * @param dto                폼에서 전송된 리뷰 데이터
+     * @param session            현재 세션
      * @param redirectAttributes 리다이렉트 시 메시지 전달용
      * @return 리뷰 목록이 있는 페이지로 리다이렉트
      */
@@ -48,7 +51,7 @@ public class shortreviewController {
         String userId = (String) session.getAttribute("userId");
         if (userId == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "로그인이 필요합니다.");
-            return "redirect:/login"; 
+            return "redirect:/login";
         }
 
         dto.setUserId(userId);
@@ -66,8 +69,9 @@ public class shortreviewController {
 
     /**
      * 한 마디 리뷰 삭제 요청을 처리합니다.
-     * @param id 삭제할 리뷰의 ID
-     * @param session 현재 세션
+     * 
+     * @param id                 삭제할 리뷰의 ID
+     * @param session            현재 세션
      * @param redirectAttributes 리다이렉트 시 메시지 전달용
      * @return 이전 페이지로 리다이렉트
      */
@@ -89,6 +93,6 @@ public class shortreviewController {
             redirectAttributes.addFlashAttribute("errorMessage", "리뷰를 삭제할 수 없습니다.");
         }
 
-        return "redirect:/short-reviews"; 
+        return "redirect:/short-reviews";
     }
 }

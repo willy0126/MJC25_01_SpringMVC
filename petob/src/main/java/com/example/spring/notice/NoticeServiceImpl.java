@@ -58,21 +58,21 @@ public class NoticeServiceImpl implements NoticeService {
             }
 
             // 작성일 설정 (DB에서 NOW()로 처리하므로 여기서는 설정하지 않음)
-            
+
             System.out.println("=== 공지사항 생성 디버깅 ===");
             System.out.println("제목: " + noticeDto.getTitle());
             System.out.println("작성자: " + noticeDto.getAuthor());
             System.out.println("내용 길이: " + (noticeDto.getContent() != null ? noticeDto.getContent().length() : 0));
-            
+
             int result = noticeDao.insertNotice(noticeDto);
             boolean success = result > 0;
-            
+
             if (success) {
                 System.out.println("공지사항 생성 성공 - 생성된 ID: " + noticeDto.getId());
             } else {
                 System.err.println("공지사항 생성 실패");
             }
-            
+
             return success;
         } catch (Exception e) {
             System.err.println("createNotice 오류: " + e.getMessage());
@@ -101,16 +101,16 @@ public class NoticeServiceImpl implements NoticeService {
             System.out.println("ID: " + noticeDto.getId());
             System.out.println("제목: " + noticeDto.getTitle());
             System.out.println("작성자: " + noticeDto.getAuthor());
-            
+
             int result = noticeDao.updateNotice(noticeDto);
             boolean success = result > 0;
-            
+
             if (success) {
                 System.out.println("공지사항 수정 성공");
             } else {
                 System.err.println("공지사항 수정 실패");
             }
-            
+
             return success;
         } catch (Exception e) {
             System.err.println("updateNotice 오류: " + e.getMessage());
@@ -123,7 +123,7 @@ public class NoticeServiceImpl implements NoticeService {
     public boolean deleteNotice(Long id) {
         try {
             System.out.println("=== 공지사항 삭제 - ID: " + id + " ===");
-            
+
             // 기존 공지사항 존재 여부 확인
             NoticeDto existingNotice = noticeDao.selectNoticeById(id);
             if (existingNotice == null) {
@@ -133,13 +133,13 @@ public class NoticeServiceImpl implements NoticeService {
 
             int result = noticeDao.deleteNotice(id);
             boolean success = result > 0;
-            
+
             if (success) {
                 System.out.println("공지사항 삭제 성공");
             } else {
                 System.err.println("공지사항 삭제 실패");
             }
-            
+
             return success;
         } catch (Exception e) {
             System.err.println("deleteNotice 오류: " + e.getMessage());
@@ -165,12 +165,12 @@ public class NoticeServiceImpl implements NoticeService {
     public List<NoticeDto> searchNoticesByTitle(String title) {
         try {
             System.out.println("=== 공지사항 제목 검색 - 검색어: '" + title + "' ===");
-            
+
             if (title == null || title.trim().isEmpty()) {
                 System.out.println("검색어가 비어있어 전체 목록을 반환합니다.");
                 return getAllNotices();
             }
-            
+
             List<NoticeDto> notices = noticeDao.selectNoticesByTitle(title.trim());
             System.out.println("검색된 공지사항 개수: " + notices.size());
             return notices;
@@ -187,31 +187,31 @@ public class NoticeServiceImpl implements NoticeService {
             System.err.println("유효성 검증 실패: noticeDto가 null입니다.");
             return false;
         }
-        
+
         // 제목 검증
         if (noticeDto.getTitle() == null || noticeDto.getTitle().trim().isEmpty()) {
             System.err.println("유효성 검증 실패: 제목이 비어있습니다.");
             return false;
         }
-        
+
         // 내용 검증
         if (noticeDto.getContent() == null || noticeDto.getContent().trim().isEmpty()) {
             System.err.println("유효성 검증 실패: 내용이 비어있습니다.");
             return false;
         }
-        
+
         // 제목 길이 검증 (DB 컬럼 크기에 맞춤: VARCHAR(255))
         if (noticeDto.getTitle().length() > 255) {
             System.err.println("유효성 검증 실패: 제목이 너무 깁니다. (최대 255자)");
             return false;
         }
-        
+
         // 작성자 길이 검증 (DB 컬럼 크기에 맞춤: VARCHAR(100))
         if (noticeDto.getAuthor() != null && noticeDto.getAuthor().length() > 100) {
             System.err.println("유효성 검증 실패: 작성자명이 너무 깁니다. (최대 100자)");
             return false;
         }
-        
+
         return true;
     }
 
@@ -219,12 +219,12 @@ public class NoticeServiceImpl implements NoticeService {
     public List<NoticeDto> getRecentNotices(int limit) {
         try {
             System.out.println("=== getRecentNotices 호출 - limit: " + limit + " ===");
-            
+
             if (limit <= 0) {
                 System.err.println("잘못된 limit 값: " + limit);
                 return List.of();
             }
-            
+
             List<NoticeDto> notices = noticeDao.selectRecentNotices(limit);
             System.out.println("메인페이지용 공지사항 " + notices.size() + "개 조회 완료");
             return notices;
@@ -234,7 +234,7 @@ public class NoticeServiceImpl implements NoticeService {
             return List.of(); // 빈 리스트 반환
         }
     }
-    
+
     /**
      * 이전 공지사항 조회 (현재 공지사항보다 작은 ID 중 가장 큰 것)
      * DB에서는 별도 쿼리가 필요하므로 필요시 NoticeDao에 메서드 추가
@@ -251,7 +251,7 @@ public class NoticeServiceImpl implements NoticeService {
             return null;
         }
     }
-    
+
     /**
      * 다음 공지사항 조회 (현재 공지사항보다 큰 ID 중 가장 작은 것)
      * DB에서는 별도 쿼리가 필요하므로 필요시 NoticeDao에 메서드 추가

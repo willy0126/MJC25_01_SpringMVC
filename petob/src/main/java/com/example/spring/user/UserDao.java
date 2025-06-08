@@ -23,6 +23,7 @@ public class UserDao {
      * 사용자 등록
      * - MyBatis 매퍼(userMapper.create)를 호출하여 USERS 테이블에 사용자 정보를 삽입
      * * @param user 가입할 사용자 정보(UserDto)
+     * 
      * @return 삽입 성공 시 1, 실패 시 -1 (또는 영향받은 행 수)
      */
     public int create(UserDto user) {
@@ -76,6 +77,7 @@ public class UserDao {
 
     /**
      * [추가] 사용자 ID로 암호화된 비밀번호 조회
+     * 
      * @param userId 사용자 ID
      * @return 암호화된 비밀번호, 없으면 null
      */
@@ -91,6 +93,7 @@ public class UserDao {
 
     /**
      * [추가] 사용자 삭제 (회원 탈퇴)
+     * 
      * @param userId 삭제할 사용자 ID
      * @return 삭제 성공 시 1, 실패 시 0 또는 -1 (delete 메서드의 반환값에 따라)
      */

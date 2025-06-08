@@ -19,10 +19,12 @@ public class FuneralReviewService {
     // @Autowired // 현재 후기 게시판에서 비밀번호를 사용하지 않으므로 주석 처리
     // PasswordEncoder passwordEncoder;
 
-    public Map<String, Object> list(int currentPage, int listCountPerPage, int pageCountPerPage, String searchType, String searchKeyword) {
+    public Map<String, Object> list(int currentPage, int listCountPerPage, int pageCountPerPage, String searchType,
+            String searchKeyword) {
         int totalCount = funeralReviewDAO.totalCount(searchType, searchKeyword);
         Pagination pagination = new Pagination(currentPage, listCountPerPage, pageCountPerPage, totalCount);
-        List<FuneralReviewDTO> posts = funeralReviewDAO.list(pagination.offset(), listCountPerPage, searchType, searchKeyword);
+        List<FuneralReviewDTO> posts = funeralReviewDAO.list(pagination.offset(), listCountPerPage, searchType,
+                searchKeyword);
 
         Map<String, Object> result = new HashMap<>();
         result.put("posts", posts);

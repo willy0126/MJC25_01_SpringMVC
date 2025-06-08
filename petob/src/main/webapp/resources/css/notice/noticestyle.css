@@ -5,7 +5,7 @@
     border-radius: 8px;
     overflow: hidden;
     background-color: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .notice-list-container .notice-table {
@@ -90,7 +90,7 @@
     .notice-list-container .notice-table {
         font-size: 0.9em;
     }
-    
+
     .notice-list-container .notice-table th,
     .notice-list-container .notice-table td {
         padding: 10px 8px;
@@ -98,12 +98,13 @@
 }
 
 @media (max-width: 480px) {
+
     .notice-list-container .notice-table th,
     .notice-list-container .notice-table td {
         padding: 8px 6px;
         font-size: 0.85em;
     }
-    
+
     .notice-list-container .notice-table .notice-title {
         display: block;
         white-space: nowrap;

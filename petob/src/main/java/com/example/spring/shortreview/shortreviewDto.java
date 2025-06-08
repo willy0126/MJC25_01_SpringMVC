@@ -14,6 +14,7 @@ public class shortreviewDto {
 
     /**
      * JSP에서 'user**' 형식으로 마스킹된 아이디를 반환하는 헬퍼 메서드
+     * 
      * @return 마스킹 처리된 사용자 ID
      */
     public String getMaskedUserId() {

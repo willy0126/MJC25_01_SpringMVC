@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.dao.DataAccessException;
 
-
 import java.util.Collections;
 import java.util.List;
 
@@ -23,6 +22,7 @@ public class adminconsoleDao {
 
     /**
      * 모든 간편 상담 예약 목록을 조회합니다.
+     * 
      * @return 간편 상담 예약 DTO 리스트
      */
     public List<ReservationDto> selectAllQuickCounselingReservations() {
@@ -39,6 +39,7 @@ public class adminconsoleDao {
 
     /**
      * 모든 장례 예약 목록을 조회합니다.
+     * 
      * @return 장례 예약 DTO 리스트
      */
     public List<ObituaryReservationDto> selectAllFuneralReservations() {

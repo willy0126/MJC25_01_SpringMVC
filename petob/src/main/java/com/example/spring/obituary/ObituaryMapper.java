@@ -14,4 +14,3 @@ public interface ObituaryMapper {
     @Select("SELECT * FROM obituary ORDER BY id DESC LIMIT 1")
     ObituaryDto selectLatestObituary();
 }
-

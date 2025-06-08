@@ -15,19 +15,19 @@ import javax.servlet.http.HttpServletRequest; // Added this import
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-import com.example.spring.user.UserDto; 
-import com.example.spring.user.UserService; 
+import com.example.spring.user.UserDto;
+import com.example.spring.user.UserService;
 
 @Controller
 @RequestMapping(value = "/mypage")
 public class mypageController {
 
     private static final Logger logger = LoggerFactory.getLogger(mypageController.class);
-    
-    @Autowired 
+
+    @Autowired
     private mypageService mypageService;
 
-    @Autowired 
+    @Autowired
     private UserService userService;
 
     // 기본 마이페이지 (예약 내역 등)
@@ -35,17 +35,17 @@ public class mypageController {
     public String userMyPage(HttpSession session, Model model) {
         String currentUserId = (String) session.getAttribute("userId");
         if (currentUserId == null) {
-             return "redirect:/login";
+            return "redirect:/login";
         }
 
         logger.info("마이페이지 요청: 사용자 ID '{}'", currentUserId);
-        
+
         List<mypageDto> funeralReservationList = mypageService.getMyFuneralReservations(currentUserId);
         model.addAttribute("funeralReservationList", funeralReservationList);
         if (funeralReservationList.isEmpty()) {
             model.addAttribute("funeralMessage", "현재까지 신청하신 장례 예약 내역이 없습니다.");
         }
-        
+
         // 사용자 정보도 함께 전달 (이름 등 표시용)
         UserDto userToRead = new UserDto();
         userToRead.setUserId(currentUserId);
@@ -103,7 +103,7 @@ public class mypageController {
             @RequestParam("newPassword") String newPassword,
             @RequestParam("confirmNewPassword") String confirmNewPassword,
             HttpSession session, RedirectAttributes redirectAttributes) {
-        
+
         String userId = (String) session.getAttribute("userId");
         if (userId == null) {
             return "redirect:/login";
@@ -125,7 +125,7 @@ public class mypageController {
         }
         return "redirect:/mypage/change-password";
     }
-    
+
     // --- 비밀번호 확인 (정보 수정, 탈퇴 등 민감한 작업 전) ---
     @GetMapping("/confirm-password")
     public String confirmPasswordForm(@RequestParam String action, HttpSession session, Model model) {
@@ -141,7 +141,7 @@ public class mypageController {
             @RequestParam String password,
             @RequestParam String action, // 다음 액션 구분
             HttpSession session, RedirectAttributes redirectAttributes) {
-        
+
         String userId = (String) session.getAttribute("userId");
         if (userId == null) {
             return "redirect:/login";
@@ -166,19 +166,19 @@ public class mypageController {
     // --- 회원 탈퇴 관련 ---
     @GetMapping("/withdraw") // 비밀번호 확인 페이지를 먼저 거치도록 변경
     public String withdrawPrompt(HttpSession session, RedirectAttributes redirectAttributes) {
-         if (session.getAttribute("userId") == null) {
+        if (session.getAttribute("userId") == null) {
             return "redirect:/login";
         }
         // 바로 탈퇴 페이지로 보내지 않고, 비밀번호 확인을 먼저 거치도록 유도
         return "redirect:/mypage/confirm-password?action=withdraw";
     }
-    
+
     @GetMapping("/withdraw-confirm") // 비밀번호 확인 후 실제 탈퇴 의사를 묻는 페이지
     public String withdrawConfirmForm(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
         if (session.getAttribute("userId") == null) {
             return "redirect:/login";
         }
-        if (session.getAttribute("passwordConfirmed") == null || !(Boolean)session.getAttribute("passwordConfirmed")) {
+        if (session.getAttribute("passwordConfirmed") == null || !(Boolean) session.getAttribute("passwordConfirmed")) {
             redirectAttributes.addFlashAttribute("errorMessage", "비밀번호 확인이 필요합니다.");
             return "redirect:/mypage/confirm-password?action=withdraw";
         }
@@ -189,30 +189,30 @@ public class mypageController {
     @PostMapping("/withdraw")
     public String withdrawUser(
             HttpServletRequest request, // Added HttpServletRequest
-            HttpSession session, 
-            RedirectAttributes redirectAttributes, 
-            @RequestParam(value="confirmWithdraw", required=false) String confirmWithdraw) {
+            HttpSession session,
+            RedirectAttributes redirectAttributes,
+            @RequestParam(value = "confirmWithdraw", required = false) String confirmWithdraw) {
         String userId = (String) session.getAttribute("userId");
         if (userId == null) {
             return "redirect:/login";
         }
-        
-        String passwordFromForm = request.getParameter("password"); 
+
+        String passwordFromForm = request.getParameter("password");
 
         if (passwordFromForm == null || passwordFromForm.isEmpty()) {
-             redirectAttributes.addFlashAttribute("errorMessage", "회원 탈퇴를 위해 비밀번호를 입력해주세요.");
-             return "redirect:/mypage/withdraw-confirm"; 
+            redirectAttributes.addFlashAttribute("errorMessage", "회원 탈퇴를 위해 비밀번호를 입력해주세요.");
+            return "redirect:/mypage/withdraw-confirm";
         }
 
-        int result = userService.deleteUser(userId, passwordFromForm); 
+        int result = userService.deleteUser(userId, passwordFromForm);
 
         if (result == 0) {
-            session.invalidate(); 
+            session.invalidate();
             redirectAttributes.addFlashAttribute("successMessage", "회원 탈퇴가 완료되었습니다. 이용해주셔서 감사합니다.");
-            return "redirect:/"; 
+            return "redirect:/";
         } else if (result == 1) {
             redirectAttributes.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않아 탈퇴할 수 없습니다.");
-             return "redirect:/mypage/withdraw-confirm"; 
+            return "redirect:/mypage/withdraw-confirm";
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "회원 탈퇴 처리 중 오류가 발생했습니다.");
             return "redirect:/mypage";

@@ -17,6 +17,3 @@ public class ObituaryService {
         return obituaryMapper.selectLatestObituary();
     }
 }
-
-
-

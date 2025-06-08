@@ -92,7 +92,8 @@
                                         사업자 정보 확인하기
                                     </a>
                                 </p>
-                                <a href="${pageContext.request.contextPath}/obituary-reservation/form?branch=main" class="btn btn-primary mt-3">본점 예약하기</a>
+                                <a href="${pageContext.request.contextPath}/obituary-reservation/form?branch=main"
+                                    class="btn btn-primary mt-3">본점 예약하기</a>
                             </div>
                         </div>
                     </div>
@@ -124,4 +125,5 @@
                 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
                 <jsp:include page="/WEB-INF/views/common/script.jsp" />
         </body>
+
         </html>
