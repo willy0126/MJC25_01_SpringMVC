@@ -18,11 +18,13 @@
     <context:component-scan base-package="com.example.spring" />
     <interceptors>
         <interceptor>
-            <mapping path="/**"/> <exclude-mapping path="/resources/**"/>
+            <mapping path="/**"/>
+            <exclude-mapping path="/resources/**"/>
             <exclude-mapping path="/css/**"/>
             <exclude-mapping path="/js/**"/>
             <exclude-mapping path="/images/**"/>
-            <exclude-mapping path="/"/> <exclude-mapping path="/login"/>
+            <exclude-mapping path="/"/>
+            <exclude-mapping path="/login"/>
             <exclude-mapping path="/register"/>
             <exclude-mapping path="/check-user-id"/>
             <exclude-mapping path="/check-phone"/>

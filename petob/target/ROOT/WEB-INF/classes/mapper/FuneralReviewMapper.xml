@@ -139,7 +139,7 @@
         ]]>
     </select>
 
-     <update id="update" parameterType="com.example.spring.FuneralReview.FuneralReviewDTO">
+    <update id="update" parameterType="com.example.spring.FuneralReview.FuneralReviewDTO">
         UPDATE REVIEWS
         SET
             REVIEW_TITLE = #{reviewTitle},
@@ -152,7 +152,7 @@
         WHERE ID = #{id}
         LIMIT 1
     </update>
-    
+
     <update id="updateFile" parameterType="com.example.spring.FuneralReview.FuneralReviewDTO">
         <![CDATA[
         UPDATE REVIEWS
@@ -202,7 +202,7 @@
                     AND U.USERNAME LIKE CONCAT('%', #{searchKeyword}, '%')
                     ]]>
                 </when>
-                 <when test="searchType == 'userId'">
+                <when test="searchType == 'userId'">
                     <![CDATA[
                     AND R.USER_ID LIKE CONCAT('%', #{searchKeyword}, '%')
                     ]]>
