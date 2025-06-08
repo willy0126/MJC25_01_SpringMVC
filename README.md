@@ -48,19 +48,19 @@
 
 |학번|이름|개발|
 |:------:|:---:|:---:|
-|2020261041|<a href="https://github.com/willy0126" target="_blank" rel="noopener noreferrer">박지원</a>|테스트|
-|2020261074|<a href="https://github.com/AnByoungJun0605" target="_blank" rel="noopener noreferrer">안병준</a>|테스트|
-|2021261037|<a href="https://github.com/Asj-Cell" target="_blank" rel="noopener noreferrer">안성준</a>|테스트|
-|2022261067|<a href="https://github.com/chltj" target="_blank" rel="noopener noreferrer">최서연</a>|테스트|
+|2020261041|<a href="https://github.com/willy0126" target="_blank" rel="noopener noreferrer">박지원</a>|Front-End|
+|2020261074|<a href="https://github.com/AnByoungJun0605" target="_blank" rel="noopener noreferrer">안병준</a>|Front-End|
+|2021261037|<a href="https://github.com/Asj-Cell" target="_blank" rel="noopener noreferrer">안성준</a>|Back-End|
+|2022261067|<a href="https://github.com/chltj" target="_blank" rel="noopener noreferrer">최서연</a>|Front-End|
 
 
 <br><br>
 
 ## ⌛ <span id=3> 3. 개발 일정</span>
 
-> 계획 수립 : 2025.04.15 ~ 2025.04.28 (프로세스 흐름도 및 Figma로 디자인 수립)
+> 계획 수립 : 2025.04.15 ~ 2025.04.28 <프로세스 흐름도 및 기능 명세서 작성, Figma 디자인 수립>
 
-> 개발 기간 : 2025.04.29 ~ 진행중
+> 개발 기간 : 2025.04.29 ~ 2025.06.09
 
 <br><br>
 
