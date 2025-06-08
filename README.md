@@ -27,6 +27,9 @@
 
 ## ❗필독해야 할 사전 구성 내용 
 <br>
+
+### 1. jQuery Validate
+<br>
 기본적으로 register.jsp 에서 jQuery Validate 설정 부분 중 116번째, 165번째 line의 noAdmin을 주석처리 해두었습니다.<br>
 admin 계정을 생성한 후 해당 주석을 제거하면 정상적으로 admin 가입 방지용 유효성 검사가 작동합니다.
 
@@ -38,8 +41,12 @@ ID: admin
 PW: admin000
 <br><br>
 
-
 관리자 Console이 구현되어 있기 때문에 필요한 내용으로 사전에 공지합니다.
+<br><br>
+
+### 2. Schema.sql 파일
+<br>
+프로젝트 루트 폴더에 있는 Schema.sql 파일 쿼리문을 전체 복사하여 붙여넣고 실행하여야 합니다.
 <br><br>
 
 ## 📝 <span id=1> 1. 프로젝트 소개</span>
@@ -371,6 +378,8 @@ PW: admin000
 
 ## 💻 <span id="6"> 6. 주요 기능 소개</span>
 <br><br>
+해당 사이트를 실제로 구동해보기 위한 번거로운 작업(DB 설정, 라이브러리 설치, 서버 설치 및 실행)이 너무나 많기에 사이트 주요 기능들에 대해서<br>gif 형식으로 첨부하여 소개합니다.
+
 
 #### 1. 로그인 및 회원가입 페이지
 ![Image](https://github.com/user-attachments/assets/2085b18d-e0e6-4e31-923f-2403cf33f879)
