@@ -6,6 +6,7 @@
 ### 2025 MJC 웹프로그래밍실습 팀프로젝트
 
 </div>
+
   
 <br>
 
@@ -23,6 +24,23 @@
 11. [프로젝트 후기](#11)
 
 <br>
+
+## ❗필독해야 할 사전 구성 내용 
+<br>
+기본적으로 register.jsp 에서 jQuery Validate 설정 부분 중 116번째, 165번째 line의 noAdmin을 주석처리 해두었습니다.<br>
+admin 계정을 생성한 후 해당 주석을 제거하면 정상적으로 admin 가입 방지용 유효성 검사가 작동합니다.
+
+<br><br> 
+<b>사이트 테스트용으로 생성하는 admin 계정 정보</b>
+<br><br>
+ID: admin
+<br>
+PW: admin000
+<br><br>
+
+
+관리자 Console이 구현되어 있기 때문에 필요한 내용으로 사전에 공지합니다.
+<br><br>
 
 ## 📝 <span id=1> 1. 프로젝트 소개</span>
 
@@ -352,8 +370,49 @@
 
 
 ## 💻 <span id="6"> 6. 주요 기능 소개</span>
+<br><br>
 
-최종 단계에 추가할 예정. (이곳에 사이트 이용 gif 추가 예정)
+#### 1. 로그인 및 회원가입 페이지
+![Image](https://github.com/user-attachments/assets/2085b18d-e0e6-4e31-923f-2403cf33f879)
+![Image](https://github.com/user-attachments/assets/ce46bbb6-370b-4585-8b27-a59dab9c41f3)
+<br><br>
+
+#### 2. 로그인 후 사용자 웰컴 메세지 구현
+![Image](https://github.com/user-attachments/assets/cfef4cb7-1d42-4cdb-9dd5-c8d938e62d2e)
+<br><br>
+
+#### 3. 메인 페이지 실시간 통계 카운터 기능
+![Image](https://github.com/user-attachments/assets/e8038955-fa3c-4216-8b0f-a90c9c2d153a)
+<br><br>
+
+#### 4. 동적 시나리오 기반 챗봇 기능
+![Image](https://github.com/user-attachments/assets/cd475b94-48b1-45d6-87fe-1a0911beb26d)
+<br><br>
+
+#### 5. 이용 안내 - 절차 및 비용 페이지
+![Image](https://github.com/user-attachments/assets/9d616ab7-347d-4598-b60f-f67c2bdcd006)
+<br><br>
+
+#### 6. 지점 위치 페이지: 네이버 Maps API 사용
+![Image](https://github.com/user-attachments/assets/8816c686-bacf-460e-a365-516d56aa2b32)
+<br><br>
+
+#### 7. 자주 묻는 질문 (FAQ)
+![Image](https://github.com/user-attachments/assets/f4b19410-c799-42cd-b264-25d8807db8ff)
+<br><br>
+
+#### 8. 지점 소개 페이지
+![Image](https://github.com/user-attachments/assets/9b1b8805-5565-44c3-9f5b-ffefbd02da93)
+<br><br>
+
+#### 9. 커뮤니티 - 한 마디 남기기 페이지
+![Image](https://github.com/user-attachments/assets/e17be3a0-3ad6-4ed5-aba0-13b4ae8298a9)
+<br><br>
+
+#### 10. 어드민 계정 로그인 시
+![Image](https://github.com/user-attachments/assets/2aea9a95-9ff4-446f-8fb8-1779ed7a0160)
+
+
 
 <br><br>
 
