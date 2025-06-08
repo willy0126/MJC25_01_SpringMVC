@@ -334,51 +334,51 @@
     .main-wrapper {
         padding: 60px 0 40px 0;
     }
-    
+
     .inquiry-container {
         padding: 0 15px;
     }
-    
+
     .inquiry-container h2 {
         font-size: 2rem;
         margin-bottom: 2rem;
     }
-    
+
     .inquiry-detail {
         padding: 25px 20px;
         border-radius: 12px;
     }
-    
+
     .inquiry-field {
         margin-bottom: 20px;
         padding-bottom: 15px;
     }
-    
+
     .inquiry-field label {
         font-size: 1rem;
     }
-    
+
     .inquiry-field p {
         padding: 12px 15px;
         font-size: 0.95rem;
     }
-    
+
     .inquiry-reply,
     .admin-reply {
         padding: 20px 15px;
         margin-top: 25px;
     }
-    
+
     .button-group {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .btn {
         width: 100%;
         max-width: 300px;
     }
-    
+
     .admin-reply textarea {
         min-height: 100px;
         font-size: 0.95rem;
@@ -389,16 +389,16 @@
     .inquiry-container h2 {
         font-size: 1.8rem;
     }
-    
+
     .inquiry-detail {
         padding: 20px 15px;
     }
-    
+
     .status-badge {
         font-size: 0.8rem;
         padding: 6px 12px;
     }
-    
+
     .inquiry-reply h4,
     .admin-reply h4 {
         font-size: 1.1rem;

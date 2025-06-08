@@ -29,14 +29,15 @@ public class ObituaryController {
     // 부고장 제출 처리
     @PostMapping("/obituary/submit")
     public String submitObituary(@ModelAttribute ObituaryDto dto,
-                                 @RequestParam("photo") MultipartFile photoFile,
-                                 HttpServletRequest request,
-                                 Model model) {
+            @RequestParam("photo") MultipartFile photoFile,
+            HttpServletRequest request,
+            Model model) {
 
         // 파일 업로드 경로 설정
         String realPath = request.getServletContext().getRealPath("/resources/uploads/");
         File uploadDir = new File(realPath);
-        if (!uploadDir.exists()) uploadDir.mkdirs();
+        if (!uploadDir.exists())
+            uploadDir.mkdirs();
 
         // 파일 저장 처리
         if (!photoFile.isEmpty()) {
@@ -59,6 +60,3 @@ public class ObituaryController {
         return "obituary_result";
     }
 }
-
-
-

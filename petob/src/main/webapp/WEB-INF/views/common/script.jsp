@@ -9,7 +9,7 @@
             <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/tinymce@7.5.1/tinymce.min.js"></script>
-            
+
             <script>
                 document.addEventListener('DOMContentLoaded', () => {
                     // carousel fade-in 효과 적용 (기존 로직)

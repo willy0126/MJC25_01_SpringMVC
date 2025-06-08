@@ -42,11 +42,11 @@ public class ReservationController {
      * 예약 등록 처리
      */
     @PostMapping("/reservation")
-    public String createReservation(ReservationDto reservation, HttpServletRequest request, 
-                                  RedirectAttributes redirectAttributes) {
-        
+    public String createReservation(ReservationDto reservation, HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
+
         logger.debug("예약 시도: name={}, phone={}, email={}, date={}, time={}",
-                reservation.getUsername(), reservation.getPhone(), reservation.getEmail(), 
+                reservation.getUsername(), reservation.getPhone(), reservation.getEmail(),
                 reservation.getDate(), reservation.getTime());
 
         // 예약 등록 처리
@@ -73,10 +73,10 @@ public class ReservationController {
      * 전화번호로 예약 조회
      */
     @PostMapping("/reservation/check")
-    public String checkReservation(@RequestParam("phone") String phone, 
-                                 HttpServletRequest request,
-                                 RedirectAttributes redirectAttributes) {
-        
+    public String checkReservation(@RequestParam("phone") String phone,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
+
         List<ReservationDto> reservations = reservationService.getReservationsByPhone(phone);
 
         if (reservations != null && !reservations.isEmpty()) {
@@ -95,9 +95,9 @@ public class ReservationController {
     @PostMapping("/reservation/check-booked-times")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> checkBookedTimes(@RequestParam("date") String date) {
-        
+
         List<String> bookedTimes = reservationService.getBookedTimes(date);
-        
+
         Map<String, Object> response = new HashMap<>();
         response.put("bookedTimes", bookedTimes != null ? bookedTimes : new java.util.ArrayList<>());
 
@@ -112,10 +112,10 @@ public class ReservationController {
     @PostMapping("/reservation/check-time-available")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> checkTimeAvailable(@RequestParam("date") String date,
-                                                                 @RequestParam("time") String time) {
-        
+            @RequestParam("time") String time) {
+
         boolean available = reservationService.isTimeSlotAvailable(date, time);
-        
+
         Map<String, Object> response = new HashMap<>();
         response.put("available", available);
 

@@ -15,8 +15,7 @@
     </resultMap>
 
     <!-- 예약 등록 -->
-    <insert id="create" parameterType="com.example.spring.reservation.ReservationDto"
-            useGeneratedKeys="true" keyProperty="reservationId">
+    <insert id="create" parameterType="com.example.spring.reservation.ReservationDto" useGeneratedKeys="true" keyProperty="reservationId">
         INSERT INTO reservations (
             username,
             phone,
@@ -35,8 +34,7 @@
     </insert>
 
     <!-- 특정 날짜/시간 중복 체크 -->
-    <select id="checkTimeSlot" parameterType="com.example.spring.reservation.ReservationDto" 
-            resultType="int">
+    <select id="checkTimeSlot" parameterType="com.example.spring.reservation.ReservationDto" resultType="int">
         SELECT COUNT(*)
         FROM reservations
         WHERE date = #{date}
@@ -67,8 +65,7 @@
     </select>
 
     <!-- 예약 단건 조회 -->
-    <select id="read" parameterType="com.example.spring.reservation.ReservationDto" 
-            resultMap="reservationResultMap">
+    <select id="read" parameterType="com.example.spring.reservation.ReservationDto" resultMap="reservationResultMap">
         SELECT 
             reservation_id,
             username,

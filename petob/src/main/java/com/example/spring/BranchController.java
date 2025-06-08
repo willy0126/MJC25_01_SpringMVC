@@ -1,4 +1,4 @@
-package com.example.spring; 
+package com.example.spring;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,21 +15,21 @@ public class BranchController {
     @GetMapping("/branches/mainbranch")
     public String showMainbranchPage() {
         logger.debug("BranchController: 본점 페이지 요청이 처리되었습니다.");
-        
-        return "mainbranch"; 
+
+        return "mainbranch";
     }
 
     @GetMapping("/branches/subbranch1")
     public String showBranch1Page() {
         logger.debug("BranchController: 홍대 페이지 요청이 처리되었습니다.");
-        
-        return "subbranch1"; 
+
+        return "subbranch1";
     }
 
     @GetMapping("/branches/subbranch2")
     public String showBranch2Page() {
         logger.debug("BranchController: 강남 페이지 요청이 처리되었습니다.");
-        
-        return "subbranch2"; 
+
+        return "subbranch2";
     }
 }

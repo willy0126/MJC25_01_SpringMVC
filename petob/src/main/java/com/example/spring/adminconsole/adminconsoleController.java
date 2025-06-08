@@ -67,7 +67,8 @@ public class adminconsoleController {
         return updateObituaryStatus(reservationId, "거절", session, redirectAttributes);
     }
 
-    private String updateObituaryStatus(int reservationId, String status, HttpSession session, RedirectAttributes redirectAttributes) {
+    private String updateObituaryStatus(int reservationId, String status, HttpSession session,
+            RedirectAttributes redirectAttributes) {
         String adminId = (String) session.getAttribute("userId");
         if (!"admin".equals(adminId)) {
             redirectAttributes.addFlashAttribute("errorMessage", "권한이 없습니다.");

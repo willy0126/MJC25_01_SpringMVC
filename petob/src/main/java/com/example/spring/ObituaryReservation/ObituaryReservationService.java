@@ -29,7 +29,8 @@ public class ObituaryReservationService {
 
             int result = obituaryReservationDao.create(dto);
             if (result > 0) {
-                logger.info("장례 예약 정보 저장 성공: ID - {}, 사용자 ID - {}, 지점 - {}, 상태 - {}", dto.getReservationId(), dto.getUserId(), dto.getBranch(), dto.getStatus());
+                logger.info("장례 예약 정보 저장 성공: ID - {}, 사용자 ID - {}, 지점 - {}, 상태 - {}", dto.getReservationId(),
+                        dto.getUserId(), dto.getBranch(), dto.getStatus());
                 return true;
             } else {
                 logger.warn("장례 예약 정보 저장 실패 (영향 받은 행 없음): 사용자 ID - {}, 지점 - {}", dto.getUserId(), dto.getBranch());
@@ -52,8 +53,9 @@ public class ObituaryReservationService {
 
     /**
      * 장례 예약의 상태를 업데이트합니다.
+     * 
      * @param reservationId 예약 ID.
-     * @param status 새로운 상태 ("수락" 또는 "거절").
+     * @param status        새로운 상태 ("수락" 또는 "거절").
      * @return 성공 시 true, 그렇지 않으면 false.
      */
     @Transactional

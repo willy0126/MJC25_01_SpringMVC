@@ -75,7 +75,7 @@
         ]]>
     </select>
 
-  <update id="update" parameterType="com.example.spring.user.UserDto">
+    <update id="update" parameterType="com.example.spring.user.UserDto">
         UPDATE USERS
         <set>
             <if test="username != null and username != ''">

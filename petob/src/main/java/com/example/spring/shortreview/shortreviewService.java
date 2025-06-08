@@ -13,6 +13,7 @@ public class shortreviewService {
 
     /**
      * 모든 한 마디 리뷰 목록을 가져옵니다.
+     * 
      * @return 리뷰 목록
      */
     public List<shortreviewDto> getAllReviews() {
@@ -21,6 +22,7 @@ public class shortreviewService {
 
     /**
      * 새로운 한 마디 리뷰를 생성합니다.
+     * 
      * @param dto 생성할 리뷰 정보
      * @return 성공 여부
      */
@@ -34,8 +36,9 @@ public class shortreviewService {
 
     /**
      * 한 마디 리뷰를 삭제합니다. 작성자 본인 또는 관리자만 삭제 가능합니다.
-     * @param reviewId 삭제할 리뷰 ID
-     * @param currentUserId 현재 로그인한 사용자 ID
+     * 
+     * @param reviewId        삭제할 리뷰 ID
+     * @param currentUserId   현재 로그인한 사용자 ID
      * @param currentUserRole 현재 로그인한 사용자의 역할
      * @return 성공 여부
      */

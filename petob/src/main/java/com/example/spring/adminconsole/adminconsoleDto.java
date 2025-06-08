@@ -13,7 +13,8 @@ public class adminconsoleDto {
     public adminconsoleDto() {
     }
 
-    public adminconsoleDto(List<ReservationDto> quickCounselingList, List<ObituaryReservationDto> funeralReservationList) {
+    public adminconsoleDto(List<ReservationDto> quickCounselingList,
+            List<ObituaryReservationDto> funeralReservationList) {
         this.quickCounselingList = quickCounselingList;
         this.funeralReservationList = funeralReservationList;
     }
@@ -38,7 +39,8 @@ public class adminconsoleDto {
     public String toString() {
         return "AdminConsoleDto{" +
                 "quickCounselingListCount=" + (quickCounselingList != null ? quickCounselingList.size() : 0) +
-                ", funeralReservationListCount=" + (funeralReservationList != null ? funeralReservationList.size() : 0) +
+                ", funeralReservationListCount=" + (funeralReservationList != null ? funeralReservationList.size() : 0)
+                +
                 '}';
     }
 }

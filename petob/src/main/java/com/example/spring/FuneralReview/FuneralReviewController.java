@@ -65,22 +65,21 @@ public class FuneralReviewController {
         return absolutePath;
     }
 
-    // (listGet, createGet, createPost, readGet, updateGet, updatePost, deletePost, download 메서드는 이전과 동일하게 유지)
+    // (listGet, createGet, createPost, readGet, updateGet, updatePost, deletePost,
+    // download 메서드는 이전과 동일하게 유지)
     // ... 이전 코드 생략 ...
 
     @GetMapping("")
     public String listGet(
-        @RequestParam(required = false) String searchType,
-        @RequestParam(required = false) String searchKeyword,
-        @RequestParam(value = "page", defaultValue = "1") int currentPage,
-        Model model
-    ) {
+            @RequestParam(required = false) String searchType,
+            @RequestParam(required = false) String searchKeyword,
+            @RequestParam(value = "page", defaultValue = "1") int currentPage,
+            Model model) {
         int listCountPerPage = 10;
         int pageCountPerPage = 5;
 
         Map<String, Object> result = funeralReviewService.list(
-            currentPage, listCountPerPage, pageCountPerPage, searchType, searchKeyword
-        );
+                currentPage, listCountPerPage, pageCountPerPage, searchType, searchKeyword);
 
         model.addAttribute("posts", result.get("posts"));
         model.addAttribute("pagination", result.get("pagination"));
@@ -100,10 +99,9 @@ public class FuneralReviewController {
 
     @PostMapping("/create")
     public String createPost(
-        FuneralReviewDTO post,
-        HttpServletRequest request,
-        RedirectAttributes redirectAttributes
-    ) {
+            FuneralReviewDTO post,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
         HttpSession session = request.getSession();
         String userId = (String) session.getAttribute("userId");
 
@@ -163,7 +161,8 @@ public class FuneralReviewController {
     }
 
     @GetMapping("/{id}/update")
-    public String updateGet(@PathVariable("id") int id, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String updateGet(@PathVariable("id") int id, Model model, HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
         HttpSession session = request.getSession();
         String currentUserId = (String) session.getAttribute("userId");
         String currentUserRole = (String) session.getAttribute("role");
@@ -175,7 +174,8 @@ public class FuneralReviewController {
             return "redirect:/funeral-reviews";
         }
 
-        if (currentUserId == null || (!currentUserId.equals(post.getUserId()) && (currentUserRole == null || !currentUserRole.equals("ADMIN")))) {
+        if (currentUserId == null || (!currentUserId.equals(post.getUserId())
+                && (currentUserRole == null || !currentUserRole.equals("ADMIN")))) {
             redirectAttributes.addFlashAttribute("errorMessage", "수정 권한이 없습니다.");
             return "redirect:/funeral-reviews/" + id;
         }
@@ -202,11 +202,12 @@ public class FuneralReviewController {
             return "redirect:/funeral-reviews";
         }
 
-        if (currentUserId == null || (!currentUserId.equals(originalPost.getUserId()) && (currentUserRole == null || !currentUserRole.equals("ADMIN")))) {
+        if (currentUserId == null || (!currentUserId.equals(originalPost.getUserId())
+                && (currentUserRole == null || !currentUserRole.equals("ADMIN")))) {
             redirectAttributes.addFlashAttribute("errorMessage", "수정 권한이 없습니다.");
             return "redirect:/funeral-reviews/" + id;
         }
-        
+
         post.setId(id);
         post.setUserId(originalPost.getUserId());
 
@@ -266,10 +267,9 @@ public class FuneralReviewController {
 
     @PostMapping("/{id}/delete")
     public String deletePost(
-        @PathVariable("id") int id,
-        HttpServletRequest request,
-        RedirectAttributes redirectAttributes
-    ) {
+            @PathVariable("id") int id,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
         HttpSession session = request.getSession();
         String currentUserId = (String) session.getAttribute("userId");
         String currentUserRole = (String) session.getAttribute("role");
@@ -281,7 +281,8 @@ public class FuneralReviewController {
             return "redirect:/funeral-reviews";
         }
 
-        if (currentUserId == null || (!currentUserId.equals(originalPost.getUserId()) && (currentUserRole == null || !currentUserRole.equals("ADMIN")))) {
+        if (currentUserId == null || (!currentUserId.equals(originalPost.getUserId())
+                && (currentUserRole == null || !currentUserRole.equals("ADMIN")))) {
             redirectAttributes.addFlashAttribute("errorMessage", "삭제 권한이 없습니다.");
             return "redirect:/funeral-reviews/" + id;
         }
@@ -353,8 +354,8 @@ public class FuneralReviewController {
         } catch (ResponseStatusException e) { // ResponseStatusException을 명시적으로 캐치
             throw e; // 그대로 다시 던져서 Spring이 처리하도록 함
         } catch (IOException e) {
-             logger.error("파일 처리 오류 (download): {}", filePath, e);
-             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            logger.error("파일 처리 오류 (download): {}", filePath, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -411,8 +412,8 @@ public class FuneralReviewController {
 
     // uploadPathByOS() 메서드는 더 이상 사용하지 않으므로 삭제 또는 주석 처리합니다.
     /*
-    public String uploadPathByOS() {
-        // ... (이전 OS별 경로 로직) ...
-    }
-    */
+     * public String uploadPathByOS() {
+     * // ... (이전 OS별 경로 로직) ...
+     * }
+     */
 }

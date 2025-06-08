@@ -41,11 +41,11 @@ public class InquiryController {
     @ResponseBody
     public ResponseEntity<Map<String, Object>> checkLogin(HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
-        
+
         HttpSession session = request.getSession(false);
         boolean isLoggedIn = false;
         String userId = null;
-        
+
         if (session != null) {
             // 다양한 세션 속성명 체크
             userId = (String) session.getAttribute("userId");
@@ -65,7 +65,7 @@ public class InquiryController {
             } else {
                 isLoggedIn = true;
             }
-            
+
             // 다른 가능한 세션 속성들도 체크
             if (!isLoggedIn) {
                 Object loginUser = session.getAttribute("loginUser");
@@ -73,12 +73,12 @@ public class InquiryController {
                 isLoggedIn = (loginUser != null) || (member != null);
             }
         }
-        
+
         response.put("isLoggedIn", isLoggedIn);
         response.put("userId", userId);
-        
+
         logger.debug("로그인 상태 체크 - isLoggedIn: {}, userId: {}", isLoggedIn, userId);
-        
+
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
     }
 
@@ -86,7 +86,7 @@ public class InquiryController {
      * 문의 목록 페이지 - 루트 경로
      * JSP에서 /inquiry로 요청하므로 추가
      */
-    @GetMapping({"", "/"})
+    @GetMapping({ "", "/" })
     public String inquiryMain(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -94,7 +94,7 @@ public class InquiryController {
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String status,
             Model model) {
-        
+
         return list(page, size, search, category, status, model);
     }
 
@@ -110,28 +110,28 @@ public class InquiryController {
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String status,
             Model model) {
-        
-        logger.debug("문의 목록 조회 요청 - page: {}, size: {}, search: {}, category: {}, status: {}", 
-                    page, size, search, category, status);
+
+        logger.debug("문의 목록 조회 요청 - page: {}, size: {}, search: {}, category: {}, status: {}",
+                page, size, search, category, status);
 
         try {
             Map<String, Object> result = inquiryService.list(page, size, search, category, status);
-            
-            model.addAttribute("inquiryList", result.get("inquiries"));  // JSP와 맞춤
+
+            model.addAttribute("inquiryList", result.get("inquiries")); // JSP와 맞춤
             model.addAttribute("currentPage", result.get("currentPage"));
             model.addAttribute("totalPages", result.get("totalPages"));
             model.addAttribute("totalCount", result.get("totalCount"));
-            model.addAttribute("pageSize", result.get("size"));  // JSP와 맞춤
+            model.addAttribute("pageSize", result.get("size")); // JSP와 맞춤
             model.addAttribute("search", search);
             model.addAttribute("category", category);
             model.addAttribute("status", status);
-            
+
             // 페이징 정보 추가
             int startPage = Math.max(1, page - 2);
             int endPage = Math.min((Integer) result.get("totalPages"), page + 2);
             model.addAttribute("startPage", startPage);
             model.addAttribute("endPage", endPage);
-            
+
             // 검색 파라미터 문자열 생성
             StringBuilder searchParams = new StringBuilder();
             if (category != null && !category.isEmpty()) {
@@ -145,7 +145,7 @@ public class InquiryController {
             }
             model.addAttribute("searchParams", searchParams.toString());
 
-            return "inquiry/list";  // 최종: /WEB-INF/views/pages/inquiry/list.jsp
+            return "inquiry/list"; // 최종: /WEB-INF/views/pages/inquiry/list.jsp
 
         } catch (Exception e) {
             logger.error("문의 목록 조회 중 오류 발생: {}", e.getMessage(), e);
@@ -175,8 +175,8 @@ public class InquiryController {
 
         try {
             Map<String, Object> result = inquiryService.listByUser(userId, page, size);
-            
-            model.addAttribute("inquiryList", result.get("inquiries"));  // JSP와 맞춤
+
+            model.addAttribute("inquiryList", result.get("inquiries")); // JSP와 맞춤
             model.addAttribute("currentPage", result.get("currentPage"));
             model.addAttribute("totalPages", result.get("totalPages"));
             model.addAttribute("totalCount", result.get("totalCount"));
@@ -200,7 +200,7 @@ public class InquiryController {
 
         try {
             InquiryDto inquiry = inquiryService.read(inquiryId);
-            
+
             if (inquiry == null) {
                 model.addAttribute("errorMessage", "존재하지 않는 문의입니다.");
                 return "inquiry/view";
@@ -210,19 +210,19 @@ public class InquiryController {
             HttpSession session = request.getSession(false);
             String currentUserId = (session != null) ? (String) session.getAttribute("userId") : null;
             String role = (session != null) ? (String) session.getAttribute("role") : null;
-            
+
             // 작성자 또는 관리자만 조회 가능
-            boolean canView = "ADMIN".equals(role) || 
-                             (currentUserId != null && currentUserId.equals(inquiry.getUserId()));
-            
+            boolean canView = "ADMIN".equals(role) ||
+                    (currentUserId != null && currentUserId.equals(inquiry.getUserId()));
+
             if (!canView) {
                 model.addAttribute("errorMessage", "해당 문의를 조회할 권한이 없습니다.");
                 return "inquiry/view";
             }
 
             model.addAttribute("inquiry", inquiry);
-            model.addAttribute("canEdit", currentUserId != null && currentUserId.equals(inquiry.getUserId()) && 
-                                        !"COMPLETED".equals(inquiry.getStatus()));
+            model.addAttribute("canEdit", currentUserId != null && currentUserId.equals(inquiry.getUserId()) &&
+                    !"COMPLETED".equals(inquiry.getStatus()));
             model.addAttribute("canReply", "ADMIN".equals(role));
 
             return "inquiry/view";
@@ -256,10 +256,10 @@ public class InquiryController {
         if (session == null || session.getAttribute("userId") == null) {
             return "redirect:/login";
         }
-        
+
         inquiry.setUserId((String) session.getAttribute("userId"));
         inquiry.setUsername((String) session.getAttribute("username"));
-        
+
         try {
             inquiryService.create(inquiry);
             redirect.addFlashAttribute("successMessage", "문의가 등록되었습니다.");
@@ -302,7 +302,7 @@ public class InquiryController {
 
             model.addAttribute("inquiry", inquiry);
             model.addAttribute("mode", "edit");
-            return "inquiry/write";  // JSP 통합 파일
+            return "inquiry/write"; // JSP 통합 파일
 
         } catch (Exception e) {
             logger.error("문의 수정 페이지 로드 중 오류 발생: {}", e.getMessage(), e);
@@ -315,8 +315,8 @@ public class InquiryController {
      * 문의 수정 처리
      */
     @PostMapping("/edit/{inquiryId}")
-    public String edit(@PathVariable Long inquiryId, InquiryDto inquiry, 
-                      HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String edit(@PathVariable Long inquiryId, InquiryDto inquiry,
+            HttpServletRequest request, RedirectAttributes redirectAttributes) {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
             return "redirect:/login?returnUrl=/inquiry/edit/" + inquiryId;
@@ -348,7 +348,7 @@ public class InquiryController {
      */
     @PostMapping("/delete/{inquiryId}")
     public String delete(@PathVariable Long inquiryId, HttpServletRequest request,
-                         RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes) {
 
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
@@ -381,10 +381,10 @@ public class InquiryController {
      * 관리자 답변 처리 (일반 POST로 변경)
      */
     @PostMapping("/reply")
-    public String reply(@RequestParam Long inquiryId, 
-                       @RequestParam String reply,
-                       HttpServletRequest request,
-                       RedirectAttributes redirectAttributes) {
+    public String reply(@RequestParam Long inquiryId,
+            @RequestParam String reply,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
 
         HttpSession session = request.getSession(false);
         if (session == null || !"ADMIN".equals(session.getAttribute("role"))) {
@@ -421,9 +421,9 @@ public class InquiryController {
      */
     @PostMapping("/reply/{inquiryId}")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> replyAjax(@PathVariable Long inquiryId, 
-                                                        @RequestParam String reply,
-                                                        HttpServletRequest request) {
+    public ResponseEntity<Map<String, Object>> replyAjax(@PathVariable Long inquiryId,
+            @RequestParam String reply,
+            HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
 
         HttpSession session = request.getSession(false);
@@ -465,9 +465,9 @@ public class InquiryController {
      */
     @PostMapping("/status/{inquiryId}")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> updateStatus(@PathVariable Long inquiryId, 
-                                                           @RequestParam String status,
-                                                           HttpServletRequest request) {
+    public ResponseEntity<Map<String, Object>> updateStatus(@PathVariable Long inquiryId,
+            @RequestParam String status,
+            HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
 
         HttpSession session = request.getSession(false);
@@ -517,13 +517,13 @@ public class InquiryController {
             return "redirect:/login?returnUrl=/inquiry/admin";
         }
 
-        logger.debug("관리자 문의 관리 페이지 요청 - page: {}, size: {}, search: {}, category: {}, status: {}", 
-                    page, size, search, category, status);
+        logger.debug("관리자 문의 관리 페이지 요청 - page: {}, size: {}, search: {}, category: {}, status: {}",
+                page, size, search, category, status);
 
         try {
             Map<String, Object> result = inquiryService.list(page, size, search, category, status);
-            
-            model.addAttribute("inquiryList", result.get("inquiries"));  // JSP와 맞춤
+
+            model.addAttribute("inquiryList", result.get("inquiries")); // JSP와 맞춤
             model.addAttribute("currentPage", result.get("currentPage"));
             model.addAttribute("totalPages", result.get("totalPages"));
             model.addAttribute("totalCount", result.get("totalCount"));
