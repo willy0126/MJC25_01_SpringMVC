@@ -1,4 +1,4 @@
-package com.example.spring.user; 
+package com.example.spring.user;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,13 +29,13 @@ public class AuthController {
 
     // SLF4J Logger 인스턴스 생성
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
-    
+
     // 로그인 페이지
     @GetMapping("/login")
     public String showLoginPage() {
         logger.debug("AuthController: 로그인 페이지 요청이 처리되었습니다.");
-        
-        return "auth/login"; 
+
+        return "auth/login";
     }
 
     @GetMapping("/register")
@@ -43,7 +43,7 @@ public class AuthController {
         // 회원가입 화면으로 이동
         return "auth/register";
     }
-    
+
     @PostMapping("/register")
     public String registerPost(UserDto user, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
@@ -67,14 +67,12 @@ public class AuthController {
         return "redirect:/register";
     }
 
-    
     @GetMapping("/find-user-id")
     public String findUserIdGet(HttpServletRequest request) {
         // 아이디 찾기 화면으로 이동
         return "auth/findUserId";
     }
 
-    
     @PostMapping("/find-user-id")
     public String findUserIdPost(UserDto user, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         // 입력된 정보를 기반으로 사용자 조회
@@ -98,7 +96,6 @@ public class AuthController {
         return "auth/resetPassword";
     }
 
-     
     @PostMapping("/reset-password")
     public String resetPasswordPost(UserDto user, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         // 세션에 userId가 존재하면 로그인 상태로 판단
@@ -112,11 +109,12 @@ public class AuthController {
 
         if (existsUser != null) {
             // 6자리 임시 비밀번호 생성
-            int iValue = (int)(Math.random() * 1000000);
+            int iValue = (int) (Math.random() * 1000000);
             String newPassword = String.format("%06d", iValue); // 앞자리 0 포함되도록
 
             // 비밀번호 초기화 및 업데이트
-            // existsUser.setPassword(newPassword); // UserDto에 직접 설정하는 대신 서비스 메서드에 일반 텍스트 암호 전달
+            // existsUser.setPassword(newPassword); // UserDto에 직접 설정하는 대신 서비스 메서드에 일반 텍스트
+            // 암호 전달
             boolean result = userService.resetUserPassword(existsUser.getUserId(), newPassword); // 수정된 호출
 
             if (result) {
@@ -131,7 +129,6 @@ public class AuthController {
         return "redirect:/reset-password";
     }
 
-      
     @PostMapping("/login")
     public String login(UserDto user, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         // 사용자 정보 조회 (userId 기준)
@@ -145,14 +142,14 @@ public class AuthController {
             session.setAttribute("username", existsUser.getUsername());
             session.setAttribute("role", existsUser.getRole());
 
-            return "redirect:/"; 
+            return "redirect:/";
         }
 
         // 로그인 실패: 에러 메시지와 함께 로그인 페이지로 리다이렉트
         redirectAttributes.addFlashAttribute("errorMessage", "아이디 또는 비밀번호가 일치하지 않습니다.");
         return "redirect:/login";
     }
- 
+
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         // 현재 세션이 존재하면 삭제 (false 옵션: 세션이 없으면 null 반환)
@@ -181,7 +178,6 @@ public class AuthController {
                 .body(response);
     }
 
-
     @PostMapping("/check-phone")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> checkPhonePost(UserDto user) {
@@ -197,7 +193,7 @@ public class AuthController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }
-      
+
     @PostMapping("/check-email")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> checkEmailPost(UserDto user) {

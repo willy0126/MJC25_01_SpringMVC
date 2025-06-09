@@ -42,7 +42,7 @@
             <div class="mypage-layout-container container mt-4 mb-4">
                 <%-- 왼쪽 사이드바 --%>
                 <aside class="mypage-sidebar">
-                    <h3 class="sidebar-title">내 정보 관리</h3>
+                    <h3 class="sidebar-title">마이페이지</h3>
                     <nav class="sidebar-nav">
                         <ul>
                             <%-- 컨트롤러에서 전달하는 currentSection 값으로 active 클래스 제어 --%>

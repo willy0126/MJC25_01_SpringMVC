@@ -20,7 +20,8 @@
 }
 
 /* 📱 전체 배경을 완전한 흰색으로 설정 */
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -86,6 +87,7 @@ body {
     background: linear-gradient(135deg, #74b9ff, #0984e3);
     border-radius: 2px;
 }
+
 .write-subtitle {
     color: var(--text-medium);
     font-size: 1rem;
@@ -333,12 +335,12 @@ label {
     flex-shrink: 0;
 }
 
-.checkbox-input:checked + .checkbox-custom {
+.checkbox-input:checked+.checkbox-custom {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
 }
 
-.checkbox-input:checked + .checkbox-custom::after {
+.checkbox-input:checked+.checkbox-custom::after {
     content: '✓';
     position: absolute;
     top: 50%;
@@ -405,10 +407,12 @@ label {
     text-decoration: none;
     transform: translateY(-1px);
 }
+
 .button-group-center {
     display: flex;
     justify-content: center;
-    gap: 10px; /* 버튼 사이 간격 */
+    gap: 10px;
+    /* 버튼 사이 간격 */
     margin-top: 20px;
     flex-wrap: wrap;
 }
@@ -488,41 +492,41 @@ label {
     .inquiry-container {
         padding: 0 1rem;
     }
-    
+
     .write-header {
         padding: 1.5rem 0;
     }
-    
+
     .write-header h2 {
         font-size: 1.8rem;
     }
-    
+
     .write-form-container,
     .inquiry-guide {
         padding: 1.5rem;
     }
-    
+
     .form-buttons {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .btn {
         width: 100%;
         max-width: 300px;
     }
-    
+
     .button-group {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .login-btn,
     .register-btn {
         width: 100%;
         max-width: 250px;
     }
-    
+
     .guide-content {
         grid-template-columns: 1fr;
         gap: 1rem;
@@ -533,17 +537,17 @@ label {
     .write-header h2 {
         font-size: 1.5rem;
     }
-    
+
     .write-subtitle {
         font-size: 0.9rem;
     }
-    
+
     .form-input,
     .form-select,
     .form-textarea {
         font-size: 0.9rem;
     }
-    
+
     .btn {
         padding: 0.875rem 1.5rem;
         font-size: 0.95rem;
@@ -556,6 +560,7 @@ label {
         opacity: 0;
         transform: translateY(-30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -567,6 +572,7 @@ label {
         opacity: 1;
         transform: translateY(0);
     }
+
     to {
         opacity: 0;
         transform: translateY(-20px);
@@ -584,11 +590,12 @@ label {
 
 /* 🖨️ 인쇄 스타일 */
 @media print {
+
     .inquiry-guide,
     .form-buttons {
         display: none;
     }
-    
+
     .write-form-container {
         box-shadow: none;
         border: 1px solid #000;
@@ -622,6 +629,7 @@ label {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);

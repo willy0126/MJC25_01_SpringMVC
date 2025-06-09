@@ -42,8 +42,9 @@ public class adminconsoleService {
     /**
      * 장례 예약 상태를 업데이트합니다.
      * 이 메소드는 adminconsoleController에 의해 호출됩니다.
+     * 
      * @param reservationId 장례 예약 ID.
-     * @param status 새로운 상태 ("수락" 또는 "거절").
+     * @param status        새로운 상태 ("수락" 또는 "거절").
      * @return 성공 시 true, 그렇지 않으면 false.
      */
     @Transactional // 클래스 레벨이 아닌 경우 트랜잭션 어노테이션 추가

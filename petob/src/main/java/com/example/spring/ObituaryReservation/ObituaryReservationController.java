@@ -48,7 +48,9 @@ public class ObituaryReservationController {
 
         if (userId == null) {
             // UTF-8 인코딩 추가
-            String returnUrl = "/obituary-reservation/form" + (branch != null ? "?branch=" + java.net.URLEncoder.encode(branch, java.nio.charset.StandardCharsets.UTF_8) : "");
+            String returnUrl = "/obituary-reservation/form" + (branch != null
+                    ? "?branch=" + java.net.URLEncoder.encode(branch, java.nio.charset.StandardCharsets.UTF_8)
+                    : "");
             redirectAttributes.addFlashAttribute("errorMessage", "로그인이 필요한 서비스입니다.");
             return "redirect:/login?returnUrl=" + returnUrl;
         }
@@ -89,7 +91,9 @@ public class ObituaryReservationController {
         if (session == null || session.getAttribute("userId") == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "로그인이 필요합니다. 다시 로그인 후 시도해주세요.");
             String branchParam = reservationDto.getBranch();
-            String returnUrl = "/obituary-reservation/form" + (branchParam != null && !branchParam.isEmpty() ? "?branch=" + java.net.URLEncoder.encode(branchParam, java.nio.charset.StandardCharsets.UTF_8) : "");
+            String returnUrl = "/obituary-reservation/form" + (branchParam != null && !branchParam.isEmpty()
+                    ? "?branch=" + java.net.URLEncoder.encode(branchParam, java.nio.charset.StandardCharsets.UTF_8)
+                    : "");
             return "redirect:/login?returnUrl=" + returnUrl;
         }
 
@@ -104,34 +108,38 @@ public class ObituaryReservationController {
                 redirectAttributes.addFlashAttribute("successMessage", "장례 예약이 성공적으로 신청되었습니다. 곧 연락드리겠습니다.");
                 return "redirect:/";
             } else {
-                redirectAttributes.addFlashAttribute("errorMessage", "장례 예약 신청에 실패했습니다. 입력 정보를 확인 후 다시 시도해주세요. (예: 이미 예약된 시간)");
-                return "redirect:/obituary-reservation/form?branch=" + java.net.URLEncoder.encode(reservationDto.getBranch(), java.nio.charset.StandardCharsets.UTF_8);
+                redirectAttributes.addFlashAttribute("errorMessage",
+                        "장례 예약 신청에 실패했습니다. 입력 정보를 확인 후 다시 시도해주세요. (예: 이미 예약된 시간)");
+                return "redirect:/obituary-reservation/form?branch=" + java.net.URLEncoder
+                        .encode(reservationDto.getBranch(), java.nio.charset.StandardCharsets.UTF_8);
             }
         } catch (Exception e) {
             logger.error("장례 예약 처리 중 심각한 오류 발생", e);
-            redirectAttributes.addFlashAttribute("errorMessage", "예약 처리 중 시스템 오류가 발생했습니다. 잠시 후 다시 시도해주시고, 문제가 지속되면 관리자에게 문의해주세요.");
-            return "redirect:/obituary-reservation/form?branch=" + java.net.URLEncoder.encode(reservationDto.getBranch(), java.nio.charset.StandardCharsets.UTF_8);
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "예약 처리 중 시스템 오류가 발생했습니다. 잠시 후 다시 시도해주시고, 문제가 지속되면 관리자에게 문의해주세요.");
+            return "redirect:/obituary-reservation/form?branch="
+                    + java.net.URLEncoder.encode(reservationDto.getBranch(), java.nio.charset.StandardCharsets.UTF_8);
         }
     }
 
     @PostMapping("/check-booked-times")
-@ResponseBody
-public ResponseEntity<Map<String, Object>> checkBookedTimes(
-        @RequestParam("date") String date,
-        @RequestParam("branch") String branch) { // 지점 파라미터 추가
-    Map<String, Object> response = new HashMap<>();
-    try {
-        // 서비스 호출 시 지점 정보 전달
-        List<String> bookedTimes = obituaryReservationService.getBookedTimesByDateAndBranch(date, branch);
-        response.put("bookedTimes", bookedTimes);
-        response.put("success", true);
-        logger.debug("날짜 [{}] 및 지점 [{}]의 예약된 시간 조회: {}", date, branch, bookedTimes);
-        return ResponseEntity.ok(response);
-    } catch (Exception e) {
-        logger.error("예약된 시간 조회 중 오류 발생 (날짜: {}, 지점: {}): {}", date, branch, e.getMessage(), e);
-        response.put("success", false);
-        response.put("message", "예약된 시간을 가져오는 중 오류가 발생했습니다.");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> checkBookedTimes(
+            @RequestParam("date") String date,
+            @RequestParam("branch") String branch) { // 지점 파라미터 추가
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // 서비스 호출 시 지점 정보 전달
+            List<String> bookedTimes = obituaryReservationService.getBookedTimesByDateAndBranch(date, branch);
+            response.put("bookedTimes", bookedTimes);
+            response.put("success", true);
+            logger.debug("날짜 [{}] 및 지점 [{}]의 예약된 시간 조회: {}", date, branch, bookedTimes);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("예약된 시간 조회 중 오류 발생 (날짜: {}, 지점: {}): {}", date, branch, e.getMessage(), e);
+            response.put("success", false);
+            response.put("message", "예약된 시간을 가져오는 중 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
-}
 }

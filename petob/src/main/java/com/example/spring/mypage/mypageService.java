@@ -16,6 +16,7 @@ public class mypageService {
 
     /**
      * 특정 사용자의 장례 예약 목록을 가져옵니다.
+     * 
      * @param userId 사용자 ID
      * @return 장례 예약 정보 DTO 리스트
      */
@@ -25,5 +26,6 @@ public class mypageService {
     }
 
     // 다른 서비스 메소드 (수정 가능)
-    // public List<AnotherReservationDto> getMyOtherReservations(String userId) { ... }
+    // public List<AnotherReservationDto> getMyOtherReservations(String userId) {
+    // ... }
 }

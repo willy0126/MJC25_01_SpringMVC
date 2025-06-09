@@ -28,13 +28,14 @@ public class InquiryDto {
     private Boolean isToday;
     private Boolean isThisYear;
 
-    public InquiryDto() {}
+    public InquiryDto() {
+    }
 
     public InquiryDto(Long inquiryId, String userId, String username, String category,
-                      String title, String content, String email,
-                      Boolean isSecret, String status,
-                      String replyContent, String replyBy, LocalDateTime replyDate,
-                      LocalDateTime createdDate, LocalDateTime updatedDate) {
+            String title, String content, String email,
+            Boolean isSecret, String status,
+            String replyContent, String replyBy, LocalDateTime replyDate,
+            LocalDateTime createdDate, LocalDateTime updatedDate) {
         this.inquiryId = inquiryId;
         this.userId = userId;
         this.username = username;
@@ -158,12 +159,11 @@ public class InquiryDto {
         this.replyDate = replyDate;
     }
 
-    
-
-public String getCreatedDateFormatted() {
-    if (createdDate == null) return "";
-    return createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-}
+    public String getCreatedDateFormatted() {
+        if (createdDate == null)
+            return "";
+        return createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
@@ -233,30 +233,44 @@ public String getCreatedDateFormatted() {
     }
 
     public String getCategoryName() {
-        if (category == null) return "";
+        if (category == null)
+            return "";
         switch (category) {
-            case "SERVICE": return "서비스";
-            case "RESERVATION": return "예약";
-            case "PRICE": return "가격";
-            case "LOCATION": return "지점";
-            case "COMPLAINT": return "불만";
-            case "SUGGESTION": return "제안";
-            case "ETC": return "기타";
-            default: return category;
+            case "SERVICE":
+                return "서비스";
+            case "RESERVATION":
+                return "예약";
+            case "PRICE":
+                return "가격";
+            case "LOCATION":
+                return "지점";
+            case "COMPLAINT":
+                return "불만";
+            case "SUGGESTION":
+                return "제안";
+            case "ETC":
+                return "기타";
+            default:
+                return category;
         }
     }
 
     public String getStatusName() {
-        if (status == null) return "대기";
+        if (status == null)
+            return "대기";
         switch (status) {
-            case "WAITING": return "답변대기";
-            case "PROCESSING": return "처리중";
-            case "COMPLETED": return "답변완료";
-            case "CLOSED": return "종료";
-            default: return status;
+            case "WAITING":
+                return "답변대기";
+            case "PROCESSING":
+                return "처리중";
+            case "COMPLETED":
+                return "답변완료";
+            case "CLOSED":
+                return "종료";
+            default:
+                return status;
         }
     }
-
 
     @Override
     public String toString() {
@@ -274,8 +288,10 @@ public String getCreatedDateFormatted() {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
         InquiryDto that = (InquiryDto) obj;
         return inquiryId != null ? inquiryId.equals(that.inquiryId) : that.inquiryId == null;
     }

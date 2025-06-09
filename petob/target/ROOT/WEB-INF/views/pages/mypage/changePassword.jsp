@@ -6,6 +6,7 @@
         <head>
             <meta charset="UTF-8">
             <title>비밀번호 변경</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
             <link rel="stylesheet" href="<c:url value='/resources/css/style.css'/>">
             <link rel="stylesheet" href="<c:url value='/resources/css/mypagestyle.css'/>">
         </head>
@@ -15,7 +16,7 @@
                 <jsp:include page="/WEB-INF/views/common/navbar.jsp" />
 
                 <div class="main-wrapper">
-                    <div class="site-container mypage-layout-container">
+                    <div class="mypage-layout-container">
                         <aside class="mypage-sidebar">
                             <h3 class="sidebar-title">마이페이지</h3>
                             <nav class="sidebar-nav">
@@ -67,6 +68,5 @@
                 </div>
                 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
             </div>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
         </body>
         </html>

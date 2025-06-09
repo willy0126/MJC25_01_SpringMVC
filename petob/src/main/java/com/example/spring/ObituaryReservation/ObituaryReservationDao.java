@@ -35,15 +35,17 @@ public class ObituaryReservationDao {
         try {
             return sqlSession.selectList("obituaryReservationMapper.getBookedTimesByDateAndBranch", params);
         } catch (DataAccessException e) {
-            logger.error("특정 날짜와 지점의 예약된 시간 조회 실패 (날짜: {}, 지점: {}): {}", params.get("obDate"), params.get("branch"), e.getMessage(), e);
+            logger.error("특정 날짜와 지점의 예약된 시간 조회 실패 (날짜: {}, 지점: {}): {}", params.get("obDate"), params.get("branch"),
+                    e.getMessage(), e);
             return Collections.emptyList();
         }
     }
 
     /**
      * 예약 상태를 업데이트합니다.
+     * 
      * @param reservationId 업데이트할 예약의 ID.
-     * @param status 새로운 상태 값.
+     * @param status        새로운 상태 값.
      * @return 영향을 받은 행의 수.
      */
     public int updateStatus(int reservationId, String status) {

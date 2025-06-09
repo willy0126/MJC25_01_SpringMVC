@@ -29,12 +29,12 @@
             #{status} )
     </insert>
 
-   <select id="getBookedTimesByDateAndBranch" resultType="java.lang.String" parameterType="map">
+    <select id="getBookedTimesByDateAndBranch" resultType="java.lang.String" parameterType="map">
     SELECT ob_time
     FROM obreserve
     WHERE ob_date = #{obDate} AND branch = #{branch} AND status = '수락' </select>
 
- <update id="updateStatus" parameterType="map">
+    <update id="updateStatus" parameterType="map">
         UPDATE obreserve
         SET status = #{status}
         WHERE reservation_id = #{reservationId}

@@ -23,7 +23,9 @@ public class mypageDto {
     }
 
     // 모든 필드를 포함하는 생성자 (status 포함)
-    public mypageDto(int reservationId, String branch, String petName, BigDecimal petWeight, String applicantName, String applicantPhone, String obDate, String obTime, String notes, String userId, Timestamp createdAt, String status) {
+    public mypageDto(int reservationId, String branch, String petName, BigDecimal petWeight, String applicantName,
+            String applicantPhone, String obDate, String obTime, String notes, String userId, Timestamp createdAt,
+            String status) {
         this.reservationId = reservationId;
         this.branch = branch;
         this.petName = petName;
