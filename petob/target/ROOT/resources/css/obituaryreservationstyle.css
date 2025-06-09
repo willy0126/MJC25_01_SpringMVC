@@ -2,56 +2,58 @@
 
 .obituary-reservation-container {
     background-color: white;
-    padding: 40px; 
-    border-radius: 12px; 
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     width: 90%;
-    max-width: 700px; 
-    border: 1px solid rgba(198, 230, 251, 0.3); 
+    max-width: 700px;
+    border: 1px solid rgba(198, 230, 251, 0.3);
     margin: 0 auto;
 }
 
 .obituary-reservation-container h2 {
-    text-align: center; /* 제목만 중앙 정렬 */
-    margin-bottom: 30px; 
-    font-size: 24px; 
-    color: #333; 
-    font-weight: 600; 
+    text-align: center;
+    /* 제목만 중앙 정렬 */
+    margin-bottom: 30px;
+    font-size: 24px;
+    color: #333;
+    font-weight: 600;
 }
 
 .form-group {
-    margin-bottom: 25px; 
-    text-align: left; 
+    margin-bottom: 25px;
+    text-align: left;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 8px; 
-    font-weight: 600; 
-    color: #444; 
-    font-size: 15px; 
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #444;
+    font-size: 15px;
 }
 
 /* input, select, textarea 공통 스타일 */
 .form-control {
     width: 100%;
-    padding: 14px 16px; 
-    font-size: 16px; 
-    line-height: 1.6; /* 기존 값 유지 또는 필요시 1.5로 조정 */
+    padding: 14px 16px;
+    font-size: 16px;
+    line-height: 1.6;
+    /* 기존 값 유지 또는 필요시 1.5로 조정 */
     color: #495057;
-    background-color: #fafbfc; 
+    background-color: #fafbfc;
     background-clip: padding-box;
     border: 2px solid #e1ecf4;
-    border-radius: 8px; 
+    border-radius: 8px;
     box-sizing: border-box;
-    transition: all 0.3s ease; 
+    transition: all 0.3s ease;
 }
 
 .form-control:focus {
     outline: none;
     border-color: #c6e6fb;
-    background-color: #fff; 
-    box-shadow: 0 0 0 3px rgba(198, 230, 251, 0.2); 
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(198, 230, 251, 0.2);
 }
 
 /* textarea는 min-height만 별도 지정 가능 */
@@ -99,101 +101,106 @@ textarea.form-control {
 .btn-submit {
     display: block;
     width: 100%;
-    padding: 14px 20px; 
-    font-size: 16px; 
-    font-weight: 600; 
-    color: #2c3e50; 
-    background: linear-gradient(135deg, #c6e6fb 0%, #a8d5f2 100%); 
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c3e50;
+    background: linear-gradient(135deg, #c6e6fb 0%, #a8d5f2 100%);
     border: none;
-    border-radius: 8px; 
+    border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s ease; 
+    transition: all 0.3s ease;
     text-align: center;
-    position: relative; 
-    overflow: hidden; 
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-submit:hover {
-    background: linear-gradient(135deg, #b3ddf9 0%, #95c9ef 100%); 
-    transform: translateY(-2px); 
-    box-shadow: 0 6px 20px rgba(166, 213, 240, 0.4); 
+    background: linear-gradient(135deg, #b3ddf9 0%, #95c9ef 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(166, 213, 240, 0.4);
 }
 
 .btn-submit:active {
-    transform: translateY(0); 
+    transform: translateY(0);
 }
 
 .form-message {
-    padding: 12px 16px; 
+    padding: 12px 16px;
     margin-bottom: 15px;
-    border-radius: 8px; 
-    font-size: 14px; 
+    border-radius: 8px;
+    font-size: 14px;
 }
 
-.error-message { /* .form-message.error-message */
+.error-message {
+    /* .form-message.error-message */
     color: #721c24;
     background-color: #f8d7da;
     border: 1px solid #f5c6cb;
     border-left: 4px solid #dc3545;
 }
 
-.success-message { /* .form-message.success-message */
-    color: #155724; 
+.success-message {
+    /* .form-message.success-message */
+    color: #155724;
     background-color: #d4edda;
-    border: 1px solid #c3e6cb; 
+    border: 1px solid #c3e6cb;
     border-left: 4px solid #28a745;
 }
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
     .obituary-reservation-container {
-        margin: 20px; 
-        padding: 30px 20px; 
-        max-width: 95%; 
+        margin: 20px;
+        padding: 30px 20px;
+        max-width: 95%;
     }
 
     .obituary-reservation-container h2 {
-        font-size: 22px; 
-        margin-bottom: 25px; 
+        font-size: 22px;
+        margin-bottom: 25px;
     }
 
-    .form-control { /* .form-group input, .form-group select 에 해당 */
-        padding: 12px 14px; 
-        font-size: 15px; 
+    .form-control {
+        /* .form-group input, .form-group select 에 해당 */
+        padding: 12px 14px;
+        font-size: 15px;
     }
-    
-    .form-control-static { /* 추가 */
+
+    .form-control-static {
+        /* 추가 */
         padding: 12px 14px;
         font-size: 15px;
     }
 
     .btn-submit {
-        padding: 12px 18px; 
-        font-size: 15px; 
+        padding: 12px 18px;
+        font-size: 15px;
     }
 }
 
 @media (max-width: 480px) {
+
     /* reservationstyle.css의 480px 스타일을 참고하여 obituary-reservation-container에도 적용 */
     .obituary-reservation-container {
-        padding: 25px 15px; 
-        margin: 15px; 
+        padding: 25px 15px;
+        margin: 15px;
     }
-    
+
     .obituary-reservation-container h2 {
-        font-size: 20px; 
-        margin-bottom: 20px; 
+        font-size: 20px;
+        margin-bottom: 20px;
     }
-    
+
     .form-group {
         margin-bottom: 20px;
     }
-    
+
     .form-group label {
         font-size: 14px;
         margin-bottom: 6px;
     }
-    
+
     .form-control,
     .form-control-static,
     .btn-submit {

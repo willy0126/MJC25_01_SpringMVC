@@ -22,6 +22,7 @@
                             <nav class="sidebar-nav">
                                 <ul>
                                     <li class="nav-item"><a href="<c:url value='/mypage'/>">예약 내역</a></li>
+                                    <li class="nav-item"><a href="<c:url value='/mypage/my-inquiry'/>">나의 문의</a></li>
                                     <li class="nav-item"><a href="<c:url value='/mypage/edit'/>">개인정보 수정</a></li>
                                     <li class="nav-item"><a href="<c:url value='/mypage/change-password'/>">비밀번호 변경</a>
                                     </li>

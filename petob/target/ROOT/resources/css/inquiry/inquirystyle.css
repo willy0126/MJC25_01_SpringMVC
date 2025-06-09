@@ -1,4 +1,3 @@
-
 /* 🎨 기본 색상 변수 */
 :root {
 
@@ -17,7 +16,8 @@
     --warning-color: #f39c12;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -50,15 +50,15 @@ body {
 
 
 .login-modal {
-            display: none;
-            position: fixed;
-            z-index: 1050;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            animation: fadeIn 0.3s ease;
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease;
 }
 
 
@@ -145,6 +145,7 @@ body {
     margin-top: 2rem;
     max-width: 100%;
 }
+
 .table .text-center {
     white-space: normal !important;
     word-wrap: break-word !important;
@@ -154,7 +155,8 @@ body {
     vertical-align: middle !important;
     max-width: 120px !important;
     min-width: 80px !important;
-    padding: 1rem 0.5rem !important; /* 좌우 패딩 줄여서 공간 확보 */
+    padding: 1rem 0.5rem !important;
+    /* 좌우 패딩 줄여서 공간 확보 */
 }
 
 .table-header {
@@ -172,11 +174,8 @@ body {
 
 /* 📋 테이블 스타일 */
 .table {
-    margin: 0;
-    background: #ffffff;
-    font-size: 0.95rem;
-    width: 100%;
-    table-layout: auto !important;
+    min-width: 1400px; /* 추가 */
+    table-layout: fixed; /* 추가 */
 }
 
 .table thead th {
@@ -197,14 +196,19 @@ body {
     border-bottom: 1px solid rgba(168, 216, 234, 0.15);
     vertical-align: middle;
     transition: background-color 0.2s ease;
-    white-space: normal !important;  /* nowrap 제거 */
-    word-wrap: break-word;           /* 긴 텍스트 자동 줄바꿈 */
+    white-space: normal !important;
+    /* nowrap 제거 */
+    word-wrap: break-word;
+    /* 긴 텍스트 자동 줄바꿈 */
 }
+
 .date-unified {
-    display: block !important;        /* inline-block → block으로 변경 */
+    display: block !important;
+    /* inline-block → block으로 변경 */
     white-space: normal !important;
     word-wrap: break-word !important;
-    word-break: break-all !important; /* 날짜에서 하이픈 기준 줄바꿈 허용 */
+    word-break: break-all !important;
+    /* 날짜에서 하이픈 기준 줄바꿈 허용 */
     overflow-wrap: break-word !important;
     text-align: center !important;
     line-height: 1.3 !important;
@@ -323,9 +327,19 @@ body {
 }
 
 @keyframes shake {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-5deg); }
-    75% { transform: rotate(5deg); }
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-5deg);
+    }
+
+    75% {
+        transform: rotate(5deg);
+    }
 }
 
 /* 🆕 NEW 배지 */
@@ -339,9 +353,17 @@ body {
 }
 
 @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 /* 📱 반응형 디자인 */
@@ -349,48 +371,55 @@ body {
     .inquiry-header {
         padding: 2rem 0;
     }
-    
+
     .inquiry-header h1 {
         font-size: 2rem;
     }
-    
+
     .inquiry-content {
-        padding: 0 1rem;
-    }
-    
+    max-width: 1500px; /* 1200px → 1500px */
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+
+
     .table thead th,
     .table tbody td {
         padding: 0.75rem 0.5rem;
         font-size: 0.9rem;
     }
-    
+
     .table thead th:nth-child(2),
     .table tbody td:nth-child(2) {
-        display: none; /* 모바일에서 작성자 숨김 */
+        display: none;
+        /* 모바일에서 작성자 숨김 */
     }
-    
+
     .status-badge {
         font-size: 0.7rem;
         padding: 0.25rem 0.5rem;
         min-width: 60px;
     }
-    
+
     .d-flex {
         flex-direction: column;
         gap: 1rem;
     }
-    
-    .d-flex > div {
+
+    .d-flex>div {
         text-align: center;
     }
 }
 
 @media (max-width: 576px) {
+
     .table thead th:nth-child(3),
     .table tbody td:nth-child(3) {
-        display: none; /* 모바일에서 상태도 숨김 */
+        display: none;
+        /* 모바일에서 상태도 숨김 */
     }
-    
+
     .inquiry-title {
         font-size: 0.9rem;
         line-height: 1.3;
@@ -434,8 +463,13 @@ body {
 }
 
 @keyframes loading {
-    0% { left: -100%; }
-    100% { left: 100%; }
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
 }
 
 /* 🎯 접근성 개선 */
@@ -482,7 +516,8 @@ body {
 }
 
 .search-section p {
-    display: none !important; /* 불필요한 p 태그 숨김 */
+    display: none !important;
+    /* 불필요한 p 태그 숨김 */
 }
 
 /* 검색 폼 레이아웃 */
@@ -658,11 +693,11 @@ body {
         flex-direction: column !important;
         align-items: stretch !important;
     }
-    
+
     .search-group {
         min-width: auto !important;
     }
-    
+
     .search-buttons {
         justify-content: center !important;
         margin-top: 0.5rem !important;
@@ -674,22 +709,22 @@ body {
         padding: 1rem !important;
         margin-bottom: 1rem !important;
     }
-    
+
     .search-form {
         gap: 0.8rem !important;
     }
-    
+
     .search-buttons {
         flex-direction: column !important;
         width: 100% !important;
     }
-    
+
     .btn-search,
     .btn-reset {
         width: 100% !important;
         justify-content: center !important;
     }
-    
+
     .search-result-info {
         flex-direction: column !important;
         gap: 0.5rem !important;

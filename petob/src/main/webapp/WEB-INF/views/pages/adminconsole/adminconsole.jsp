@@ -69,6 +69,10 @@
                                                         href="${pageContext.request.contextPath}/admin/console?section=funeral_reservations">장례
                                                         예약 현황</a>
                                                 </li>
+                                                <li class="nav-item ${currentSection == 'inquiry_board' ? 'active' : ''}">
+                                                <a href="${pageContext.request.contextPath}/admin/console?section=inquiry_board">문의 게시판</a>
+                                                </li>
+
                                             </ul>
                                         </nav>
                                     </aside>
@@ -304,69 +308,134 @@
                                                                     </c:choose>
                                                                 </div>
                                                             </c:when>
+
+                                                            <%-- 3. 문의 게시판 섹션 --%>
+                                                            <c:when test="${currentSection == 'inquiry_board'}">
+                                                                <div class="inquiry-board-container">
+                                                                    <h2><i class="bi bi-question-circle-fill"></i> 문의 게시판 관리</h2>
+                                                                    <p class="sub-text">사용자들이 작성한 문의 목록입니다.</p>
+                                                                    <hr class="title-divider">
+                                                                    
+                                                                    <c:choose>
+                                                                        <c:when test="${not empty inquiryList}">
+                                                                            <div class="inquiry-summary mb-3">
+                                                                                <span class="text-muted">총 <strong>${fn:length(inquiryList)}</strong>건의 문의</span>
+                                                                            </div>
+                                                                            <div class="table-responsive">
+                                                                                <table class="reservation-table table table-hover">
+                                                                                    <thead class="table-light">
+                                                                                        <tr>
+                                                                                            <th style="width: 80px;">번호</th>
+                                                                                            <th>제목</th>
+                                                                                            <th style="width: 120px;">작성자</th>
+                                                                                            <th style="width: 120px;">처리상태</th>
+                                                                                            <th style="width: 140px;">작성일</th>
+                                                                                            <th style="width: 100px;">관리</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <c:forEach var="inquiry" items="${inquiryList}" varStatus="status">
+                                                                                            <tr>
+                                                                                                <td>${inquiry.inquiryId}</td>
+                                                                                                <td>
+                                                                                                    <a href="${pageContext.request.contextPath}/admin/inquiry/view/${inquiry.inquiryId}" 
+                                                                                                       class="text-decoration-none text-dark fw-medium">
+                                                                                                        <c:out value="${inquiry.title}" />
+                                                                                                    </a>
+                                                                                                </td>
+                                                                                                <td><c:out value="${inquiry.username}" /></td>
+                                                                                                <td>
+                                                                                                    <c:choose>
+                                                                                                        <c:when test="${inquiry.status == 'WAITING'}">
+                                                                                                            <span class="badge" style="background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7;">답변대기</span>
+                                                                                                        </c:when>
+                                                                                                        <c:when test="${inquiry.status == 'PROCESSING'}">
+                                                                                                            <span class="badge bg-primary">처리중</span>
+                                                                                                        </c:when>
+                                                                                                        <c:when test="${inquiry.status == 'COMPLETED'}">
+                                                                                                            <span class="badge bg-success">답변완료</span>
+                                                                                                        </c:when>
+                                                                                                        <c:otherwise>
+                                                                                                            <span class="badge" style="background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7;">답변대기</span>
+                                                                                                        </c:otherwise>
+                                                                                                    </c:choose>
+                                                                                                </td>
+                                               <td>
+    <c:choose>
+        <c:when test="${not empty inquiry.createdDate}">
+            ${fn:replace(fn:substring(inquiry.createdDate, 0, 16), 'T', ' ')}
+        </c:when>
+        <c:otherwise>-</c:otherwise>
+    </c:choose>
+</td>
+                                                                                                <td>
+                                                                                                    <a href="${pageContext.request.contextPath}/admin/inquiry/view/${inquiry.inquiryId}" 
+                                                                                                       class="btn btn-sm btn-outline-primary">
+                                                                                                        보기
+                                                                                                    </a>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </c:forEach>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <div class="no-data-message">
+                                                                                <div class="icon"><i class="bi bi-inbox-fill"></i></div>
+                                                                                <p class="lead">현재 등록된 문의가 없습니다.</p>
+                                                                            </div>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
+                                                                </div>
+                                                            </c:when>
+
+                                                            <%-- 기본 섹션 (간편 상담) --%>
                                                             <c:otherwise>
-                                                                <div class="quick-counseling-container"> <%-- 기본적으로 간편
-                                                                        상담을 보여주도록 처리 --%>
-                                                                        <h2><i class="bi bi-headset"></i> 간편 상담 예약 현황
-                                                                        </h2>
-                                                                        <p class="sub-text">접수된 모든 간편 상담 예약 목록입니다.</p>
-                                                                        <hr class="title-divider">
-                                                                        <c:choose>
-                                                                            <c:when
-                                                                                test="${not empty quickCounselingList}">
-                                                                                <%-- 간편 상담 목록 테이블 (위와 동일) --%>
-                                                                                    <div class="table-responsive">
-                                                                                        <table
-                                                                                            class="reservation-table table table-hover">
-                                                                                            <thead class="table-light">
-                                                                                                <tr>
-                                                                                                    <th>예약ID</th>
-                                                                                                    <th>예약자명</th>
-                                                                                                    <th>연락처</th>
-                                                                                                    <th>이메일</th>
-                                                                                                    <th>상담 희망일</th>
-                                                                                                    <th>상담 희망 시간</th>
-                                                                                                    <th>신청일</th>
-                                                                                                </tr>
-                                                                                            </thead>
-                                                                                            <tbody>
-                                                                                                <c:forEach
-                                                                                                    var="counseling"
-                                                                                                    items="${quickCounselingList}">
-                                                                                                    <tr>
-                                                                                                        <td>${counseling.reservationId}
-                                                                                                        </td>
-                                                                                                        <td>${fn:escapeXml(counseling.username)}
-                                                                                                        </td>
-                                                                                                        <td>${fn:escapeXml(counseling.phone)}
-                                                                                                        </td>
-                                                                                                        <td>${fn:escapeXml(counseling.email)}
-                                                                                                        </td>
-                                                                                                        <td>${fn:escapeXml(counseling.date)}
-                                                                                                        </td>
-                                                                                                        <td>${fn:escapeXml(counseling.time)}
-                                                                                                        </td>
-                                                                                                        <td>
-                                                                                                            <fmt:formatDate
-                                                                                                                value="${counseling.createdAt}"
-                                                                                                                pattern="yyyy-MM-dd HH:mm" />
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                </c:forEach>
-                                                                                            </tbody>
-                                                                                        </table>
-                                                                                    </div>
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                <div class="no-data-message">
-                                                                                    <div class="icon"><i
-                                                                                            class="bi bi-info-circle-fill"></i>
-                                                                                    </div>
-                                                                                    <p class="lead">현재 접수된 간편 상담 예약이
-                                                                                        없습니다.</p>
-                                                                                </div>
-                                                                            </c:otherwise>
-                                                                        </c:choose>
+                                                                <div class="quick-counseling-container">
+                                                                    <h2><i class="bi bi-headset"></i> 간편 상담 예약 현황</h2>
+                                                                    <p class="sub-text">접수된 모든 간편 상담 예약 목록입니다.</p>
+                                                                    <hr class="title-divider">
+                                                                    <c:choose>
+                                                                        <c:when test="${not empty quickCounselingList}">
+                                                                            <div class="table-responsive">
+                                                                                <table class="reservation-table table table-hover">
+                                                                                    <thead class="table-light">
+                                                                                        <tr>
+                                                                                            <th>예약ID</th>
+                                                                                            <th>예약자명</th>
+                                                                                            <th>연락처</th>
+                                                                                            <th>이메일</th>
+                                                                                            <th>상담 희망일</th>
+                                                                                            <th>상담 희망 시간</th>
+                                                                                            <th>신청일</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <c:forEach var="counseling" items="${quickCounselingList}">
+                                                                                            <tr>
+                                                                                                <td>${counseling.reservationId}</td>
+                                                                                                <td>${fn:escapeXml(counseling.username)}</td>
+                                                                                                <td>${fn:escapeXml(counseling.phone)}</td>
+                                                                                                <td>${fn:escapeXml(counseling.email)}</td>
+                                                                                                <td>${fn:escapeXml(counseling.date)}</td>
+                                                                                                <td>${fn:escapeXml(counseling.time)}</td>
+                                                                                                <td>
+                                                                                                    <fmt:formatDate value="${counseling.createdAt}" pattern="yyyy-MM-dd HH:mm" />
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </c:forEach>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <div class="no-data-message">
+                                                                                <div class="icon"><i class="bi bi-info-circle-fill"></i></div>
+                                                                                <p class="lead">현재 접수된 간편 상담 예약이 없습니다.</p>
+                                                                            </div>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
                                                                 </div>
                                                             </c:otherwise>
                                                 </c:choose>

@@ -63,13 +63,13 @@
         position: relative;
     }
 
-    #procedure .d-flex > .text-center.flex-fill {
+    #procedure .d-flex>.text-center.flex-fill {
         position: relative;
         padding: 0 1rem;
     }
 
     /* Procedure Section 화살표 스타일 */
-    #procedure .d-flex > .text-center.flex-fill:not(:last-child)::after {
+    #procedure .d-flex>.text-center.flex-fill:not(:last-child)::after {
         content: "→";
         position: absolute;
         right: 0;
@@ -161,21 +161,23 @@
     }
 
     /* 카드 내부 이미지가 튀어나오지 않도록 */
-    #cost-common2 .item-list .item > .card {
+    #cost-common2 .item-list .item>.card {
         width: 100%;
         overflow: hidden;
         border-radius: 8px;
     }
 
     /* 카드 이미지 설정 */
-    #cost-common2 .item-list .item > .card img {
+    #cost-common2 .item-list .item>.card img {
         display: block;
         width: 100%;
-        height: auto; /* 높이 자동조정 */
-        object-fit: cover; /* 프레임에 맞춰 자르기 */
+        height: auto;
+        /* 높이 자동조정 */
+        object-fit: cover;
+        /* 프레임에 맞춰 자르기 */
     }
 
-    #cost-common2 > .site-container {
+    #cost-common2>.site-container {
         max-width: 1200px;
         padding: 0 !important;
         width: 100%;
@@ -228,7 +230,7 @@
         line-height: 1.75;
     }
 
-    #cost-notice > .site-container {
+    #cost-notice>.site-container {
         max-width: 1200px;
         padding-left: 2rem;
         padding-right: 2rem;
