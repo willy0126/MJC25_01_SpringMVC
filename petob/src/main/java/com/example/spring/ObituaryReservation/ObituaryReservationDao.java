@@ -3,7 +3,7 @@ package com.example.spring.ObituaryReservation;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap; // Map 사용을 위해 필요
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public class ObituaryReservationDao {
             result = sqlSession.insert("obituaryReservationMapper.create", dto);
         } catch (DataAccessException e) {
             logger.error("장례 예약 정보 저장 실패: {}", e.getMessage(), e);
-            // 사용자 정의 예외를 발생시키거나 특정 오류 코드를 반환하는 것을 고려
+        
         }
         return result;
     }
@@ -41,13 +41,7 @@ public class ObituaryReservationDao {
         }
     }
 
-    /**
-     * 예약 상태를 업데이트합니다.
-     * 
-     * @param reservationId 업데이트할 예약의 ID.
-     * @param status        새로운 상태 값.
-     * @return 영향을 받은 행의 수.
-     */
+   
     public int updateStatus(int reservationId, String status) {
         int result = 0;
         try {
@@ -60,5 +54,17 @@ public class ObituaryReservationDao {
             // 사용자 정의 예외 발생 또는 특정 오류 코드 반환 고려
         }
         return result;
+    }
+
+   
+    public int checkDuplicate(ObituaryReservationDto dto) {
+        try {
+            // "obituaryReservationMapper.checkDuplicateReservation" 쿼리를 호출합니다.
+            return sqlSession.selectOne("obituaryReservationMapper.checkDuplicateReservation", dto);
+        } catch (DataAccessException e) {
+            logger.error("중복 예약 확인 중 데이터베이스 오류 발생: {}", e.getMessage(), e);
+            // 오류 발생 시 안전하게 예약을 막기 위해 1 (중복)을 반환합니다.
+            return 1;
+        }
     }
 }
