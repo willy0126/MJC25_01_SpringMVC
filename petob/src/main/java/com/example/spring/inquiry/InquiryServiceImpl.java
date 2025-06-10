@@ -186,6 +186,41 @@ public class InquiryServiceImpl implements InquiryService {
         }
     }
 
+@Override
+public boolean reply(Long inquiryId, String reply, String replyBy) {
+    try {
+        // 기존 문의 조회
+        InquiryDto existingInquiry = inquiryDao.read(inquiryId);
+        if (existingInquiry == null) {
+            logger.warn("답변할 문의가 존재하지 않음 - inquiryId: {}", inquiryId);
+            return false;
+        }
+
+        // 답변 데이터 세팅
+        InquiryDto dto = new InquiryDto();
+        dto.setInquiryId(inquiryId);
+        dto.setReplyContent(reply);
+        dto.setReplyBy(replyBy);
+        dto.setReplyDate(LocalDateTime.now());
+        dto.setStatus("COMPLETED");
+
+        // MyBatis mapper 호출
+        int result = inquiryDao.reply(dto);
+        if (result > 0) {
+            logger.info("답변 등록 완료 - inquiryId: {}", inquiryId);
+            return true;
+        } else {
+            logger.warn("답변 등록 실패 - inquiryId: {}", inquiryId);
+            return false;
+        }
+    } catch (Exception e) {
+        logger.error("답변 등록 중 오류: {}", e.getMessage(), e);
+        throw new RuntimeException("답변 등록 중 오류가 발생했습니다.", e);
+    }
+}
+
+
+
     @Override
 public boolean delete(Long inquiryId, String userId, boolean isAdmin) {
     try {
@@ -291,12 +326,6 @@ public boolean delete(Long inquiryId, String userId) {
             logger.error("전체 문의 개수 조회 중 오류: {}", e.getMessage(), e);
             throw new RuntimeException("전체 문의 개수 조회 중 오류가 발생했습니다.", e);
         }
-    }
-
-    @Override
-    public boolean reply(Long inquiryId, String reply, String replyBy) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'reply'");
     }
 
 }

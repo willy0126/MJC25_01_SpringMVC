@@ -200,7 +200,7 @@
                                     valBranchName = branchEl.options[branchEl.selectedIndex].text;
                                 }
                             }
-
+x
                             const valPetName = petNameEl ? petNameEl.value.trim() : "";
                             const valPetWeight = petWeightEl ? petWeightEl.value.trim() : "";
                             const valApplicantName = applicantNameEl ? applicantNameEl.value.trim() : "";
