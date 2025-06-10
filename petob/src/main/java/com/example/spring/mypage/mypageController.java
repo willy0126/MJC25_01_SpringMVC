@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest; // Added this import
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 import com.example.spring.user.UserDto;
 import com.example.spring.user.UserService;
+import com.example.spring.inquiry.InquiryService; // 문의 서비스 추가
 
 @Controller
 @RequestMapping(value = "/mypage")
@@ -29,6 +31,9 @@ public class mypageController {
 
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private InquiryService inquiryService; // 문의 서비스 주입
 
     // 기본 마이페이지 (예약 내역 등)
     @GetMapping
@@ -40,10 +45,15 @@ public class mypageController {
 
         logger.info("마이페이지 요청: 사용자 ID '{}'", currentUserId);
 
-        List<mypageDto> funeralReservationList = mypageService.getMyFuneralReservations(currentUserId);
-        model.addAttribute("funeralReservationList", funeralReservationList);
-        if (funeralReservationList.isEmpty()) {
-            model.addAttribute("funeralMessage", "현재까지 신청하신 장례 예약 내역이 없습니다.");
+        try {
+            List<mypageDto> funeralReservationList = mypageService.getMyFuneralReservations(currentUserId);
+            model.addAttribute("funeralReservationList", funeralReservationList);
+            if (funeralReservationList.isEmpty()) {
+                model.addAttribute("funeralMessage", "현재까지 신청하신 장례 예약 내역이 없습니다.");
+            }
+        } catch (Exception e) {
+            logger.error("장례 예약 목록 조회 중 오류: {}", e.getMessage(), e);
+            model.addAttribute("funeralMessage", "장례 예약 서비스 준비 중입니다.");
         }
 
         // 사용자 정보도 함께 전달 (이름 등 표시용)
@@ -51,10 +61,75 @@ public class mypageController {
         userToRead.setUserId(currentUserId);
         UserDto currentUser = userService.read(userToRead);
         model.addAttribute("currentUser", currentUser);
+        model.addAttribute("currentSection", "reservations"); // 현재 섹션 표시
 
         return "mypage/mypage";
     }
 
+  @GetMapping("/my-inquiry")
+public String myInquiry(
+        @RequestParam(defaultValue = "1") int page,
+        @RequestParam(defaultValue = "10") int size,
+        Model model, 
+        HttpSession session) {
+    
+    String userId = (String) session.getAttribute("userId");
+    logger.info("=== 나의 문의 요청 시작 ===");
+    logger.info("사용자 ID: {}", userId);
+    logger.info("요청 페이지: {}, 크기: {}", page, size);
+    
+    if (userId == null) {
+        return "redirect:/login?returnUrl=/mypage/my-inquiry";
+    }
+
+    try {
+        // 사용자별 문의 목록 조회
+        Map<String, Object> result = inquiryService.listByUser(userId, page, size);
+        
+        // 🔍 디버깅 로그 추가
+        logger.info("=== 서비스 조회 결과 ===");
+        logger.info("전체 결과: {}", result);
+        
+        List<?> inquiries = (List<?>) result.get("inquiries");
+        logger.info("조회된 문의 목록 크기: {}", inquiries != null ? inquiries.size() : 0);
+        
+        if (inquiries != null) {
+            for (int i = 0; i < inquiries.size(); i++) {
+                logger.info("문의 [{}]: {}", i, inquiries.get(i));
+            }
+        }
+        
+        Integer totalCount = (Integer) result.get("totalCount");
+        logger.info("전체 문의 개수: {}", totalCount);
+        logger.info("현재 페이지: {}", result.get("currentPage"));
+        logger.info("전체 페이지: {}", result.get("totalPages"));
+
+        model.addAttribute("myInquiryList", inquiries);
+        model.addAttribute("currentPage", result.get("currentPage"));
+        model.addAttribute("totalPages", result.get("totalPages"));
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("pageSize", result.get("size"));
+
+        // 페이징 정보
+        int totalPages = (Integer) result.get("totalPages");
+        int startPage = Math.max(1, page - 2);
+        int endPage = Math.min(totalPages, page + 2);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+        logger.info("=== 모델에 추가된 데이터 ===");
+        logger.info("myInquiryList 크기: {}", inquiries != null ? inquiries.size() : 0);
+        logger.info("totalCount: {}", totalCount);
+
+        return "mypage/my-inquiry";
+
+    } catch (Exception e) {
+        logger.error("나의 문의 목록 조회 중 오류: {}", e.getMessage(), e);
+        model.addAttribute("errorMessage", "문의 목록을 불러오는 중 오류가 발생했습니다: " + e.getMessage());
+        model.addAttribute("myInquiryList", new java.util.ArrayList<>());
+        return "mypage/my-inquiry";
+    }
+}
     // --- 개인정보 수정 관련 ---
     @GetMapping("/edit")
     public String editProfileForm(HttpSession session, Model model) {
@@ -66,6 +141,7 @@ public class mypageController {
         userToRead.setUserId(userId);
         UserDto user = userService.read(userToRead);
         model.addAttribute("user", user);
+        model.addAttribute("currentSection", "editProfile");
         return "mypage/editProfile";
     }
 
@@ -90,10 +166,11 @@ public class mypageController {
 
     // --- 비밀번호 변경 관련 ---
     @GetMapping("/change-password")
-    public String changePasswordForm(HttpSession session) {
+    public String changePasswordForm(HttpSession session, Model model) {
         if (session.getAttribute("userId") == null) {
             return "redirect:/login";
         }
+        model.addAttribute("currentSection", "changePassword");
         return "mypage/changePassword";
     }
 
@@ -183,12 +260,13 @@ public class mypageController {
             return "redirect:/mypage/confirm-password?action=withdraw";
         }
         session.removeAttribute("passwordConfirmed"); // 확인 후 플래그 제거
+        model.addAttribute("currentSection", "withdraw");
         return "mypage/withdraw"; // 실제 탈퇴 동의를 받는 JSP
     }
 
     @PostMapping("/withdraw")
     public String withdrawUser(
-            HttpServletRequest request, // Added HttpServletRequest
+            HttpServletRequest request,
             HttpSession session,
             RedirectAttributes redirectAttributes,
             @RequestParam(value = "confirmWithdraw", required = false) String confirmWithdraw) {

@@ -174,11 +174,8 @@ body {
 
 /* 📋 테이블 스타일 */
 .table {
-    margin: 0;
-    background: #ffffff;
-    font-size: 0.95rem;
-    width: 100%;
-    table-layout: auto !important;
+    min-width: 1400px; /* 추가 */
+    table-layout: fixed; /* 추가 */
 }
 
 .table thead th {
@@ -380,8 +377,12 @@ body {
     }
 
     .inquiry-content {
-        padding: 0 1rem;
-    }
+    max-width: 1500px; /* 1200px → 1500px */
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+
 
     .table thead th,
     .table tbody td {

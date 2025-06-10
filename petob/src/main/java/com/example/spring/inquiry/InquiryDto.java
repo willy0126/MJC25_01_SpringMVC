@@ -159,11 +159,22 @@ public class InquiryDto {
         this.replyDate = replyDate;
     }
 
-    public String getCreatedDateFormatted() {
-        if (createdDate == null)
-            return "";
-        return createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    // 수정: getCreatedDate() 메서드를 getCreatedDate()로 변경
+    public LocalDateTime getCreatedDate() {
+        return this.createdDate;
     }
+
+    // 추가: 기존 getCreatedAt() 호환성을 위해 유지 (필요에 따라 제거 가능)
+    public LocalDateTime getCreatedAt() {
+        return this.createdDate;
+    }
+
+    // 추가: fmt:formatDate를 위한 Date 타입 getter
+    public java.util.Date getCreatedDateAsDate() {
+        return this.createdDate != null ? 
+            java.util.Date.from(this.createdDate.atZone(java.time.ZoneId.systemDefault()).toInstant()) : null;
+    }
+    
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
