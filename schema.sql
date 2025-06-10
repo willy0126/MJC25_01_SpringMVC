@@ -8,6 +8,12 @@ DROP DATABASE IF EXISTS spring;
 -- 'spring' 데이터베이스를 생성하고, 기본 문자 세트를 utf8mb4로 지정합니다. (한글, 이모지 지원)
 CREATE DATABASE spring CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+CREATE USER 'spring'@'localhost' IDENTIFIED BY '1234';
+
+GRANT ALL PRIVILEGES ON spring.* TO 'spring'@'localhost';
+
+FLUSH PRIVILEGES;
+
 -- 'spring' 데이터베이스를 사용합니다.
 USE spring;
 
