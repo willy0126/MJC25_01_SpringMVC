@@ -28,7 +28,7 @@
 ## ❗필독해야 할 사전 구성 내용 
 <br>
 
-### 1. jQuery Validate
+### 1. 🚀 jQuery Validate
 <br>
 기본적으로 register.jsp 에서 jQuery Validate 설정 부분 중 116번째, 165번째 line의 noAdmin을 주석처리 해두었습니다.<br>
 admin 계정을 생성한 후 해당 주석을 제거하면 정상적으로 admin 가입 방지용 유효성 검사가 작동합니다.
@@ -44,9 +44,37 @@ PW: admin000
 관리자 Console이 구현되어 있기 때문에 필요한 내용으로 사전에 공지합니다.
 <br><br>
 
-### 2. Schema.sql 파일
+### 2. 🚀 Schema.sql 파일
 <br>
 프로젝트 루트 폴더에 있는 Schema.sql 파일 쿼리문을 전체 복사하여 붙여넣고 실행하여야 합니다.
+<br><br>
+
+### 3. 🚀 프로젝트 실행 가이드
+
+이 프로젝트를 로컬 환경에서 실행하기 위해서는 데이터베이스 설정이 필요합니다.
+
+#### 3-1. 데이터베이스 설정
+
+-   **데이터베이스 종류:** MariaDB
+-   **데이터베이스 이름:** `spring`
+-   **사용자 이름:** `spring`
+-   **비밀번호:** `1234`
+-   **port:** `3308`
+
+#### 3-2. Spring 설정 파일 수정
+
+`src/main/webapp/WEB-INF/spring/db-context.xml` 파일을 열어 아래와 같이 본인의 데이터베이스 환경에 맞게 수정해 주세요.
+
+```xml
+<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
+    <property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
+    <property name="jdbcUrl" value="jdbc:mariadb://127.0.0.1:3308/[데이터베이스 이름]"/>
+    <property name="username" value="[사용자 이름]"/>
+    <property name="password" value="[비밀번호]"/>
+    <property name="maximumPoolSize" value="10"/>
+    <property name="minimumIdle" value="5"/>
+</bean>
+```
 <br><br>
 
 ## 📝 <span id=1> 1. 프로젝트 소개</span>
