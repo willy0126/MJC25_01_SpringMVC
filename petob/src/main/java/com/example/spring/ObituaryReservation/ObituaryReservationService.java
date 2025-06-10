@@ -21,6 +21,11 @@ public class ObituaryReservationService {
     @Transactional
     public boolean createReservation(ObituaryReservationDto dto) {
         try {
+            if (obituaryReservationDao.checkDuplicate(dto) > 0) {
+                logger.warn("중복된 장례 예약 시도: 지점={}, 날짜={}, 시간={}", dto.getBranch(), dto.getObDate(), dto.getObTime());
+                return false; 
+            }
+
             if (dto.getApplicantPhone() != null) {
                 dto.setApplicantPhone(dto.getApplicantPhone().replaceAll("-", ""));
             }
@@ -38,7 +43,6 @@ public class ObituaryReservationService {
             }
         } catch (Exception e) {
             logger.error("장례 예약 서비스 처리 중 예외 발생: 사용자 ID - {}, 지점 - {}", dto.getUserId(), dto.getBranch(), e);
-            // 여기서는 서비스 레이어에 맞는 사용자 정의 예외를 던지는 것이 더 좋습니다.
             throw new RuntimeException("예약 처리 중 오류가 발생했습니다.", e);
         }
     }
@@ -47,21 +51,15 @@ public class ObituaryReservationService {
         Map<String, Object> params = new HashMap<>();
         params.put("obDate", obDate);
         params.put("branch", branch);
-        // 매퍼가 업데이트되었으므로 이제 '수락' 상태의 예약만 올바르게 고려합니다.
+       
         return obituaryReservationDao.getBookedTimesByDateAndBranch(params);
     }
 
-    /**
-     * 장례 예약의 상태를 업데이트합니다.
-     * 
-     * @param reservationId 예약 ID.
-     * @param status        새로운 상태 ("수락" 또는 "거절").
-     * @return 성공 시 true, 그렇지 않으면 false.
-     */
+    
     @Transactional
     public boolean updateReservationStatus(int reservationId, String status) {
         try {
-            // 상태 값 유효성 검사
+            
             if (!"수락".equals(status) && !"거절".equals(status) && !"신청대기중".equals(status)) {
                 logger.warn("유효하지 않은 상태 값으로 업데이트 시도: ID - {}, Status - {}", reservationId, status);
                 return false;

@@ -191,48 +191,50 @@ public class InquiryController {
         }
     }
 
-    /**
-     * 문의 상세 조회 페이지
-     */
-    @GetMapping("/view/{inquiryId}")
-    public String view(@PathVariable Long inquiryId, Model model, HttpServletRequest request) {
-        logger.debug("문의 상세 조회 요청 - inquiryId: {}", inquiryId);
+   /**
+ * 문의 상세 조회 페이지
+ */
+@GetMapping("/view/{inquiryId}")
+public String view(@PathVariable Long inquiryId, Model model, HttpServletRequest request) {
+    logger.debug("문의 상세 조회 요청 - inquiryId: {}", inquiryId);
 
-        try {
-            InquiryDto inquiry = inquiryService.read(inquiryId);
+    try {
+        InquiryDto inquiry = inquiryService.read(inquiryId);
 
-            if (inquiry == null) {
-                model.addAttribute("errorMessage", "존재하지 않는 문의입니다.");
-                return "inquiry/view";
-            }
-
-            // 로그인 사용자 정보 확인
-            HttpSession session = request.getSession(false);
-            String currentUserId = (session != null) ? (String) session.getAttribute("userId") : null;
-            String role = (session != null) ? (String) session.getAttribute("role") : null;
-
-            // 작성자 또는 관리자만 조회 가능
-            boolean canView = "ADMIN".equals(role) ||
-                    (currentUserId != null && currentUserId.equals(inquiry.getUserId()));
-
-            if (!canView) {
-                model.addAttribute("errorMessage", "해당 문의를 조회할 권한이 없습니다.");
-                return "inquiry/view";
-            }
-
-            model.addAttribute("inquiry", inquiry);
-            model.addAttribute("canEdit", currentUserId != null && currentUserId.equals(inquiry.getUserId()) &&
-                    !"COMPLETED".equals(inquiry.getStatus()));
-            model.addAttribute("canReply", "ADMIN".equals(role));
-
-            return "inquiry/view";
-
-        } catch (Exception e) {
-            logger.error("문의 상세 조회 중 오류 발생: {}", e.getMessage(), e);
-            model.addAttribute("errorMessage", "문의를 불러오는 중 오류가 발생했습니다.");
+        if (inquiry == null) {
+            model.addAttribute("errorMessage", "존재하지 않는 문의입니다.");
             return "inquiry/view";
         }
+
+        // 로그인 사용자 정보 확인
+        HttpSession session = request.getSession(false);
+        String currentUserId = (session != null) ? (String) session.getAttribute("userId") : null;
+        String role = (session != null) ? (String) session.getAttribute("role") : null;
+
+        // 관리자 권한 확인: admin 사용자이거나 ADMIN 역할을 가진 경우
+        boolean isAdmin = "admin".equals(currentUserId) || "ADMIN".equals(role);
+        
+        // 작성자 또는 관리자만 조회 가능
+        boolean canView = isAdmin || (currentUserId != null && currentUserId.equals(inquiry.getUserId()));
+
+        if (!canView) {
+            model.addAttribute("errorMessage", "해당 문의를 조회할 권한이 없습니다.");
+            return "inquiry/view";
+        }
+
+        model.addAttribute("inquiry", inquiry);
+        model.addAttribute("canEdit", currentUserId != null && currentUserId.equals(inquiry.getUserId()) &&
+                !"COMPLETED".equals(inquiry.getStatus()));
+        model.addAttribute("canReply", isAdmin); // 관리자만 답변 가능
+
+        return "inquiry/view";
+
+    } catch (Exception e) {
+        logger.error("문의 상세 조회 중 오류 발생: {}", e.getMessage(), e);
+        model.addAttribute("errorMessage", "문의를 불러오는 중 오류가 발생했습니다.");
+        return "inquiry/view";
     }
+}
 
     /**
      * 문의 작성 페이지
@@ -378,44 +380,51 @@ public class InquiryController {
     }
 
     /**
-     * 관리자 답변 처리 (일반 POST로 변경)
-     */
-    @PostMapping("/reply")
-    public String reply(@RequestParam Long inquiryId,
-            @RequestParam String reply,
-            HttpServletRequest request,
-            RedirectAttributes redirectAttributes) {
+ * 관리자 답변 처리 (일반 POST로 변경)
+ */
+@PostMapping("/reply")
+public String reply(@RequestParam Long inquiryId,
+        @RequestParam String reply,
+        HttpServletRequest request,
+        RedirectAttributes redirectAttributes) {
 
-        HttpSession session = request.getSession(false);
-        if (session == null || !"ADMIN".equals(session.getAttribute("role"))) {
-            redirectAttributes.addFlashAttribute("errorMessage", "관리자 권한이 필요합니다.");
-            return "redirect:/inquiry/view/" + inquiryId;
-        }
-
-        String replyBy = (String) session.getAttribute("userId");
-        if (replyBy == null) {
-            replyBy = "관리자";
-        }
-
-        logger.debug("문의 답변 요청 - inquiryId: {}, replyBy: {}", inquiryId, replyBy);
-
-        try {
-            boolean result = inquiryService.reply(inquiryId, reply, replyBy);
-
-            if (result) {
-                redirectAttributes.addFlashAttribute("successMessage", "답변이 성공적으로 등록되었습니다.");
-            } else {
-                redirectAttributes.addFlashAttribute("errorMessage", "답변 등록에 실패했습니다.");
-            }
-
-        } catch (Exception e) {
-            logger.error("문의 답변 중 오류 발생: {}", e.getMessage(), e);
-            redirectAttributes.addFlashAttribute("errorMessage", "답변 등록 중 오류가 발생했습니다.");
-        }
-
+    HttpSession session = request.getSession(false);
+    if (session == null) {
+        redirectAttributes.addFlashAttribute("errorMessage", "로그인이 필요합니다.");
+        return "redirect:/login";
+    }
+    
+    String currentUserId = (String) session.getAttribute("userId");
+    String role = (String) session.getAttribute("role");
+    
+    // 관리자 권한 확인: admin 사용자이거나 ADMIN 역할을 가진 경우
+    boolean isAdmin = "admin".equals(currentUserId) || "ADMIN".equals(role);
+    
+    if (!isAdmin) {
+        redirectAttributes.addFlashAttribute("errorMessage", "관리자 권한이 필요합니다.");
         return "redirect:/inquiry/view/" + inquiryId;
     }
 
+    String replyBy = currentUserId != null ? currentUserId : "관리자";
+
+    logger.debug("문의 답변 요청 - inquiryId: {}, replyBy: {}", inquiryId, replyBy);
+
+    try {
+        boolean result = inquiryService.reply(inquiryId, reply, replyBy);
+
+        if (result) {
+            redirectAttributes.addFlashAttribute("successMessage", "답변이 성공적으로 등록되었습니다.");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "답변 등록에 실패했습니다.");
+        }
+
+    } catch (Exception e) {
+        logger.error("문의 답변 중 오류 발생: {}", e.getMessage(), e);
+        redirectAttributes.addFlashAttribute("errorMessage", "답변 등록 중 오류가 발생했습니다.");
+    }
+
+    return "redirect:/inquiry/view/" + inquiryId;
+}
     /**
      * 관리자 답변 처리 (AJAX용 - 기존 호환성 유지)
      */

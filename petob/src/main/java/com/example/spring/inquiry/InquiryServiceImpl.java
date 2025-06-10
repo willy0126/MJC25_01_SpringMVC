@@ -186,53 +186,81 @@ public class InquiryServiceImpl implements InquiryService {
         }
     }
 
-    @Override
-    public boolean delete(Long inquiryId, String userId, boolean isAdmin) {
-        InquiryDto inquiry = inquiryMapper.read(inquiryId);
-        if (inquiry == null)
+@Override
+public boolean reply(Long inquiryId, String reply, String replyBy) {
+    try {
+        // 기존 문의 조회
+        InquiryDto existingInquiry = inquiryDao.read(inquiryId);
+        if (existingInquiry == null) {
+            logger.warn("답변할 문의가 존재하지 않음 - inquiryId: {}", inquiryId);
             return false;
+        }
 
+        // 답변 데이터 세팅
+        InquiryDto dto = new InquiryDto();
+        dto.setInquiryId(inquiryId);
+        dto.setReplyContent(reply);
+        dto.setReplyBy(replyBy);
+        dto.setReplyDate(LocalDateTime.now());
+        dto.setStatus("COMPLETED");
+
+        // MyBatis mapper 호출
+        int result = inquiryDao.reply(dto);
+        if (result > 0) {
+            logger.info("답변 등록 완료 - inquiryId: {}", inquiryId);
+            return true;
+        } else {
+            logger.warn("답변 등록 실패 - inquiryId: {}", inquiryId);
+            return false;
+        }
+    } catch (Exception e) {
+        logger.error("답변 등록 중 오류: {}", e.getMessage(), e);
+        throw new RuntimeException("답변 등록 중 오류가 발생했습니다.", e);
+    }
+}
+
+
+
+    @Override
+public boolean delete(Long inquiryId, String userId, boolean isAdmin) {
+    try {
+        // 기존 문의 조회 (inquiryMapper → inquiryDao로 수정)
+        InquiryDto inquiry = inquiryDao.read(inquiryId);
+        
+        if (inquiry == null) {
+            logger.warn("삭제할 문의가 존재하지 않음 - inquiryId: {}", inquiryId);
+            return false;
+        }
+
+        // 권한 확인 (관리자이거나 본인의 문의인 경우만)
         if (!isAdmin && !userId.equals(inquiry.getUserId())) {
+            logger.warn("문의 삭제 권한 없음 - inquiryId: {}, requestUserId: {}, ownerUserId: {}", 
+                       inquiryId, userId, inquiry.getUserId());
             return false;
         }
 
-        return inquiryMapper.delete(inquiryId) > 0;
-    }
-
-    @Override
-    public boolean reply(Long inquiryId, String reply, String replyBy) {
-        try {
-            // 기존 문의 조회
-            InquiryDto existingInquiry = inquiryDao.read(inquiryId);
-
-            if (existingInquiry == null) {
-                logger.warn("답변할 문의가 존재하지 않음 - inquiryId: {}", inquiryId);
-                return false;
-            }
-
-            // 답변 정보 설정
-            InquiryDto inquiryForReply = new InquiryDto();
-            inquiryForReply.setInquiryId(inquiryId);
-            inquiryForReply.setReplyContent(reply);
-            inquiryForReply.setReplyBy(replyBy);
-            inquiryForReply.setStatus("COMPLETED");
-            inquiryForReply.setReplyDate(LocalDateTime.now());
-
-            int result = inquiryDao.reply(inquiryForReply);
-
-            if (result > 0) {
-                logger.info("문의 답변 완료 - inquiryId: {}, replyBy: {}", inquiryId, replyBy);
-                return true;
-            } else {
-                logger.warn("문의 답변 실패 - 결과값: {}", result);
-                return false;
-            }
-
-        } catch (Exception e) {
-            logger.error("문의 답변 중 오류: {}", e.getMessage(), e);
-            throw new RuntimeException("문의 답변 중 오류가 발생했습니다.", e);
+        // 삭제 실행 (inquiryMapper → inquiryDao로 수정)
+        int result = inquiryDao.delete(inquiryId);
+        
+        if (result > 0) {
+            logger.info("문의 삭제 완료 - inquiryId: {}, userId: {}", inquiryId, userId);
+            return true;
+        } else {
+            logger.warn("문의 삭제 실패 - 결과값: {}", result);
+            return false;
         }
+
+    } catch (Exception e) {
+        logger.error("문의 삭제 중 오류: {}", e.getMessage(), e);
+        throw new RuntimeException("문의 삭제 중 오류가 발생했습니다.", e);
     }
+}
+
+@Override
+public boolean delete(Long inquiryId, String userId) {
+    // 일반 사용자 삭제 (관리자 권한 없음)
+    return delete(inquiryId, userId, false);
+}
 
     @Override
     public boolean updateStatus(Long inquiryId, String status) {
@@ -300,9 +328,4 @@ public class InquiryServiceImpl implements InquiryService {
         }
     }
 
-    @Override
-    public boolean delete(Long inquiryId, String userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
-    }
 }

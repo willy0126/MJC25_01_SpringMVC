@@ -200,21 +200,13 @@
                                     valBranchName = branchEl.options[branchEl.selectedIndex].text;
                                 }
                             }
-
+x
                             const valPetName = petNameEl ? petNameEl.value.trim() : "";
                             const valPetWeight = petWeightEl ? petWeightEl.value.trim() : "";
                             const valApplicantName = applicantNameEl ? applicantNameEl.value.trim() : "";
                             const valApplicantPhone = applicantPhoneEl ? applicantPhoneEl.value.trim() : "";
                             const valFuneralDate = funeralDateEl ? funeralDateEl.value : "";
                             const valFuneralTime = funeralTimeEl ? funeralTimeEl.value : "";
-
-                            // console.log("LOG: --- [Submit Handler] 값 추출 직후 ---");
-                            // console.log("LOG: 지점 Value: \"" + valBranchValue + "\"");
-                            // console.log("LOG: 지점 Text: \"" + valBranchName + "\"");
-                            // console.log("LOG: 펫 이름: \"" + valPetName + "\"");
-                            // console.log("LOG: 신청자명: \"" + valApplicantName + "\"");
-                            // console.log("LOG: 장례날짜: \"" + valFuneralDate + "\"");
-                            // console.log("LOG: 장례시간: \"" + valFuneralTime + "\"");
 
                             // 유효성 검사
                             if (!valBranchValue || valBranchName === "지점을 선택해주세요" || valBranchName === "") { alert("지점을 선택해주세요."); if (branchEl) branchEl.focus(); return; }

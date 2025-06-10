@@ -3,24 +3,30 @@
 /* ------------------
  * 전체 레이아웃 (중앙 정렬의 핵심)
  * ------------------ */
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #f8f9fa; /* 부드러운 배경색 */
+    background-color: #f8f9fa;
+    /* 부드러운 배경색 */
 }
 
 .page-wrapper {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* 뷰포트 전체 높이를 차지하도록 설정 */
+    min-height: 100vh;
+    /* 뷰포트 전체 높이를 차지하도록 설정 */
 }
 
 .main-wrapper {
-    flex: 1; /* navbar와 footer를 제외한 모든 공간 차지 */
+    flex: 1;
+    /* navbar와 footer를 제외한 모든 공간 차지 */
     display: flex;
-    align-items: center;    /* 수직 중앙 정렬 */
-    justify-content: center;/* 수평 중앙 정렬 */
+    align-items: center;
+    /* 수직 중앙 정렬 */
+    justify-content: center;
+    /* 수평 중앙 정렬 */
     padding: 2rem 1rem;
 }
 
@@ -29,20 +35,23 @@ html, body {
  * ------------------ */
 .auth-container {
     width: 100%;
-    max-width: 420px; /* 최대 너비 살짝 증가 */
+    max-width: 420px;
+    /* 최대 너비 살짝 증가 */
     background-color: #fff;
-    padding: 2.5rem; /* 내부 여백 증가 */
+    padding: 2.5rem;
+    /* 내부 여백 증가 */
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     border: 1px solid #e9ecef;
 
-     /* ▼▼▼ 애니메이션 효과 추가 ▼▼▼ */
+    /* ▼▼▼ 애니메이션 효과 추가 ▼▼▼ */
     animation: fadeInUp 0.7s ease-out both;
 }
 
 .auth-container h2 {
     text-align: center;
-    color: #2c3e50; /* 짙은 네이비 색상 */
+    color: #2c3e50;
+    /* 짙은 네이비 색상 */
     margin-bottom: 2rem;
     font-weight: 600;
 }
@@ -73,7 +82,8 @@ html, body {
 
 .form-control:focus {
     outline: none;
-    border-color: #86b7fe; /* 부드러운 파란색 */
+    border-color: #86b7fe;
+    /* 부드러운 파란색 */
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
@@ -170,8 +180,10 @@ html, body {
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(25px); /* 아래에서 위로 25px 이동하며 나타남 */
+        transform: translateY(25px);
+        /* 아래에서 위로 25px 이동하며 나타남 */
     }
+
     to {
         opacity: 1;
         transform: translateY(0);

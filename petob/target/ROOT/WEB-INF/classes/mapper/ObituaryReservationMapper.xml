@@ -29,15 +29,27 @@
             #{status} )
     </insert>
 
-   <select id="getBookedTimesByDateAndBranch" resultType="java.lang.String" parameterType="map">
-    SELECT ob_time
-    FROM obreserve
-    WHERE ob_date = #{obDate} AND branch = #{branch} AND status = '수락' </select>
+    <select id="getBookedTimesByDateAndBranch" resultType="java.lang.String" parameterType="map">
 
- <update id="updateStatus" parameterType="map">
+        SELECT ob_time
+        FROM obreserve
+        WHERE ob_date = #{obDate} AND branch = #{branch} AND status IN ('수락', '신청대기중')
+    </select>
+
+
+    <update id="updateStatus" parameterType="map">
         UPDATE obreserve
         SET status = #{status}
         WHERE reservation_id = #{reservationId}
     </update>
+
+    <select id="checkDuplicateReservation" parameterType="com.example.spring.ObituaryReservation.ObituaryReservationDto" resultType="int">
+        SELECT COUNT(*)
+        FROM obreserve
+        WHERE branch = #{branch}
+          AND ob_date = #{obDate}
+          AND ob_time = #{obTime}
+          AND status IN ('수락', '신청대기중')
+    </select>
 
 </mapper>
