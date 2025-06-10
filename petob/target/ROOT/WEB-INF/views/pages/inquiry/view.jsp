@@ -1,7 +1,9 @@
 <!-- inquiry/view.jsp -->
+
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %><%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 
             <!DOCTYPE html>
             <html lang="ko">
@@ -96,6 +98,7 @@
                                     </div>
 
                                     <!-- 작성일 표시 -->
+
   <div class="inquiry-field">
     <label>작성일:</label>
     <c:choose>
@@ -109,6 +112,7 @@
         </c:otherwise>
     </c:choose>
 </div>
+
 
 
                                     <!-- 상태 표시 (배지 스타일) -->

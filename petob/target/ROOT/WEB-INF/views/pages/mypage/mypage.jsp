@@ -44,6 +44,7 @@
                                     padding: 0.4em 0.6em;
                                 }
 
+
                                 /* 문의 관련 스타일 */
                                 .inquiry-card {
                                     border: 1px solid #e0e0e0;
@@ -153,6 +154,7 @@
                                     color: white;
                                     text-decoration: none;
                                 }
+
                             </style>
                 </head>
 
@@ -172,9 +174,11 @@
                                                         class="nav-item ${currentSection == 'reservations' or empty currentSection ? 'active' : ''}">
                                                         <a href="${pageContext.request.contextPath}/mypage">예약 확인</a>
                                                     </li>
+
                                                     <li class="nav-item ${currentSection == 'myInquiry' ? 'active' : ''}">
                                                         <a href="${pageContext.request.contextPath}/mypage/my-inquiry">나의 문의</a>
                                                     </li>
+
                                                     <li
                                                         class="nav-item ${currentSection == 'editProfile' ? 'active' : ''}">
                                                         <a href="${pageContext.request.contextPath}/mypage/edit">개인정보
@@ -206,6 +210,7 @@
                                                     <div class="alert alert-danger flash-message" role="alert">
                                                         ${errorMessage}</div>
                                                 </c:if>
+
 
  
                                                 <c:choose>
@@ -449,6 +454,7 @@
                                                         </div>
                                                     </c:when>
                                                 </c:choose>
+
                                         </main>
                             </div>
                         </div>

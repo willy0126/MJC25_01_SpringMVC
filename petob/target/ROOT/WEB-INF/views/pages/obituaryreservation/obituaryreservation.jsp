@@ -200,13 +200,14 @@
                                     valBranchName = branchEl.options[branchEl.selectedIndex].text;
                                 }
                             }
-x
+
                             const valPetName = petNameEl ? petNameEl.value.trim() : "";
                             const valPetWeight = petWeightEl ? petWeightEl.value.trim() : "";
                             const valApplicantName = applicantNameEl ? applicantNameEl.value.trim() : "";
                             const valApplicantPhone = applicantPhoneEl ? applicantPhoneEl.value.trim() : "";
                             const valFuneralDate = funeralDateEl ? funeralDateEl.value : "";
                             const valFuneralTime = funeralTimeEl ? funeralTimeEl.value : "";
+
 
                             // 유효성 검사
                             if (!valBranchValue || valBranchName === "지점을 선택해주세요" || valBranchName === "") { alert("지점을 선택해주세요."); if (branchEl) branchEl.focus(); return; }

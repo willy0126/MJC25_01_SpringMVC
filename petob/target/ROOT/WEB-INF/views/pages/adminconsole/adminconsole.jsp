@@ -69,9 +69,11 @@
                                                         href="${pageContext.request.contextPath}/admin/console?section=funeral_reservations">장례
                                                         예약 현황</a>
                                                 </li>
+
                                                 <li class="nav-item ${currentSection == 'inquiry_board' ? 'active' : ''}">
                                                 <a href="${pageContext.request.contextPath}/admin/console?section=inquiry_board">문의 게시판</a>
                                                 </li>
+
 
                                             </ul>
                                         </nav>
@@ -309,6 +311,7 @@
                                                                 </div>
                                                             </c:when>
 
+
                                                             <%-- 3. 문의 게시판 섹션 --%>
                                                             <c:when test="${currentSection == 'inquiry_board'}">
                                                                 <div class="inquiry-board-container">
@@ -436,7 +439,7 @@
                                                                             </div>
                                                                         </c:otherwise>
                                                                     </c:choose>
-                                                                </div>
+                                                     </div>
                                                             </c:otherwise>
                                                 </c:choose>
                                         </main>
